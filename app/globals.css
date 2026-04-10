@@ -9,9 +9,8 @@
 
   --bg-dark: #131313;
   --bg-less-dark: #1b1b1b;
-  --text-main: #dbdbdb;
+  --text-main: #e2e2e2;
   --accent: #6eDD86;
-  --accent-dark: #003915;
 }
 
 @theme inline {
@@ -23,15 +22,16 @@
 
 /* This must be the .dark class so the next-themes toggle can apply it */
 .light {
-  --bg-dark: #dbdbdb;
-  --bg-less-dark: #f1f1f1;
+  /* --background: #0a0a0a;
+  --foreground: #ededed; */
+  --bg-dark: #e2e2e2;
+  --bg-less-dark: #ffffff;
   --text-main: #131313;
   --accent: #44c45f;
-  --accent-dark: #003915;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: Arial, Helvetica, sans-serif;
 }
