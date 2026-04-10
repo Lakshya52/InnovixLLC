@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+/* Allow Tailwind to recognize the dark class added by next-themes */
+@custom-variant dark (&:where(.light, .light *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --background: #ffffff;
+  --foreground: #171717; */
+
+  --bg-dark: #131313;
+  --bg-less-dark: #1b1b1b;
+  --text-main: #e2e2e2;
+  --accent: #6eDD86;
 }
 
 @theme inline {
@@ -12,11 +20,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* This must be the .dark class so the next-themes toggle can apply it */
+.light {
+  /* --background: #0a0a0a;
+  --foreground: #ededed; */
+  --bg-dark: #e2e2e2;
+  --bg-less-dark: #ffffff;
+  --text-main: #131313;
+  --accent: #44c45f;
 }
 
 body {
