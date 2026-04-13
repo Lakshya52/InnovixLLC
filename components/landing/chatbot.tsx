@@ -8,7 +8,7 @@ export default function ChatBot() {
 
             <div className="flex items-center justify-center min-h-fit mt-30">
                 <div className="flex items-center jusify-center w-[80dvw] h-fit bg-(--bg-less-dark) rounded-[90px]">
-                    <div className="w-1/2 p-10 flex flex-col gap-10">
+                    <div className="w-1/2 p-20 flex flex-col gap-10">
 
                         {/* <div className="relative z-10 flex flex-col justify-end items-start h-full p-10 text-white gap-10"> */}
                         <div className="flex items-center justify-start gap-2">
@@ -47,7 +47,7 @@ export default function ChatBot() {
 
                         </ul>
                         {/* buy now button and view product details buttons */}
-                        <Link href="/chatbot" className="bg-(--accent) w-fit text-(--accent-dark) font-inter text-2xl rounded-full py-5 px-7 flex items-center justify-center gap-2 hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]">Launch Live-Chat <MessageCircle /></Link>
+                        <Link href="/chatbot" className="button-green w-fit">Launch Live-Chat <MessageCircle className="ml-5" /></Link>
                         {/* </div> */}
 
 
