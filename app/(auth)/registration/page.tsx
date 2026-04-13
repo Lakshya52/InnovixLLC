@@ -3,7 +3,7 @@ import { register } from "@/actions/auth";
 
 export default function Registration() {
   return (
-    <div className=" w-full flex flex-col items-center justify-center">
+    <div className=" w-full min-h-dvh flex flex-col items-center justify-center">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-(--accent)/20 blur-[100px] -z-10 rounded-full" />
       
       <form action={register} className="bg-(--bg-less-dark) p-10 rounded-2xl shadow-xl shadow-black/50 border border-(--accent)/20 flex flex-col gap-6 w-full max-w-md">

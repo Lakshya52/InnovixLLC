@@ -30,7 +30,7 @@ export default function HeroProduct() {
             </p>
           </div>
           <div>
-            <Link href='/products' className="bg-(--accent) text-(--accent-dark) font-inter text-2xl rounded-full py-5 px-7 flex items-center justify-center gap-2 hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]">View All Products <ArrowRight /></Link>
+            <Link href='/products' className="button-green">View All Products <ArrowRight /></Link>
           </div>
         </div>
         <div className="h-[75%] w-full flex gap-10">
@@ -57,10 +57,10 @@ export default function HeroProduct() {
               <div className="flex items-center justify-between w-full">
 
                 <div className="flex gap-5">
-                  <Link href="/products" className="bg-(--accent) text-(--accent-dark) font-inter text-2xl rounded-full py-5 px-7 flex items-center justify-center gap-2 hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]">Buy Now <ArrowRight /></Link>
+                  <Link href="/products" className="button-green">Buy Now <ArrowRight /></Link>
 
                   {/* bordered button */}
-                  <Link href="/products" className="border border-(--text-main) text-(--text-main) font-inter text-2xl rounded-full py-5 px-7 flex items-center justify-center gap-2 hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]">View</Link>
+                  <Link href="/products" className="button-dark">View More</Link>
                 </div>
                 {/* price of the product in dollars */}
                 <div className="flex items-center justify-center gap-2 text-(--accent) font-inter text-4xl  rounded-full w-fit ">$1499.00</div>
@@ -78,7 +78,7 @@ export default function HeroProduct() {
                 security with the most cloud-connected SQL
                 Server release yet.</p>
               {/* bordered button */}
-              <Link href="/products" className="flex items-center justify-center gap-2 text-(--accent) font-inter text-lg border border-(--accent) rounded-full py-5 px-7 w-full hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]" >View Product <ArrowRight /></Link>
+              <Link href="/products" className="button-green w-full flex items-center justify-center " >View Product <ArrowRight /></Link>
             </div>
             <div className="w-full flex flex-col items-start justify-center p-10 bg-(--accent)/20 h-2/10 rounded-[50px] ">
               <span className="text-(--text-main) font-inter text-lg font-bold" >LIVE SUPPORT</span>

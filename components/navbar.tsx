@@ -1,12 +1,15 @@
-"use client";
+"use client"
 
 import { ShoppingCart } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/context/CartContext";
+
 
 export default function Navbar() {
     const pathname = usePathname();
+    const { cartCount } = useCart();
 
     const navLinks = [
         { name: "Home", href: "/" },
@@ -48,19 +51,21 @@ export default function Navbar() {
 
                     {/* Right side */}
                     <div className="mx-5 flex items-center gap-5">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
 
-                        <Link href="/cart" className="flex items-start">
-                            <ShoppingCart />
-                            <span className="rounded-full h-4 w-4 bg-red-500 text-white text-xs flex items-center justify-center">
-                                0
-                            </span>
+                        <Link href="/cart" className="flex items-start relative group">
+                            <ShoppingCart className="group-hover:text-[var(--accent)] transition-colors" />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-2 -right-2 rounded-full h-5 w-5 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in duration-300">
+                                    {cartCount}
+                                </span>
+                            )}
                         </Link>
                     </div>
 
                     {/* CTA */}
                     <Link href="/registration">
-                        <button className="bg-[var(--accent)] text-[var(--accent-dark)] font-inter text-lg rounded-full py-2 px-4 flex items-center gap-2 hover:scale-105 transition-all duration-200 hover:shadow-[0_0_10px_var(--accent)]">
+                        <button className="button-green">
                             Get Started
                         </button>
                     </Link>

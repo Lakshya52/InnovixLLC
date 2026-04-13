@@ -32,8 +32,8 @@ export default function Hero() {
             with the world's leading OS and productivity suites.
           </p>
           <div className="flex gap-5">
-            <Link href="/products" className="bg-(--accent) text-(--accent-dark) font-inter text-2xl rounded-full py-5 px-7 flex items-center justify-center gap-2 hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]">Shop Products <ArrowRight /></Link>
-            <Link href="/contact" className="bg-(--bg-less-dark) text-(--text-main) font-inter text-2xl rounded-full py-5 px-7 flex items-center justify-center gap-2 hover:scale-102 transition-all duration-300 cursor-pointer hover:shadow hover:shadow-[0px_0px_10px_var(--accent)]">Contact Us</Link>
+            <Link href="/products" className="button-green">Shop Products <ArrowRight /></Link>
+            <Link href="/contact" className="button-dark">Contact Us</Link>
           </div>
         </div>
         <div className="h-full w-1/2 py-30 pl-30" >

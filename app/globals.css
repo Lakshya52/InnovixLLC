@@ -35,3 +35,43 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.button-green {
+  background: var(--accent);
+  display: flex;
+  gap: 5px;
+  color: var(--bg-dark);
+  font-family: var(--font-inter);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border-radius: 50;
+}
+
+.button-green:hover {
+  background: #5dbb72;
+  box-shadow: 0 0 40px rgba(110, 221, 134, 0.5);
+}
+
+
+.button-dark {
+  background: var(--bg-dark);
+  display: flex;
+  gap: 5px;
+  color: var(--text-main);
+  font-family: var(--font-inter);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 50;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: 1px solid rgb(94, 94, 94);
+}
+
+.button-dark:hover {
+  background: var(--bg-less-dark);
+}
