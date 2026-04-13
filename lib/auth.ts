@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_key_innovix_llc_repla
 const encodedKey = new TextEncoder().encode(JWT_SECRET);
 
 export interface SessionPayload {
-  id: number;
+  id: string;
   email: string;
   role: string;
   [key: string]: any;
