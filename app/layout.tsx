@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
-
+import { ThemeProvider } from "@/components/theme-provider";
+import { CartProvider } from "@/context/CartContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,9 +19,6 @@ export const metadata: Metadata = {
   description: "Innovix LLC | Your Hub for Microsoft Solutions & Expert Support",
 };
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { CartProvider } from "@/context/CartContext";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,11 +31,14 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased font-inter`}
     >
       <body className="min-h-full flex flex-col items-center justify-start">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="system" 
+          enableSystem
+          disableTransitionOnChange
+        >
           <CartProvider>
-            <Navbar />
             {children}
-            <Footer />
           </CartProvider>
         </ThemeProvider>
       </body>

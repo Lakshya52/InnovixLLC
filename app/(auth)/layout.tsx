@@ -1,7 +1,7 @@
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
-export default function PublicLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;

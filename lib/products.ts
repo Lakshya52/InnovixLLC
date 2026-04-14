@@ -20,13 +20,22 @@ export interface Product {
   subCategory: string;
   description: string;
   longPara1: string;
-  longPara2:"Experience a kinetic UI that responds to your workflow. From instant-on capabilities to seamless wake-from-sleep, every interaction is optimized for speed and reliability in a mission-critical environment.",
+  longPara2: string;
   price: string;
   image: string;
   isBestseller?: boolean;
   features: string[];
   specs: { label: string; value: string }[];
   keyFeatures: { icon: string; title: string; description: string }[];
+  systemRequirements?: {
+    component: string;
+    minimum: string;
+    recommended: string;
+  }[];
+  trustArchitecture?: {
+    title: string;
+    points: string[];
+  };
 }
 
 export const products: Product[] = [
@@ -59,7 +68,23 @@ export const products: Product[] = [
       { icon: "Shield", title: "Enhanced Security", description: "Hardware-based isolation, encryption, and malware protection." },
       { icon: "Zap", title: "High Performance", description: "DirectStorage and Auto HDR for faster loading and better visuals." },
       { icon: "Cpu", title: "Modern CPU Support", description: "Optimized for the latest processors and architecture." }
-    ]
+    ],
+    systemRequirements: [
+      { component: "Processor", minimum: "1 GHz or faster with 2 or more cores on a compatible 64-bit processor", recommended: "2 GHz or faster with 4 or more cores" },
+      { component: "RAM", minimum: "4 GB or more", recommended: "8 GB or more" },
+      { component: "Storage", minimum: "64 GB or larger storage device", recommended: "128 GB or larger SSD" },
+      { component: "System Firmware", minimum: "UEFI, Secure Boot capable", recommended: "UEFI, Secure Boot capable" },
+      { component: "TPM", minimum: "Trusted Platform Module (TPM) version 2.0", recommended: "Trusted Platform Module (TPM) version 2.0" },
+      { component: "Graphics Card", minimum: "Compatible with DirectX 12 or later with WDDM 2.0 driver", recommended: "Compatible with DirectX 12 or later with WDDM 2.0 driver" }
+    ],
+    trustArchitecture: {
+      title: "Trust Architecture",
+      points: [
+        "Verified Licensing with instant digital keys delivered to your dashboard.",
+        "Lifetime activation guarantee with dedicated 24/7 technical support.",
+        "Full enterprise features including BitLocker and Windows Information Protection."
+      ]
+    }
   },
   {
     id: "office-2024",
@@ -90,7 +115,22 @@ export const products: Product[] = [
       { icon: "Globe", title: "Cloud Integration", description: "Seamlessly save and share files across devices." },
       { icon: "Lock", title: "Secure Access", description: "Enhanced security for documents and communication." },
       { icon: "Briefcase", title: "Pro Tools", description: "Advanced data analysis and presentation tools." }
-    ]
+    ],
+    systemRequirements: [
+      { component: "Processor", minimum: "1.6 GHz or faster, 2-core", recommended: "2.0 GHz or faster, 4-core" },
+      { component: "RAM", minimum: "4 GB RAM", recommended: "8 GB RAM" },
+      { component: "Storage", minimum: "4.0 GB available disk space", recommended: "10.0 GB available SSD space" },
+      { component: "Display", minimum: "1280 x 768 screen resolution", recommended: "1920 x 1080 screen resolution" },
+      { component: "Graphics", minimum: "DirectX 9 or later with WDDM 2.0", recommended: "DirectX 10 or later" }
+    ],
+    trustArchitecture: {
+      title: "Enterprise Trust",
+      points: [
+        "100% Genuine Retail Keys with lifetime warranty.",
+        "Secure digital activation directly with Microsoft servers.",
+        "Comprehensive suite of productivity tools for business-critical workflows."
+      ]
+    }
   },
   {
     id: "visio-pro",

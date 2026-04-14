@@ -41,7 +41,7 @@ export default function BlogsPage() {
           <p className="text-gray-400 text-md font-inter max-w-2/5 leading-relaxed">
             Complete your order for InnovixLLC high-performance digital infrastructure. Your digital assets will be available immediately after verification.
           </p>
-        </div>9
+        </div>
 
         {/* Featured Hero Card */}
         <div className="mb-20">

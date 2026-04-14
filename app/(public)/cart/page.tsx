@@ -8,30 +8,23 @@ import {
   Plus,
   Minus,
   ArrowRight,
-  Zap,
   ShieldCheck,
-  CheckCircle,
   ShoppingCart,
   ArrowLeft,
-  Monitor,
-  Briefcase,
-  Database,
-  LayoutGrid
+  CreditCard,
+  Target,
+  Info,
+  CheckCircle2,
+  Lock,
+  BadgeCheck
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-
-const categoryIcons: Record<string, React.ReactNode> = {
-  "Windows": <Monitor className="w-10 h-10 text-[#6eDD86]" />,
-  "Office Suite": <Briefcase className="w-10 h-10 text-[#6eDD86]" />,
-  "Servers": <Database className="w-10 h-10 text-[#6eDD86]" />,
-  "Developer Tools": <LayoutGrid className="w-10 h-10 text-[#6eDD86]" />
-};
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, cartCount } = useCart();
   const router = useRouter();
 
-  // 🔥 NEW: login message state
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [showLoginMsg, setShowLoginMsg] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
@@ -39,7 +32,7 @@ export default function CartPage() {
     if (!showLoginMsg) return;
 
     if (countdown === 0) {
-      window.location.href = "/registration"; // redirect
+      router.push("/registration");
       return;
     }
 
@@ -48,54 +41,35 @@ export default function CartPage() {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [showLoginMsg, countdown]);
+  }, [showLoginMsg, countdown, router]);
 
-  // 🔥 NEW: checkout handler
   const handleCheckout = () => {
     const isLoggedIn = document.cookie.includes("session=");
 
     if (!isLoggedIn) {
       setShowLoginMsg(true);
-      setCountdown(3); // reset countdown every time
-      // redirect after small delay (better UX)
-      setTimeout(() => {
-        router.push("/registration");
-      }, 3000);
-
+      setCountdown(3);
       return;
     }
 
-    router.push("/checkout");
+    // Process checkout or redirect to stripe/paypal logic would go here
+    console.log(`Processing checkout with ${paymentMethod}`);
+    router.push("/checkout/success"); // Mock success page
   };
-
-  //   onClick = {() => {
-
-  //     if (!isLoggedIn) {
-  //       setShowLoginMsg(true);
-  //       setCountdown(3); // reset countdown every time
-  //       return;
-  //     }
-
-  //     // normal checkout logic here
-  //   }
-  // }
-
-
 
   if (cart.length === 0) {
     return (
       <div className="bg-(--bg-dark) min-h-screen text-white pt-40 pb-20 px-4 flex flex-col items-center justify-center text-center">
-        <div className="w-24 h-24 bg-white/[0.03] rounded-full flex items-center justify-center mb-8 border border-white/5">
-          <ShoppingCart className="w-10 h-10 text-gray-500" />
+        <div className="w-24 h-24 bg-white/[0.03] rounded-full flex items-center justify-center mb-8 border border-white/5 animate-pulse">
+          <ShoppingCart className="w-10 h-10 text-(--accent)" />
         </div>
         <h1 className="text-4xl font-bold font-grotesk mb-4">Your cart is empty</h1>
         <p className="text-gray-400 font-inter mb-10 max-w-md">
-          Looks like you haven't added any premium digital solutions yet.
-          Explore our products to find the perfect fit for your workspace.
+          Looks like you haven't added any premium digital solutions yet. Explore our products to find the perfect fit.
         </p>
         <Link
           href="/products"
-          className="bg-[#6eDD86] hover:bg-[#5dbb72] text-black font-bold py-4 px-10 rounded-full transition-all duration-300 font-grotesk flex items-center gap-2 group"
+          className="button-green py-4 px-10 rounded-full group"
         >
           Browse Products
           <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -105,154 +79,192 @@ export default function CartPage() {
   }
 
   return (
-    <div className="bg-(--bg-dark) min-h-screen text-white pt-32 pb-20 px-4 md:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-4 mb-12">
-          <Link href="/products" className="text-gray-500 hover:text-white transition-colors">
-            <ArrowLeft className="w-6 h-6" />
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-bold font-grotesk tracking-tight">Your Cart</h1>
-          <span className="bg-white/[0.05] border border-white/10 px-4 py-1 rounded-full text-xs font-bold text-gray-400 font-inter">
-            {cartCount} Items
-          </span>
+    <div className="bg-(--bg-dark) min-h-screen text-white pt-32 pb-20 px-6 lg:px-12 relative overflow-hidden">
+      {/* Background blobs for premium feel */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-(--accent)/5 blur-[120px] rounded-full -z-10" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-(--accent)/5 blur-[100px] rounded-full -z-10" />
+
+      <div className="w-[80dvw]  relative z-10">
+        {/* Header Section */}
+        <div className="mb-16">
+          <h1 className="text-5xl md:text-6xl font-bold font-grotesk mb-4 tracking-tight">
+            Secure <span className="text-(--accent)">Checkout</span>
+          </h1>
+          <p className="text-gray-400 font-inter text-md max-w-2xl leading-relaxed">
+            Complete your order for InnovixLLC high-performance digital infrastructure. Your digital assets will be available immediately after verification.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Cart Items List */}
-          <div className="lg:col-span-2 space-y-6">
-            {cart.map((item) => (
-              <div
-                key={item.product.id}
-                className="bg-white/[0.02] border border-white/5 rounded-[40px] p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 transition-all hover:bg-white/[0.04]"
-              >
-                <div className="w-full md:w-32 h-32 bg-white/[0.03] rounded-3xl border border-white/5 flex items-center justify-center shrink-0">
-                  {categoryIcons[item.product.category] || <Monitor className="w-10 h-10 text-white/20" />}
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
-                <div className="flex-1 text-center md:text-left">
-                  <div className="flex flex-col gap-1 mb-4">
-                    <span className="text-[#6eDD86] text-[10px] font-bold tracking-widest uppercase mb-1">
-                      {item.product.subCategory}
-                    </span>
-                    <h3 className="text-2xl font-bold font-grotesk">{item.product.name}</h3>
-                    <p className="text-gray-500 text-sm font-inter">60s Instant Delivery Guaranteed</p>
-                  </div>
-
-                  <div className="flex items-center justify-center md:justify-start gap-4">
-                    <CheckCircle className="w-4 h-4 text-[#6eDD86]" />
-                    <span className="text-xs text-gray-400 font-inter uppercase tracking-widest">Active License</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center md:items-end gap-6">
-                  <div className="text-2xl font-bold font-grotesk">${item.product.price}</div>
-
-                  <div className="flex items-center bg-black/40 border border-white/10 rounded-2xl p-1 shrink-0">
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="w-10 h-10 flex items-center justify-center hover:bg-white/5 rounded-xl transition-colors"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="w-10 text-center font-bold font-grotesk">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="w-10 h-10 flex items-center justify-center hover:bg-white/5 rounded-xl transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  <button
-                    onClick={() => removeFromCart(item.product.id)}
-                    className="p-3 text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
+          {/* Left: Your Cart Section */}
+          <div className="lg:col-span-7">
+            <div className="bg-white/[0.03] border border-white/10 rounded-[40px] p-8 md:p-10 backdrop-blur-xl">
+              <div className="flex items-center gap-3 mb-10">
+                <ShoppingCart className="text-(--accent)" size={24} />
+                <h2 className="text-2xl font-bold font-grotesk">Your Cart</h2>
               </div>
-            ))}
+
+              <div className="space-y-6">
+                {cart.map((item) => (
+                  <div
+                    key={item.product.id}
+                    className="group bg-white/[0.02] border border-white/5 rounded-3xl p-6 flex items-center gap-6 transition-all hover:bg-white/[0.05] hover:border-white/10"
+                  >
+                    <div className="w-24 h-24 rounded-2xl overflow-hidden bg-white/5 p-2 shrink-0">
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold font-grotesk text-white group-hover:text-(--accent) transition-colors">
+                        {item.product.name}
+                      </h3>
+                      <p className="text-gray-500 text-sm font-inter mt-1">
+                        {item.product.subCategory}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-6">
+                      <div className="text-xl font-bold font-grotesk whitespace-nowrap">
+                        ${item.product.price}
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(item.product.id)}
+                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Checkout Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white/[0.02] border border-white/5 rounded-[50px] p-8 md:p-10 sticky top-32">
-              <h2 className="text-2xl font-bold font-grotesk mb-8">Order Summary</h2>
+          {/* Right: Order Summary Section */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="bg-white/[0.03] border border-white/10 rounded-[50px] p-10 backdrop-blur-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-(--accent)/50 to-transparent" />
 
-              <div className="space-y-4 mb-10 pb-8 border-b border-white/5">
+              <h2 className="text-2xl font-bold font-grotesk mb-10">Order Summary</h2>
+
+              <div className="space-y-5 mb-10 border-b border-white/5 pb-10">
                 <div className="flex justify-between items-center text-gray-400 font-inter">
-                  <span>Subtotal</span>
-                  <span className="text-white font-medium">${cartTotal.toFixed(2)}</span>
+                  <span className="text-lg">Subtotal</span>
+                  <span className="text-white font-bold text-lg">${cartTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center text-gray-400 font-inter">
-                  <span>Service Fee</span>
-                  <span className="text-[#6eDD86] font-medium">$0.00</span>
+                  <span className="text-lg">Digital Delivery</span>
+                  <span className="text-(--accent) font-bold text-sm tracking-widest uppercase">FREE</span>
+                </div>
+                <div className="flex justify-between items-center text-gray-400 font-inter">
+                  <span className="text-lg">Tax (0.00%)</span>
+                  <span className="text-white font-bold text-lg">$0.00</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mb-10">
-                <span className="text-xl font-bold font-grotesk">Total</span>
-                <span className="text-4xl font-bold font-grotesk text-[#6eDD86] tracking-tight">
+              <div className="flex justify-between items-baseline mb-12">
+                <span className="text-2xl font-bold font-grotesk">Total</span>
+                <span className="text-5xl font-bold font-grotesk text-(--accent) tracking-tight">
                   ${cartTotal.toFixed(2)}
                 </span>
               </div>
 
-              {/* 🔥 ONLY CHANGE HERE */}
+              {/* Payment Method */}
+              <div className="space-y-4 mb-10">
+                <p className="text-sm font-medium text-gray-400 ml-1">Payment Method</p>
+                <div className="space-y-3">
+                  <label
+                    className={`flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all ${paymentMethod === "stripe"
+                      ? "border-(--accent) bg-(--accent)/5"
+                      : "border-white/5 bg-white/[0.02] hover:bg-white/[0.05]"
+                      }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <CreditCard className={paymentMethod === "stripe" ? "text-(--accent)" : "text-gray-500"} size={20} />
+                      <span className={`font-bold font-inter ${paymentMethod === "stripe" ? "text-white" : "text-gray-400"}`}>Stripe</span>
+                    </div>
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="stripe"
+                      checked={paymentMethod === "stripe"}
+                      onChange={() => setPaymentMethod("stripe")}
+                      className="peer hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 border-white/10 flex items-center justify-center ${paymentMethod === "stripe" ? "border-(--accent)" : ""}`}>
+                      {paymentMethod === "stripe" && <div className="w-2.5 h-2.5 rounded-full bg-(--accent)" />}
+                    </div>
+                  </label>
+
+                  <label
+                    className={`flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all ${paymentMethod === "paypal"
+                      ? "border-(--accent) bg-(--accent)/5"
+                      : "border-white/5 bg-white/[0.02] hover:bg-white/[0.05]"
+                      }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <Target className={paymentMethod === "paypal" ? "text-(--accent)" : "text-gray-500"} size={20} />
+                      <span className={`font-bold font-inter ${paymentMethod === "paypal" ? "text-white" : "text-gray-400"}`}>PayPal</span>
+                    </div>
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="paypal"
+                      checked={paymentMethod === "paypal"}
+                      onChange={() => setPaymentMethod("paypal")}
+                      className="peer hidden"
+                    />
+                    <div className={`w-5 h-5 rounded-full border-2 border-white/10 flex items-center justify-center ${paymentMethod === "paypal" ? "border-(--accent)" : ""}`}>
+                      {paymentMethod === "paypal" && <div className="w-2.5 h-2.5 rounded-full bg-(--accent)" />}
+                    </div>
+                  </label>
+                </div>
+              </div>
+
               <button
                 onClick={handleCheckout}
-                className="w-full bg-[#6eDD86] hover:bg-[#5dbb72] text-black font-bold py-6 rounded-3xl transition-all duration-300 shadow-[0_0_20px_rgba(110,221,134,0.3)] font-grotesk text-xl flex items-center justify-center gap-3 group mb-2 px-5"
+                className="w-full bg-(--accent) hover:bg-[#5dbb72] text-black font-bold py-6 rounded-3xl transition-all duration-300 shadow-[0_0_30px_rgba(110,221,134,0.4)] font-grotesk text-xl flex items-center justify-center gap-3 group relative overflow-hidden"
               >
-                Proceed to Checkout
-                <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1" />
+                <span className="relative z-10">Complete Purchase</span>
+                <ArrowRight className="w-6 h-6 relative z-10 transition-transform group-hover:translate-x-1" />
               </button>
+
               {showLoginMsg && (
-                <p className="text-red-500 font-bold text-lg font-inter mb-10" >
-                  Please login to continue, Redirecting in <span>{countdown}</span>...
-                </p>
+                <div className="mt-8 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                  <Info className="text-red-500" size={20} />
+                  <p className="text-red-400 font-bold text-sm font-inter">
+                    Please login to continue. Redirecting in {countdown}...
+                  </p>
+                </div>
               )}
 
-              {/* Trust Section unchanged */}
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] flex items-center justify-center text-[#6eDD86]">
-                    <Zap className="w-5 h-5" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-bold font-grotesk">Fast Delivery</span>
-                    <span className="text-[10px] text-gray-500 font-inter uppercase tracking-widest">Digital Keys in Seconds</span>
-                  </div>
+              {/* Trust Badges */}
+              <div className="space-y-4 mt-12">
+                <div className="bg-white/[0.02] border border-white/5 p-4 rounded-2xl flex items-center gap-4 group hover:bg-white/[0.05] transition-colors">
+                  <Lock className="text-(--accent)" size={20} />
+                  <span className="text-[10px] font-bold font-inter tracking-[0.2em] uppercase text-gray-400">Secure SSL Encryption</span>
                 </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] flex items-center justify-center text-[#6eDD86]">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-bold font-grotesk">Secure Payments</span>
-                    <span className="text-[10px] text-gray-500 font-inter uppercase tracking-widest">AES-256 Encryption</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.03] flex items-center justify-center text-[#6eDD86]">
-                    <CheckCircle className="w-5 h-5" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm font-bold font-grotesk">Official Partner</span>
-                    <span className="text-[10px] text-gray-500 font-inter uppercase tracking-widest">Microsoft Certified</span>
-                  </div>
+                <div className="bg-white/[0.02] border border-white/5 p-4 rounded-2xl flex items-center gap-4 group hover:bg-white/[0.05] transition-colors">
+                  <BadgeCheck className="text-(--accent)" size={20} />
+                  <span className="text-[10px] font-bold font-inter tracking-[0.2em] uppercase text-gray-400">Microsoft Certified Partner</span>
                 </div>
               </div>
             </div>
+
+            {/* Disclaimer Box */}
+            <div className="bg-white/[0.02] border border-white/5 p-6 rounded-[30px] flex gap-4">
+              <Info className="text-gray-500 shrink-0 mt-1" size={20} />
+              <p className="text-[11px] text-gray-500 font-inter leading-relaxed uppercase tracking-wider">
+                By clicking "Complete Purchase", you agree to our <Link href="/terms" className="text-white hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-white hover:underline">Refund Policy</Link>. Digital keys will be delivered to your registered email immediately after payment verification.
+              </p>
+            </div>
           </div>
         </div>
-
-        {/* 🔥 Login Toast */}
-        {showLoginMsg && (
-          <div className="fixed bottom-10 right-10 bg-red-500 text-white px-6 py-3 rounded-xl shadow-lg z-50">
-            Please login to continue
-          </div>
-        )}
       </div>
     </div>
   );

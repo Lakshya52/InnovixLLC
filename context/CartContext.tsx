@@ -42,22 +42,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const MAX_ITEMS = 50;
 
-  const addToCart = (product: Product, quantity: number) => {
-    if (cartCount + quantity > MAX_ITEMS) {
-      alert(`Limit reached: You can only have up to ${MAX_ITEMS} items in your cart.`);
-      return;
-    }
-
+  const addToCart = (product: Product, _quantity: number) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.product.id === product.id);
       if (existingItem) {
-        return prevCart.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
+        // One product can only be added once.
+        return prevCart;
       }
-      return [...prevCart, { product, quantity }];
+      return [...prevCart, { product, quantity: 1 }];
     });
   };
 

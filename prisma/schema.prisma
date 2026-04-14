@@ -14,11 +14,118 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String?
-  password  String
-  role      String   @default("USER")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  email            String          @unique
+  name             String?
+  password         String
+  role             String          @default("USER") // USER or ADMIN
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  orders           Order[]
+  keys             ProductKey[]
+  tickets          SupportTicket[]
 }
+
+model Order {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String       @db.ObjectId
+  user        User         @relation(fields: [userId], references: [id])
+  productId   String?      @db.ObjectId
+  product     Product?     @relation(fields: [productId], references: [id])
+  productName String
+  productType String
+  amount      Float
+  status      String       @default("Processing")
+  createdAt   DateTime     @default(now())
+  keys        ProductKey[]
+}
+
+model Product {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  sku         String?
+  shortDescription String?
+  description String?        // Long form paragraph one
+  longDescriptionTwo String? // Long form paragraph two
+  featureHeading String?
+  category    String         // OS, Productivity, Enterprise, etc.
+  price       Float
+  msrp        Float?
+  status      String         @default("Live") // Live, Draft, Archive
+  iconVariant String?
+  image       String?
+  features    String[]       // Trust architecture signals
+  
+  // System Requirements
+  minCPU      String?
+  minRAM      String?
+  minStorage  String?
+  minGPU      String?
+  recCPU      String?
+  recRAM      String?
+  recStorage  String?
+  recGPU      String?
+
+  stockKeys   InventoryKey[]
+  orders      Order[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model InventoryKey {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id])
+  keyValue  String
+  isSold    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model InventoryLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  type      String   // PRICE_UPDATE, NEW_STOCK, OUT_OF_STOCK
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model ProductKey {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  user        User      @relation(fields: [userId], references: [id])
+  orderId     String    @db.ObjectId
+  order       Order     @relation(fields: [orderId], references: [id])
+  name        String
+  edition     String?
+  keyValue    String
+  status      String    @default("Active")
+  expiresAt   DateTime?
+  iconVariant String?
+}
+
+model SupportTicket {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  user          User     @relation(fields: [userId], references: [id])
+  subject       String
+  category      String
+  status        String   @default("OPEN") // OPEN, IN_PROGRESS, RESOLVED
+  description   String?
+  resolution    String?
+  assignedAgent String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  messages      ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  ticketId  String   @db.ObjectId
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id])
+  senderId  String   @db.ObjectId
+  senderRole String   // USER or ADMIN
+  text      String
+  createdAt DateTime @default(now())
+}
+

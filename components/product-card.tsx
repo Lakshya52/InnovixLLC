@@ -9,8 +9,8 @@ import {
   Minus,
   Monitor
 } from "lucide-react";
-import { Product } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
+import { createCheckoutSession } from "@/actions/checkout";
 
 interface ProductCardProps {
   product: Product;
@@ -21,10 +21,21 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
+  const handleBuyNow = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const { url } = await createCheckoutSession([{ productId: product.id, quantity }]);
+      if (url) window.location.href = url;
+    } catch (err: any) {
+      alert(err.message || "Failed to initiate checkout");
+    }
+  };
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product, quantity);
+    addToCart(product as any, quantity);
     setQuantity(1); // Reset quantity after adding
   };
 
@@ -39,7 +50,13 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
       href={`/products/${product.id}`}
       className="group bg-white/[0.02] border border-white/5 rounded-[40px] overflow-hidden transition-all duration-500 hover:bg-white/[0.04] hover:border-white/10 flex flex-col cursor-pointer"
     >
-      <img src={product.image} alt={product.name} className="aspect-square w-full h-full object-cover rounded-none" />
+      <div className="aspect-square w-full h-full bg-[#121212] border-b border-white/5 flex items-center justify-center overflow-hidden">
+        {product.image ? (
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+        ) : (
+          <Monitor className="w-20 h-20 text-[#6eDD86]/20" />
+        )}
+      </div>
       
       <div className="p-8 flex flex-col flex-grow">
         <div className="flex items-start justify-between gap-5 mb-4">
@@ -74,19 +91,21 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
             </button>
         </div> */}
 
-        {/* <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/5"> */}
-          <div className="flex items-center gap-2 bg-white/[0.05] hover:bg-[#6eDD86] text-white hover:text-black px-6 py-3 rounded-2xl transition-all duration-300 font-bold border border-white/5 group-hover:border-transparent group/btn">
-            <span>View More</span>
-            <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-          </div>
+        <div className="grid grid-cols-2 gap-3 mt-auto">
+          <button 
+            onClick={handleBuyNow}
+            className="flex items-center justify-center gap-2 bg-[#6eDD86] text-black px-6 py-4 rounded-2xl transition-all duration-300 font-bold hover:bg-[#5dbb72] active:scale-[0.98]"
+          >
+            <span>Buy Now</span>
+          </button>
           
-          {/* <button 
+          <button 
             onClick={handleAddToCart}
-            className="bg-white/[0.05] hover:bg-[#6eDD86] text-white hover:text-black px-6 py-3 rounded-2xl transition-all duration-300 font-bold border border-white/5 hover:border-transparent group/btn h-12 flex items-center justify-center"
+            className="flex items-center justify-center gap-2 bg-white/[0.05] hover:bg-white/[0.1] text-white px-6 py-4 rounded-2xl transition-all duration-300 font-bold border border-white/5 active:scale-[0.98]"
           >
             <ShoppingCart className="w-5 h-5" />
-          </button> */}
-        {/* </div> */}
+          </button>
+        </div>
       </div>
     </Link>
   );
