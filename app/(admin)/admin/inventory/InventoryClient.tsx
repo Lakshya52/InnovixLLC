@@ -15,10 +15,12 @@ import {
   Package,
   TrendingUp,
   Activity,
-  X
+  Edit2,
+  Trash2,
+  Key
 } from "lucide-react";
 import Link from "next/link";
-import { createProduct } from "@/actions/inventory";
+import { deleteProduct } from "@/actions/inventory";
 
 interface InventoryKey {
   id: string;
@@ -56,7 +58,6 @@ export default function InventoryClient({
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [filter, setFilter] = useState("All Software");
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false); // Can be removed later if not used elsewhere, but keeping for now if I miss a ref
 
   const filteredProducts = useMemo(() => {
     return products.filter(p => {
@@ -73,6 +74,17 @@ export default function InventoryClient({
     lowStock: products.filter(p => p.stockKeys.length < 10).length
   };
 
+  const handleDelete = async (id: string, name: string) => {
+    if (confirm(`Are you sure you want to delete ${name}? This action cannot be undone.`)) {
+      try {
+        await deleteProduct(id);
+        setProducts(prev => prev.filter(p => p.id !== id));
+      } catch (err: any) {
+        alert(err.message || "Failed to delete product");
+      }
+    }
+  };
+
   return (
     <div className="p-8 mx-auto w-full max-w-[1400px]">
       {/* Header */}
@@ -86,6 +98,13 @@ export default function InventoryClient({
             <Filter size={18} />
             Filters
           </button>
+          <Link
+            href="/admin/inventory/keys"
+            className="flex items-center gap-2 bg-[#1a1a1a] border border-[#2a2a2a] text-[#e2e2e2] px-6 py-3 rounded-2xl font-bold text-sm hover:bg-[#222] transition-all cursor-pointer"
+          >
+            <Key size={18} className="text-[#6eDD86]" />
+            Manage Keys
+          </Link>
           <Link
             href="/admin/inventory/new"
             className="flex items-center gap-2 bg-[#6eDD86] text-black px-6 py-3 rounded-2xl font-bold text-sm hover:bg-[#5dbb72] transition-all cursor-pointer shadow-[0_0_20px_rgba(110,221,134,0.2)]"
@@ -176,7 +195,7 @@ export default function InventoryClient({
             <tbody className="divide-y divide-[#1f1f1f]">
               {filteredProducts.map((p) => {
                 const stockCount = p.stockKeys.length;
-                const progressWidth = Math.min(100, (stockCount / 500) * 100); // assume 500 is "full" stock for visualization
+                const progressWidth = Math.min(100, (stockCount / 500) * 100);
 
                 return (
                   <tr key={p.id} className="group hover:bg-[#1a1a1a]/30 transition-all">
@@ -187,7 +206,7 @@ export default function InventoryClient({
                         </div>
                         <div>
                           <p className="font-bold text-[#e2e2e2] text-lg leading-tight">{p.name}</p>
-                          <p className="text-[10px] text-gray-600 font-medium uppercase tracking-tight mt-1">{p.description || 'Full Retail License • Global'}</p>
+                          <p className="text-[10px] text-gray-600 font-medium uppercase tracking-tight mt-1">{p.description?.slice(0, 50) || 'Full Retail License • Global'}...</p>
                         </div>
                       </div>
                     </td>
@@ -225,11 +244,17 @@ export default function InventoryClient({
                     </td>
                     <td className="px-6 py-8 text-right">
                       <div className="flex items-center justify-end gap-3 text-gray-600">
-                        <button className="p-2 hover:bg-[#1a1a1a] hover:text-[#6eDD86] rounded-xl transition-all cursor-pointer">
-                          <BarChart2 size={18} />
-                        </button>
-                        <button className="p-2 hover:bg-[#1a1a1a] hover:text-white rounded-xl transition-all cursor-pointer">
-                          <MoreVertical size={18} />
+                        <Link 
+                          href={`/admin/inventory/edit/${p.id}`}
+                          className="p-2 hover:bg-[#1a1a1a] hover:text-[#6eDD86] rounded-xl transition-all cursor-pointer border border-[#1f1f1f]"
+                        >
+                          <Edit2 size={18} />
+                        </Link>
+                        <button 
+                          onClick={() => handleDelete(p.id, p.name)}
+                          className="p-2 hover:bg-[#1a1a1a] hover:text-red-500 rounded-xl transition-all cursor-pointer border border-[#1f1f1f]"
+                        >
+                          <Trash2 size={18} />
                         </button>
                       </div>
                     </td>
@@ -273,36 +298,10 @@ export default function InventoryClient({
                   {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic leading-relaxed">
-                Admin adjusted Win 11 to $189.00
-              </p>
             </div>
           ))}
-          {/* Static placeholders if logs are empty */}
           {initialLogs.length === 0 && (
-            <>
-              <div className="relative pl-8 before:absolute before:left-0 before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-[#6eDD86] before:shadow-[0_0_10px_rgba(110,221,134,0.3)]">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-sm font-bold text-white">Price Updated</p>
-                  <span className="text-[10px] font-bold text-gray-600 uppercase tabular-nums">10:42 AM</span>
-                </div>
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic leading-relaxed">Admin adjusted Win 11 to $189.00</p>
-              </div>
-              <div className="relative pl-8 before:absolute before:left-0 before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-yellow-500 before:shadow-[0_0_10px_rgba(234,179,8,0.3)]">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-sm font-bold text-white">New Batch Upload</p>
-                  <span className="text-[10px] font-bold text-gray-600 uppercase tabular-nums">09:15 AM</span>
-                </div>
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic leading-relaxed text-yellow-500/70">500 keys added to Office 2024</p>
-              </div>
-              <div className="relative pl-8 before:absolute before:left-0 before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-red-500 before:shadow-[0_0_10px_rgba(239,68,68,0.3)]">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-sm font-bold text-white">Out of Stock</p>
-                  <span className="text-[10px] font-bold text-gray-600 uppercase tabular-nums">Yesterday</span>
-                </div>
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest italic leading-relaxed text-red-500/70">Windows Server 2022 inventory hit zero</p>
-              </div>
-            </>
+            <p className="text-gray-500 text-sm italic">No recent logs</p>
           )}
         </div>
 

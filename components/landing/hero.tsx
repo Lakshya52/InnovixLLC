@@ -19,8 +19,8 @@ export default function Hero() {
 
   return (
     <>
-    <div className="bg-(--bg-less-dark) w-full flex items-center justify-center" >
-      <div className="flex items-center justify-center h-[90dvh] mt-[10dvh] w-[80dvw] ">
+    <div className="bg-(--bg-less-dark) w-dvw flex items-center justify-center" >
+      <div className="flex items-center justify-between h-[90dvh] mt-[10dvh] w-[80dvw] ">
         <div className="flex flex-col gap-10" >
           {/* left section */}
           {/* <span className=" text-(--bg-light) text-xs rounded-full w-fit font-inter border p-2 px-3" >TRUSTED MICROSOFT PARTNER</span> */}

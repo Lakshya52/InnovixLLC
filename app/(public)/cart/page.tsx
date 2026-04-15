@@ -19,6 +19,7 @@ import {
   BadgeCheck
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { createCheckoutSession, createOrderDirect } from "@/actions/checkout";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, cartTotal, cartCount } = useCart();
@@ -27,6 +28,7 @@ export default function CartPage() {
   const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [showLoginMsg, setShowLoginMsg] = useState(false);
   const [countdown, setCountdown] = useState(3);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!showLoginMsg) return;
@@ -43,23 +45,46 @@ export default function CartPage() {
     return () => clearTimeout(timer);
   }, [showLoginMsg, countdown, router]);
 
-  const handleCheckout = () => {
-    const isLoggedIn = document.cookie.includes("session=");
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const items = cart.map(item => ({
+        productId: item.product.id,
+        quantity: 1 // For digital assets quantity is usually 1
+      }));
 
-    if (!isLoggedIn) {
-      setShowLoginMsg(true);
-      setCountdown(3);
-      return;
+      if (paymentMethod === "stripe") {
+        const { url } = await createCheckoutSession(items);
+        if (url) {
+          window.location.href = url;
+        } else {
+          throw new Error("Failed to create checkout session");
+        }
+      } else {
+        // Direct order / PayPal integration
+        const res = await createOrderDirect(items);
+        if (res?.url) {
+          window.location.href = res.url;
+        } else {
+          throw new Error("Failed to initialize PayPal order");
+        }
+      }
+    } catch (err: any) {
+      console.error("Checkout error:", err);
+      if (err.message.includes("log in") || err.message.includes("Unauthorized")) {
+        setShowLoginMsg(true);
+        setCountdown(3);
+      } else {
+        alert(err.message || "Checkout failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
-
-    // Process checkout or redirect to stripe/paypal logic would go here
-    console.log(`Processing checkout with ${paymentMethod}`);
-    router.push("/checkout/success"); // Mock success page
   };
 
   if (cart.length === 0) {
     return (
-      <div className="bg-(--bg-dark) min-h-screen text-white pt-40 pb-20 px-4 flex flex-col items-center justify-center text-center">
+      <div className="bg-(--bg-dark) min-h-screen text-white pt-40 pb-20 w-[800dvw] flex flex-col items-center justify-center text-center">
         <div className="w-24 h-24 bg-white/[0.03] rounded-full flex items-center justify-center mb-8 border border-white/5 animate-pulse">
           <ShoppingCart className="w-10 h-10 text-(--accent)" />
         </div>
@@ -228,10 +253,11 @@ export default function CartPage() {
 
               <button
                 onClick={handleCheckout}
-                className="w-full bg-(--accent) hover:bg-[#5dbb72] text-black font-bold py-6 rounded-3xl transition-all duration-300 shadow-[0_0_30px_rgba(110,221,134,0.4)] font-grotesk text-xl flex items-center justify-center gap-3 group relative overflow-hidden"
+                disabled={loading}
+                className={`w-full bg-(--accent) hover:bg-[#5dbb72] text-black font-bold py-6 rounded-3xl transition-all duration-300 shadow-[0_0_30px_rgba(110,221,134,0.4)] font-grotesk text-xl flex items-center justify-center gap-3 group relative overflow-hidden ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
               >
-                <span className="relative z-10">Complete Purchase</span>
-                <ArrowRight className="w-6 h-6 relative z-10 transition-transform group-hover:translate-x-1" />
+                <span className="relative z-10">{loading ? "Processing..." : "Complete Purchase"}</span>
+                {!loading && <ArrowRight className="w-6 h-6 relative z-10 transition-transform group-hover:translate-x-1" />}
               </button>
 
               {showLoginMsg && (

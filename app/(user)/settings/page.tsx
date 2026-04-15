@@ -23,18 +23,18 @@ export default async function SettingsPage() {
   if (!user) redirect("/login");
 
   return (
-    <div className="p-8 mx-auto w-full">
+    <div className=" mx-auto w-[90%]">
       <div className="mb-10">
         <h1 className="text-4xl font-bold mb-2">Account <span className="text-[#6eDD86]">Settings</span></h1>
         <p className="text-[#a0a0a0] text-sm">Manage your digital identity and security parameters.</p>
       </div>
 
-      <div className="space-y-8 max-w-6xl">
+      <div className="space-y-8 pb-20">
         {/* Profile Information */}
         <div className="bg-[#121212] border border-[#1f1f1f] rounded-[40px] p-10 relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-40 h-40 bg-[#1a1a1a]/40 rounded-full -mr-16 -mt-16 pointer-events-none transition-transform group-hover:scale-110"></div>
           <Fingerprint size={80} className="absolute top-10 right-10 text-[#222] pointer-events-none" />
-          
+
           <div className="flex items-center gap-3 mb-10 text-[#6eDD86]">
             <User size={20} />
             <h2 className="text-xl font-bold">Profile Information</h2>

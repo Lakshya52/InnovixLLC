@@ -81,7 +81,7 @@ export default function SupportClient({
   };
 
   return (
-    <div className="p-8 mx-auto w-full relative">
+    <div className=" mx-auto w-[90%] relative">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>
           <h1 className="text-4xl font-bold mb-2">Support <span className="text-[#6eDD86]">Tickets</span></h1>

@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { encrypt } from "@/lib/auth";
+import { encrypt, decrypt } from "@/lib/auth";
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
@@ -32,19 +32,14 @@ export async function register(formData: FormData) {
   }
 
   try {
-    // Check if user already exists
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return { error: "User with this email already exists" };
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Determine Role (Securely auto-elevate the specific admin email)
     const assignedRole = email === "admin@gmail.com" ? "ADMIN" : "USER";
 
-    // Create user
     const user = await prisma.user.create({
       data: {
         email,
@@ -54,7 +49,6 @@ export async function register(formData: FormData) {
       },
     });
 
-    // Create Session
     const session = await encrypt({ id: user.id, email: user.email, role: user.role });
 
     const cookieStore = await cookies();
@@ -80,19 +74,16 @@ export async function login(formData: FormData) {
     throw new Error("Missing required fields");
   }
 
-  // Verify User
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
     throw new Error("Invalid credentials");
   }
 
-  // Verify Password
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
     throw new Error("Invalid credentials");
   }
 
-  // Create Session
   const session = await encrypt({ id: user.id, email: user.email, role: user.role });
 
   const cookieStore = await cookies();
@@ -103,11 +94,26 @@ export async function login(formData: FormData) {
     path: "/",
   });
 
-  // Redirect based on role
   if (user.role === "ADMIN") {
     redirect("/admin/dashboard");
   } else {
     redirect("/dashboard");
+  }
+}
+
+export async function checkAuth() {
+  const cookieStore = await cookies();
+  const sessionToken = cookieStore.get("session")?.value;
+
+  if (!sessionToken) {
+    return { isLoggedIn: false };
+  }
+
+  try {
+    const payload = await decrypt(sessionToken);
+    return { isLoggedIn: !!payload, user: payload };
+  } catch {
+    return { isLoggedIn: false };
   }
 }
 
@@ -120,10 +126,10 @@ export async function forgotPassword(formData: FormData) {
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
-    
+
     if (user) {
       const token = crypto.randomBytes(32).toString("hex");
-      const expiry = new Date(Date.now() + 3600000); // 1 hour from now
+      const expiry = new Date(Date.now() + 3600000);
 
       await prisma.user.update({
         where: { email },
@@ -133,13 +139,11 @@ export async function forgotPassword(formData: FormData) {
         },
       });
 
-      // Send the real email
       await sendResetEmail(email, token);
-      
+
       console.log(`Email sent to ${email}. Check terminal if ENV not set.`);
     }
 
-    // Always return success for security
     return { success: true };
   } catch (err) {
     console.error("Forgot password error:", err);

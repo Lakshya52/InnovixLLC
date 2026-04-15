@@ -11,7 +11,9 @@ import {
   TrendingUp,
   ShoppingBag,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  Key,
+  Mail
 } from "lucide-react";
 
 interface Order {
@@ -24,6 +26,10 @@ interface Order {
   amount: number;
   status: string;
   createdAt: string;
+  keys: {
+    keyValue: string;
+    status: string;
+  }[];
 }
 
 export default function OrdersClient({ initialOrders }: { initialOrders: Order[] }) {
@@ -55,22 +61,22 @@ export default function OrdersClient({ initialOrders }: { initialOrders: Order[]
         <div className="bg-[#121212] border border-[#1f1f1f] rounded-[32px] p-8">
           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Total Revenue</p>
           <h3 className="text-3xl font-bold mb-4">${orders.reduce((acc, o) => acc + o.amount, 0).toLocaleString()}</h3>
-          <div className="flex items-center gap-2 text-[#6eDD86] text-xs font-bold font-mono">
-            <TrendingUp size={14} /> +8.4% VS LAST WEEK
+          <div className="flex items-center gap-2 text-[#6eDD86] text-xs font-bold font-mono text-uppercase">
+             AUTO-REVENUE SYNC ACTIVE
           </div>
         </div>
         <div className="bg-[#121212] border border-[#1f1f1f] rounded-[32px] p-8">
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Active Orders</p>
-          <h3 className="text-3xl font-bold mb-4">{orders.filter(o => o.status === 'Processing').length}</h3>
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Processing Orders</p>
+          <h3 className="text-3xl font-bold mb-4">{orders.filter(o => o.status === 'Processing' || o.status === 'Waiting_For_Payment').length}</h3>
           <div className="flex items-center gap-2 text-yellow-500 text-xs font-bold font-mono">
-            <Clock size={14} /> REQUIRES ATTENTION
+            <Clock size={14} /> PENDING ACTIONS
           </div>
         </div>
         <div className="bg-[#121212] border border-[#1f1f1f] rounded-[32px] p-8">
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Fulfilled Cases</p>
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Success Fulfillment</p>
           <h3 className="text-3xl font-bold mb-4">{orders.filter(o => o.status === 'Fulfilled').length}</h3>
           <div className="flex items-center gap-2 text-blue-500 text-xs font-bold font-mono">
-            <CheckCircle2 size={14} /> 99.8% SUCCESS RATE
+            <CheckCircle2 size={14} /> INSTANT DELIVERY OK
           </div>
         </div>
       </div>
@@ -97,18 +103,19 @@ export default function OrdersClient({ initialOrders }: { initialOrders: Order[]
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">Order ID</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">Customer</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">Product</th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">Amount</th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">Status</th>
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">Delivery Status</th>
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500">License Key</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-500 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f1f1f]">
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="group hover:bg-[#1a1a1a]/30 transition-all">
-                  <td className="px-6 py-6">
+                  <td className="px-6 py-6 border-transparent border-l-2 group-hover:border-[#6eDD86] transition-all">
                     <span className="text-[#6eDD86] font-mono font-bold tracking-tighter">
                       #IVX-{order.id.slice(-6).toUpperCase()}
                     </span>
+                    <p className="text-[10px] text-gray-600 mt-1">{new Date(order.createdAt).toLocaleDateString()}</p>
                   </td>
                   <td className="px-6 py-6">
                     <div>
@@ -118,14 +125,28 @@ export default function OrdersClient({ initialOrders }: { initialOrders: Order[]
                   </td>
                   <td className="px-6 py-6">
                     <p className="text-sm font-bold text-[#e2e2e2]">{order.productName}</p>
+                    <p className="text-[10px] text-gray-600 mt-1">${order.amount.toFixed(2)} USD</p>
                   </td>
-                  <td className="px-6 py-6 font-bold text-[#e2e2e2]">${order.amount.toFixed(2)}</td>
                   <td className="px-6 py-6">
-                    <div className={`inline-flex items-center px-3 py-1 rounded-md text-[9px] font-bold tracking-widest uppercase ${order.status === 'Fulfilled' ? 'text-green-500 bg-green-500/10' :
+                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-md text-[9px] font-bold tracking-widest uppercase ${order.status === 'Fulfilled' ? 'text-green-500 bg-green-500/10' :
                         order.status === 'Processing' ? 'text-yellow-500 bg-yellow-500/10' : 'text-red-400 bg-red-400/10'
                       }`}>
+                      {order.status === 'Fulfilled' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
                       {order.status}
                     </div>
+                  </td>
+                  <td className="px-6 py-6">
+                    {order.keys && order.keys.length > 0 ? (
+                      <div className="bg-[#0b0b0b] border border-[#222] rounded-lg p-2 flex items-center gap-3">
+                        <Key size={14} className="text-[#6eDD86]" />
+                        <span className="text-[10px] font-mono text-gray-400 select-all">{order.keys[0].keyValue}</span>
+                        <div className="ml-auto flex items-center gap-1 text-[8px] text-green-500/50 font-bold uppercase tracking-tighter">
+                           <Mail size={10} /> Email Sent
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-[10px] text-gray-700 font-bold uppercase italic">No Key Assigned</span>
+                    )}
                   </td>
                   <td className="px-6 py-6 text-right">
                     <button className="p-2 hover:bg-[#1a1a1a] hover:text-white rounded-xl transition-all cursor-pointer">

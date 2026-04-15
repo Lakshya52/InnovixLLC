@@ -102,12 +102,12 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="h-fit bg-(--bg-dark) text-white pt-32 pb-20 px-8 lg:px-20 relative overflow-hidden">
+    <div className="h-fit bg-(--bg-dark) text-white pt-32 pb-20 relative overflow-hidden">
       {/* Background blur blobs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
 
-      <div className="max-w-[1400px]  mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+      <div className="w-[80dvw]  mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
 
         {/* Left Column: Resource Library */}
         <div className="flex flex-col items-start justify-between gap-12">

@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
 
-export default function Navbar() {
+export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSidebar?: boolean, isLoggedIn?: boolean }) {
     const pathname = usePathname();
     const { cartCount } = useCart();
 
@@ -21,8 +21,8 @@ export default function Navbar() {
     ];
 
     return (
-        <div className="flex items-center justify-center fixed top-0 bg-[var(--bg-less-dark)]/50 backdrop-blur-xl w-dvw h-[10dvh] z-[9999]">
-            <nav className="flex items-center justify-between w-[80dvw]">
+        <div className="flex items-center justify-center  bg-[var(--bg-less-dark)]/50 backdrop-blur-xl  h-[10dvh] z-[9999] w-full ">
+            <nav className={`flex items-center justify-between ${isSidebar ? "w-[90%]" : "w-[80%]"} mx-auto `}>
 
                 {/* Logo */}
                 <Link href="/" className="font-grotesk text-[var(--accent)] font-bold text-3xl">
@@ -64,9 +64,12 @@ export default function Navbar() {
                     </div>
 
                     {/* CTA */}
-                    <Link href="/registration">
+                    <Link
+                        href={isLoggedIn ? "/dashboard" : "/registration"}
+                        className={`${isSidebar ? "hidden" : ""}`}
+                    >
                         <button className="button-green">
-                            Get Started
+                            {isLoggedIn ? "Dashboard" : "Get Started"}
                         </button>
                     </Link>
 

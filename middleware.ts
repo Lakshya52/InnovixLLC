@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { decrypt } from "@/lib/auth";
 
-const protectedRoutes = ["/dashboard"];
-const adminRoutes = ["/admin", "/admin/dashboard"];
+const protectedRoutes = ["/dashboard", "/orders", "/keys", "/settings", "/support"];
+const adminRoutes = ["/admin"];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
     if (session.role !== "ADMIN") {
-      // Forbidden: redirect to regular user dashboard
+      // Forbidden: redirect regular users to their own dashboard
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
@@ -29,6 +29,10 @@ export async function middleware(request: NextRequest) {
   if (isProtectedRoute) {
     if (!session) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
+    // If an ADMIN tries to access user dashboard/routes, send them to admin home
+    if (session.role === "ADMIN") {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
   }
 

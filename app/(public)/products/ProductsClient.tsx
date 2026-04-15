@@ -53,7 +53,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
 
   return (
     <div className="bg-[#0b0b0b] w-full min-h-screen text-white pt-40 pb-20">
-      <div className="w-[85dvw] mx-auto max-w-[1400px]">
+      <div className="w-[80dvw] mx-auto ">
         {/* Header Section */}
         <div className="mb-12">
           <h1 className="text-6xl md:text-8xl font-bold font-grotesk mb-8 tracking-tight">

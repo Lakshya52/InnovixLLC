@@ -26,6 +26,7 @@ model User {
   orders           Order[]
   keys             ProductKey[]
   tickets          SupportTicket[]
+  blogPosts        BlogPost[]
 }
 
 model Order {
@@ -59,14 +60,8 @@ model Product {
   features    String[]       // Trust architecture signals
   
   // System Requirements
-  minCPU      String?
-  minRAM      String?
-  minStorage  String?
-  minGPU      String?
-  recCPU      String?
-  recRAM      String?
-  recStorage  String?
-  recGPU      String?
+  systemRequirements Json? // Array of { title, minimum, recommended }
+
 
   stockKeys   InventoryKey[]
   orders      Order[]
@@ -127,5 +122,25 @@ model ChatMessage {
   senderRole String   // USER or ADMIN
   text      String
   createdAt DateTime @default(now())
+}
+
+model BlogPost {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  slug           String   @unique
+  content        String   // Markdown body
+  summary        String?  // Short summary / elevator pitch
+  category       String   // Engineering, Infrastructure, Security, Licensing, etc.
+  tags           String[]
+  seoDescription String?
+  featuredImage  String?
+  status         String   @default("DRAFT") // PUBLISHED, DRAFT, SCHEDULED
+  visibility     String   @default("Public") // Public, Private
+  publishDate    DateTime?
+  promoted       Boolean  @default(false)
+  authorId       String   @db.ObjectId
+  author         User     @relation(fields: [authorId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 

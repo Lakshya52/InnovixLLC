@@ -70,7 +70,7 @@ export default async function DashboardPage() {
   ].sort((a, b) => b.time.getTime() - a.time.getTime()).slice(0, 4);
 
   return (
-    <div className="p-8 mx-auto w-full">
+    <div className=" mx-auto w-[90%]">
       {/* Banner */}
       <section className="bg-linear-to-br from-[#121212] to-[#1a1a1a] border border-[#1f1f1f] rounded-3xl p-12 mb-8 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-[400px] h-full bg-[radial-gradient(circle_at_center,rgba(110,221,134,0.08)_0%,transparent_70%)] pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>

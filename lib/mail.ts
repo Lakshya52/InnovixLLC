@@ -1,10 +1,10 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail", // You can change this to your provider (e.g., 'resend', 'smtp.mailtrap.io', etc.)
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // Use an App Password for Gmail
+    pass: process.env.EMAIL_PASS,
   },
 });
 
@@ -39,5 +39,56 @@ export async function sendResetEmail(email: string, token: string) {
   } catch (error) {
     console.error("Email sending error:", error);
     return { error: "Failed to send email" };
+  }
+}
+
+export async function sendOrderKeyEmail(email: string, productName: string, key: string) {
+  const mailOptions = {
+    from: `"InnovixLLC Fulfillment" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: `Your License Key for ${productName} - InnovixLLC`,
+    html: `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #0b0b0b; color: #ffffff; border-radius: 20px; border: 1px solid #ffffff10;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #6eDD86; margin: 0; font-size: 28px;">InnovixLLC</h1>
+          <p style="color: #666; font-size: 14px; margin-top: 5px;">Premium Digital Infrastructure</p>
+        </div>
+        
+        <div style="background-color: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid #ffffff05;">
+          <h2 style="margin-top: 0; font-size: 20px; font-weight: 600;">Delivery info for ${productName}</h2>
+          <p style="color: #aaa; font-size: 14px; line-height: 1.6;">Your digital license key has been generated successfully. Please find it below:</p>
+          
+          <div style="background-color: #000000; padding: 15px; border-radius: 10px; border: 1px dashed #6eDD86; text-align: center; margin: 25px 0;">
+            <code style="color: #6eDD86; font-size: 20px; font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 2px;">${key}</code>
+          </div>
+          
+          <div style="margin-top: 20px;">
+            <p style="font-size: 13px; color: #888;"><strong>Activation Instructions:</strong></p>
+            <ol style="font-size: 13px; color: #888; padding-left: 20px;">
+              <li>Copy the license key above.</li>
+              <li>Open your application and navigate to the activation settings.</li>
+              <li>Paste the key and follow the on-screen prompts.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="background-color: #6eDD86; color: #000000; padding: 12px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; display: inline-block;">Access Dashboard</a>
+        </div>
+        
+        <p style="font-size: 12px; color: #444; text-align: center; margin-top: 40px;">
+          InnovixLLC &copy; 2026. All rights reserved.<br />
+          This is an automated delivery. Please do not reply to this email.
+        </p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return { success: true };
+  } catch (error) {
+    console.error("Order completion email error:", error);
+    return { error: "Failed to send license key email" };
   }
 }
