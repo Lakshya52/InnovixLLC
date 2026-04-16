@@ -59,7 +59,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
    const wordCount = formData.content
       .trim()
       .split(/\s+/)
-      .filter((w) => w.length > 0).length;
+      .filter((w: string) => w.length > 0).length;
 
    const insertMarkdown = (prefix: string, suffix = "") => {
       const textarea = textareaRef.current;
@@ -111,7 +111,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
    const removeTag = (tag: string) => {
       setFormData((prev) => ({
          ...prev,
-         tags: prev.tags.filter((t) => t !== tag),
+         tags: prev.tags.filter((t:any) => t !== tag),
       }));
    };
 
@@ -243,7 +243,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                   <div className="mb-6">
                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Tags</label>
                      <div className="flex flex-wrap gap-2 mb-3">
-                        {formData.tags.map(tag => (
+                        {formData.tags.map((tag: any) => (
                            <span key={tag} className="px-3 py-1.5 rounded-full bg-[#6eDD86]/10 text-[#6eDD86] text-[10px] font-bold flex items-center gap-1">
                               #{tag} <button onClick={() => removeTag(tag)}><X size={10} /></button>
                            </span>
