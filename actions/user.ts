@@ -19,7 +19,7 @@ export async function getCurrentUser() {
   if (!session) return null;
 
   try {
-    return await prisma.user.findUnique({
+    return await (prisma.user as any).findUnique({
       where: { id: session.id },
       select: {
         id: true,
@@ -41,7 +41,7 @@ export async function updateUserImage(image: string) {
   if (!session) return { error: "Unauthorized" };
 
   try {
-    await prisma.user.update({
+    await (prisma.user as any).update({
       where: { id: session.id },
       data: { image }
     });
@@ -62,7 +62,7 @@ export async function updateProfile(formData: FormData) {
   const image = formData.get("image") as string;
 
   try {
-    await prisma.user.update({
+    await (prisma.user as any).update({
       where: { id: session.id },
       data: { name, image }
     });
@@ -80,7 +80,7 @@ export async function updatePreferences(marketing: boolean, transactional: boole
   if (!session) return { error: "Unauthorized" };
 
   try {
-    await prisma.user.update({
+    await (prisma.user as any).update({
       where: { id: session.id },
       data: { 
         marketingEmails: marketing,
@@ -103,7 +103,7 @@ export async function requestPasswordOTP() {
   const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
   try {
-    const user = await prisma.user.update({
+    const user = await (prisma.user as any).update({
       where: { id: session.id },
       data: {
         verificationOTP: otp,
@@ -136,7 +136,7 @@ export async function verifyAndChangePassword(formData: FormData) {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await (prisma.user as any).findUnique({
       where: { id: session.id }
     });
 
@@ -146,7 +146,7 @@ export async function verifyAndChangePassword(formData: FormData) {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await prisma.user.update({
+    await (prisma.user as any).update({
       where: { id: session.id },
       data: {
         password: hashedPassword,

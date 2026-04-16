@@ -59,7 +59,7 @@ export default function NewBlogPostClient() {
    const wordCount = formData.content
       .trim()
       .split(/\s+/)
-      .filter((w) => w.length > 0).length;
+      .filter((w: string) => w.length > 0).length;
 
    // Auto-save simulation
    useEffect(() => {

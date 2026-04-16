@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
+import { Product } from "@prisma/client";
 
 interface ProductCardProps {
   product: Product;
