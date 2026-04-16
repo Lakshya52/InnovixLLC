@@ -32,10 +32,10 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Column: Contact Form */}
-          <div className="lg:col-span-7 bg-white/[0.03] border border-white/5 rounded-[50px] p-12 shadow-2xl">
-            <h2 className="text-3xl font-bold font-grotesk mb-10">Direct Transmission</h2>
+          <div className="lg:col-span-7 h-full bg-white/[0.03] border border-white/5 rounded-[50px] p-12 shadow-2xl">
+            {/* <h2 className="text-3xl font-bold font-grotesk mb-10">Direct Transmission</h2> */}
             
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-8 " onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <label className="text-xs font-bold font-inter text-gray-500 uppercase tracking-widest ml-1">Full Name</label>
@@ -72,12 +72,12 @@ export default function ContactPage() {
                 <label className="text-xs font-bold font-inter text-gray-500 uppercase tracking-widest ml-1">Message Payload</label>
                 <textarea 
                   placeholder="How can our engineers assist?"
-                  rows={6}
+                  rows={12}
                   className="w-full bg-white/[0.04] border border-white/10 rounded-3xl px-6 py-5 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all resize-none"
                 ></textarea>
               </div>
 
-              <button className="button-green">
+              <button className="button-green w-full flex justify-center" style={{padding:"20px"}}>
                 {/* <span className="flex items-center justify-center gap-2 group-hover:scale-105 transition-all"> */}
                    Submit Message <Send size={20} />
                 {/* </span> */}

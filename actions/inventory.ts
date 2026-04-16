@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { decrypt } from "@/lib/auth";
+import { processBacklog } from "@/lib/fulfillment";
 
 async function checkAdmin() {
   const cookieStore = await cookies();
@@ -67,6 +68,7 @@ export async function createProduct(data: any) {
           message: `Added ${keys.length} initial keys to new product: ${data.name}`
         }
       });
+      await processBacklog(product.id);
     }
   }
 
@@ -91,6 +93,8 @@ export async function addStock(productId: string, keys: string[]) {
       message: `Added ${keys.length} keys to product ID: ${productId}`
     }
   });
+
+  await processBacklog(productId);
 
   revalidatePath("/admin/inventory");
   return createdKeys;
@@ -171,6 +175,7 @@ export async function updateProduct(id: string, data: any) {
           message: `Added ${keys.length} new keys to product: ${product.name}`
         }
       });
+      await processBacklog(id);
     }
   }
 

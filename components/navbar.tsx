@@ -51,7 +51,7 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
 
                     {/* Right side */}
                     <div className="mx-5 flex items-center gap-5">
-                        {/* <ThemeToggle /> */}
+                        <ThemeToggle />
 
                         <Link href="/cart" className="flex items-start relative group">
                             <ShoppingCart className="group-hover:text-[var(--accent)] transition-colors" />

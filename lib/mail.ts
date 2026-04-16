@@ -92,3 +92,44 @@ export async function sendOrderKeyEmail(email: string, productName: string, key:
     return { error: "Failed to send license key email" };
   }
 }
+
+export async function sendOTPEmail(email: string, otp: string) {
+  const mailOptions = {
+    from: `"InnovixLLC Security" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "Your Verification Code - InnovixLLC",
+    html: `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #0b0b0b; color: #ffffff; border-radius: 20px; border: 1px solid #ffffff10;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #6eDD86; margin: 0; font-size: 28px;">InnovixLLC</h1>
+          <p style="color: #666; font-size: 14px; margin-top: 5px;">Security Verification</p>
+        </div>
+        
+        <div style="background-color: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid #ffffff05; text-align: center;">
+          <h2 style="margin-top: 0; font-size: 20px; font-weight: 600;">Verification Code</h2>
+          <p style="color: #aaa; font-size: 14px; line-height: 1.6;">Use the following code to verify your identity. This code will expire in 10 minutes.</p>
+          
+          <div style="background-color: #000000; padding: 20px; border-radius: 10px; border: 1px dashed #6eDD86; display: inline-block; margin: 25px 0;">
+            <span style="color: #6eDD86; font-size: 32px; font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 8px;">${otp}</span>
+          </div>
+          
+          <p style="font-size: 13px; color: #888;">If you did not request this code, please ignore this email or contact support if you suspect unauthorized access.</p>
+        </div>
+
+        <p style="font-size: 12px; color: #444; text-align: center; margin-top: 40px;">
+          InnovixLLC &copy; 2026. All rights reserved.<br />
+          This is an automated security message. Please do not reply.
+        </p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return { success: true };
+  } catch (error) {
+    console.error("OTP email error:", error);
+    return { error: "Failed to send verification email" };
+  }
+}
+

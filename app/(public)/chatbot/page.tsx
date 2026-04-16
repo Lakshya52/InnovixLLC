@@ -77,7 +77,7 @@ export default function ChatBot() {
       let responseText = "";
       let showRegister = false;
 
-      if (botCount >= 5) {
+      if (botCount >= 4) {
         responseText = "Looks like you’ve reached the end of your free support session. To keep chatting and to receive unlimited technical assistance from our support team, please register for an official Innovix account.";
         showRegister = true;
       } else {
