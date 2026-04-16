@@ -21,7 +21,8 @@ import {
    Trash2,
    CheckCircle2,
    CheckCircle,
-   Upload
+   Upload,
+   Key
 } from "lucide-react";
 import Link from "next/link";
 import { createProduct } from "@/actions/inventory";
@@ -43,8 +44,8 @@ export default function AddProductClient() {
       status: "Live",
       image: "",
       systemRequirements: [] as { title: string; minimum: string; recommended: string }[],
-      features: [],
-      coupons: [],
+      features: [] as string[],
+      coupons: [] as string[],
       initialKeys: ""
    });
 
