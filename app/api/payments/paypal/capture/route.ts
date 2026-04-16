@@ -50,7 +50,7 @@ export async function GET(req: Request) {
       console.log(`PayPal Success: Fulfilling order ${orderId}`);
       await fulfillOrder(orderId);
       
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/success`);
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/success?orderId=${orderId}`);
     } else {
       console.error("PayPal Capture failed:", data);
       return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/cart?error=paypal_capture_failed`);

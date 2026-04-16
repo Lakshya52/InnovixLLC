@@ -18,6 +18,7 @@ import {
   PanelLeftOpen
 } from "lucide-react";
 import { logout } from "@/actions/auth";
+import { getCurrentUser } from "@/actions/user";
 import Navbar from "@/components/navbar";
 
 export default function UserLayout({
@@ -26,6 +27,11 @@ export default function UserLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    getCurrentUser().then(setUser);
+  }, [pathname]); // Refresh on navigation just in case
 
   const navItems = [
     { name: "Overview", icon: <LayoutDashboard size={20} />, href: "/dashboard" },
@@ -112,9 +118,13 @@ export default function UserLayout({
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#6eDD86] rounded-full border-2 border-[#0d0d0d]"></span>
               </div>
               <HelpCircle size={20} className="text-[#a0a0a0] cursor-pointer hover:text-[#6eDD86] transition-colors" />
-              <div className="w-[35px] h-[35px] rounded-full bg-[#1a1a1a] flex items-center justify-center border border-[#2a2a2a] overflow-hidden cursor-pointer hover:border-[#6eDD86]/50 transition-all">
-                <User size={20} className="text-gray-400" />
-              </div>
+              <Link href="/settings" className="w-[35px] h-[35px] rounded-full bg-[#1a1a1a] flex items-center justify-center border border-[#2a2a2a] overflow-hidden cursor-pointer hover:border-[#6eDD86]/50 transition-all">
+                {user?.image ? (
+                  <img src={user.image} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  <User size={20} className="text-gray-400" />
+                )}
+              </Link>
             </div>
           </header>
           </div>

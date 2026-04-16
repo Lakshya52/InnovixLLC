@@ -8,7 +8,7 @@ import { fulfillOrder } from "@/lib/fulfillment";
 import { createPayPalOrderInternal } from "@/lib/paypal";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder", {
-  apiVersion: "2024-12-18.acacia",
+  apiVersion: "2026-03-25.dahlia",
 });
 
 export async function createCheckoutSession(items: { productId: string, quantity: number }[]) {

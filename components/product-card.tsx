@@ -10,7 +10,7 @@ import {
   Monitor
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { createCheckoutSession } from "@/actions/checkout";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   product: Product;
@@ -20,15 +20,16 @@ interface ProductCardProps {
 export function ProductCard({ product, categoryIcon }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
+  const router = useRouter();
 
   const handleBuyNow = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     try {
-      const { url } = await createCheckoutSession([{ productId: product.id, quantity }]);
-      if (url) window.location.href = url;
+      addToCart(product as any, quantity);
+      router.push("/cart");
     } catch (err: any) {
-      alert(err.message || "Failed to initiate checkout");
+      alert(err.message || "Failed to initiate buy now");
     }
   };
 
