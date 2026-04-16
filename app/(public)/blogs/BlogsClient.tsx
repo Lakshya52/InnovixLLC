@@ -24,6 +24,7 @@ interface BlogPost {
     role: string;
   };
   image: string;
+  slug: string;
   keyTakeaways: string[];
 }
 

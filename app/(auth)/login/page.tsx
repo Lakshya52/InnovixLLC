@@ -33,7 +33,7 @@ export default function Login() {
       form.append("email", formData.email);
       form.append("password", formData.password);
 
-      const result = await login(form);
+      const result = await login(form) as { error?: string } | undefined;
 
       if (result?.error) {
         setError(result.error);

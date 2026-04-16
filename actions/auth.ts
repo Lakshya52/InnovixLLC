@@ -71,33 +71,42 @@ export async function login(formData: FormData) {
   const password = formData.get("password") as string;
 
   if (!email || !password) {
-    throw new Error("Missing required fields");
+    return { error: "Missing required fields" };
   }
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) {
-    throw new Error("Invalid credentials");
-  }
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      return { error: "Invalid credentials" };
+    }
 
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) {
-    throw new Error("Invalid credentials");
-  }
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return { error: "Invalid credentials" };
+    }
 
-  const session = await encrypt({ id: user.id, email: user.email, role: user.role });
+    const session = await encrypt({ id: user.id, email: user.email, role: user.role });
 
-  const cookieStore = await cookies();
-  cookieStore.set("session", session, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-  });
-
-  if (user.role === "ADMIN") {
-    redirect("/admin/dashboard");
-  } else {
-    redirect("/dashboard");
+    const cookieStore = await cookies();
+    cookieStore.set("session", session, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+    
+    // Check role inside the block where user is defined
+    if (user.role === "ADMIN") {
+      redirect("/admin/dashboard");
+    } else {
+      redirect("/dashboard");
+    }
+  } catch (err) {
+    if ((err as Error).message === "NEXT_REDIRECT") {
+      throw err;
+    }
+    console.error("Login error:", err);
+    return { error: "Something went wrong" };
   }
 }
 
