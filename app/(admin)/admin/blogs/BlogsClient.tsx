@@ -123,7 +123,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
    return (
       <div className="p-8 mx-auto w-full">
          {/* Header Section */}
-         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8 mb-16">
+         <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8 mb-16 mt-10">
             <div>
                <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-4">
                   Blog <span className="text-(--accent)">Management</span>

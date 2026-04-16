@@ -44,7 +44,7 @@ export default function About() {
           </div> */}
             </div>
             <div className="w-full lg:w-1/2 lg:pl-16 py-8 lg:py-20 flex items-center justify-center" >
-              <img src="/AboutHeroImage.png" alt="InnovixLLC hero image" className="w-full max-w-[400px] lg:max-w-none h-auto rounded-3xl lg:rounded-4xl overflow-hidden shadow-xl shadow-[5px_5px_40px_var(--accent)] hover:shadow-[10px_10px_120px_var(--accent)] transition-all duration-300 cursor-pointer " />
+              <img src="/AboutHeroImage.png" alt="InnovixLLC hero image" className="w-full max-w-[400px] lg:max-w-none h-auto rounded-3xl lg:rounded-4xl overflow-hidden shadow-2xl shadow-[10px_10px_100px_var(--accent)] hover:shadow-[10px_10px_300px_var(--accent)] transition-all duration-300 cursor-pointer " />
             </div>
           </div>
         </div>

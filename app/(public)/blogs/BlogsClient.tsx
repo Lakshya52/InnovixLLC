@@ -42,12 +42,12 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
   const featuredPost = initialPosts.find(p => p.category === "Featured") || initialPosts[0];
 
   return (
-    <div className="min-h-screen bg-(--bg-dark) text-(--text-main) pt-32 pb-20 px-8 lg:px-20 relative overflow-hidden">
+    <div className="min-h-screen bg-(--bg-dark) text-(--text-main) pt-32 pb-20  relative overflow-hidden mt-[10dvh]">
       {/* Background design elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
 
-      <div className="w-full max-w-7xl mx-auto">
+      <div className="w-[80dvw] mx-auto">
         {/* Header Section */}
         <div className="mb-10 lg:mb-16">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk tracking-tighter mb-4 lg:mb-6">

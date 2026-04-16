@@ -52,7 +52,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
     });
 
   return (
-    <div className=" w-full min-h-screen text-(--text-main) pt-5 mt-[15dvh] pb-20">
+    <div className=" w-full min-h-screen text-(--text-main) py-20 mt-[15dvh]">
       <div className="w-[80dvw] mx-auto ">
         {/* Header Section */}
         <div className="mb-5">
