@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2, ArrowRight, Package, Download, ShieldCheck, Loader2, AlertCircle, Key as KeyIcon } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { verifyOrderFulfillment } from "@/actions/fulfill";
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const { clearCart } = useCart();
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
@@ -31,8 +31,9 @@ export default function OrderSuccessPage() {
         });
 
         if (result.success) {
-          setFulfillmentStatus(result.status || "Fulfilled");
-          setAssignedKey((result as any).productKey);
+          const successResult = result as any;
+          setFulfillmentStatus(successResult.status || "Fulfilled");
+          setAssignedKey(successResult.productKey);
         } else {
           setError(result.error || "Something went wrong verifying your payment.");
         }
@@ -44,7 +45,7 @@ export default function OrderSuccessPage() {
     };
 
     verify();
-  }, []);
+  }, [sessionId, orderId, clearCart]);
 
   if (!mounted) return null;
 
@@ -125,5 +126,18 @@ export default function OrderSuccessPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[80vh] flex flex-col items-center justify-center gap-6">
+        <Loader2 className="w-16 h-16 text-[#6eDD86] animate-spin" />
+        <h2 className="text-2xl font-bold font-grotesk text-white">Loading Order Data...</h2>
+      </div>
+    }>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }

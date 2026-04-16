@@ -19,7 +19,14 @@ export async function fulfillOrder(orderId: string) {
 
     if (order.status === "Fulfilled") {
       console.log(`Order ${orderId} already fulfilled`);
-      return { success: true, message: "Already fulfilled" };
+      const existingKey = await prisma.productKey.findFirst({
+        where: { orderId: order.id }
+      });
+      return { 
+        success: true, 
+        status: "Fulfilled", 
+        productKey: existingKey?.keyValue || null 
+      };
     }
 
     // 1. Find an available key for this product
