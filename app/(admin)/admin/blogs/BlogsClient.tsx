@@ -74,22 +74,22 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
 
    const getCategoryColor = (cat: string) => {
       const colors: Record<string, string> = {
-         Infrastructure: "bg-[#6eDD86] text-black",
-         Engineering: "bg-blue-500 text-white",
-         Security: "bg-orange-500 text-white",
-         Licensing: "bg-purple-500 text-white",
-         Product: "bg-cyan-500 text-black",
-         General: "bg-gray-500 text-white",
+         Infrastructure: "bg-(--accent) text-(--bg-dark)",
+         Engineering: "bg-blue-500 text-(--text-main)",
+         Security: "bg-orange-500 text-(--text-main)",
+         Licensing: "bg-purple-500 text-(--text-main)",
+         Product: "bg-cyan-500 text-(--bg-dark)",
+         General: "bg-gray-500 text-(--text-main)",
       };
-      return colors[cat] || "bg-[#6eDD86] text-black";
+      return colors[cat] || "bg-(--accent) text-(--bg-dark)";
    };
 
    const getStatusBadge = (status: string) => {
       if (status === "PUBLISHED")
          return (
             <span className="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest">
-               <span className="w-2 h-2 rounded-full bg-[#6eDD86] shadow-[0_0_8px_#6eDD86]"></span>
-               <span className="text-[#6eDD86]">Published</span>
+               <span className="w-2 h-2 rounded-full bg-(--accent) shadow-[0_0_8px_#6eDD86]"></span>
+               <span className="text-(--accent)">Published</span>
             </span>
          );
       if (status === "SCHEDULED")
@@ -126,28 +126,28 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8 mb-16">
             <div>
                <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                  Blog <span className="text-[#6eDD86]">Management</span>
+                  Blog <span className="text-(--accent)">Management</span>
                </h1>
-               <p className="text-[#a0a0a0] text-sm max-w-lg leading-relaxed">
+               <p className="text-(--text-main) text-sm max-w-lg leading-relaxed">
                   Curate and manage your high-performance content pipeline. Publish
                   technical updates and industry insights.
                </p>
             </div>
 
             {/* Total Posts Card */}
-            <div className="bg-[#121212] border border-[#1f1f1f] rounded-[28px] p-6 pr-8 flex items-center gap-6 min-w-[260px] relative overflow-hidden group">
-               <div className="absolute top-0 right-0 w-24 h-24 bg-[#6eDD86]/5 rounded-full -mr-8 -mt-8 blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
+            <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[28px] p-6 pr-8 flex items-center gap-6 min-w-[260px] relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-24 h-24 bg-(--accent)/5 rounded-full -mr-8 -mt-8 blur-2xl group-hover:scale-150 transition-transform duration-500"></div>
                <div>
                   <p className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-1">
                      Total Posts
                   </p>
-                  <h2 className="text-4xl font-bold text-white">{data.total}</h2>
+                  <h2 className="text-4xl font-bold text-(--text-main)">{data.total}</h2>
                </div>
-               <div className="p-3 bg-[#1a1a1a] rounded-2xl text-gray-600 border border-[#1f1f1f]">
+               <div className="p-3 bg-(--bg-dark) rounded-2xl text-gray-600 border border-(--bg-dark)">
                   <FileText size={28} />
                </div>
                <div className="absolute bottom-4 left-6">
-                  <span className="flex items-center gap-1 text-[#6eDD86] text-[10px] font-bold">
+                  <span className="flex items-center gap-1 text-(--accent) text-[10px] font-bold">
                      <TrendingUp size={12} /> {growthPercent} this month
                   </span>
                </div>
@@ -158,8 +158,8 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
          <div className="flex items-center justify-between mb-10">
             <h2 className="text-2xl font-bold">Recent Articles</h2>
             <Link href="/admin/blogs/new">
-               <button className="flex items-center gap-2 bg-[#1a1a1a] border border-[#2a2a2a] text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#222] hover:border-[#6eDD86]/30 transition-all cursor-pointer">
-                  <Plus size={18} className="text-[#6eDD86]" />
+               <button className="flex items-center gap-2 bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-6 py-3 rounded-full font-bold text-sm hover:bg-[#222] hover:border-(--accent)/30 transition-all cursor-pointer">
+                  <Plus size={18} className="text-(--accent)" />
                   New Post
                </button>
             </Link>
@@ -168,11 +168,11 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
          {/* Blog Cards Grid */}
          {loading ? (
             <div className="flex items-center justify-center py-32">
-               <div className="w-8 h-8 border-4 border-[#6eDD86] border-t-transparent rounded-full animate-spin"></div>
+               <div className="w-8 h-8 border-4 border-(--accent) border-t-transparent rounded-full animate-spin"></div>
             </div>
          ) : data.posts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-32 text-center">
-               <div className="w-20 h-20 bg-[#121212] border border-[#1f1f1f] rounded-full flex items-center justify-center mb-6">
+               <div className="w-20 h-20 bg-(--bg-dark) border border-(--bg-dark) rounded-full flex items-center justify-center mb-6">
                   <FileText size={32} className="text-gray-600" />
                </div>
                <h3 className="text-xl font-bold mb-2">No articles yet</h3>
@@ -181,7 +181,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                   share industry insights and updates.
                </p>
                <Link href="/admin/blogs/new">
-                  <button className="flex items-center gap-2 bg-[#6eDD86] text-black px-8 py-3 rounded-full font-bold text-sm hover:bg-[#5dbb72] transition-all cursor-pointer shadow-[0_0_20px_rgba(110,221,134,0.2)]">
+                  <button className="flex items-center gap-2 bg-(--accent) text-(--bg-dark) px-8 py-3 rounded-full font-bold text-sm hover:bg-(--accent) transition-all cursor-pointer shadow-[0_0_20px_rgba(110,221,134,0.2)]">
                      <Plus size={18} />
                      Create First Post
                   </button>
@@ -192,7 +192,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                {data.posts.map((post, idx) => (
                   <div
                      key={post.id}
-                     className="bg-[#121212] border border-[#1f1f1f] rounded-[28px] overflow-hidden group hover:border-[#2a2a2a] transition-all duration-300 flex flex-col"
+                     className="bg-(--bg-dark) border border-(--bg-dark) rounded-[28px] overflow-hidden group hover:border-(--bg-less-dark) transition-all duration-300 flex flex-col"
                   >
                      {/* Card Image */}
                      <div className="relative h-[200px] overflow-hidden">
@@ -217,7 +217,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
 
                      {/* Card Content */}
                      <div className="p-6 flex-grow flex flex-col">
-                        <h3 className="text-lg font-bold leading-tight mb-4 line-clamp-2 group-hover:text-[#6eDD86] transition-colors">
+                        <h3 className="text-lg font-bold leading-tight mb-4 line-clamp-2 group-hover:text-(--accent) transition-colors">
                            {post.title}
                         </h3>
                         <div className="flex items-center gap-3 text-[11px] text-gray-500 mt-auto">
@@ -232,7 +232,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                                  })}
                            </span>
                            <span className="text-gray-700">•</span>
-                           <span className="text-[#6eDD86] font-bold">
+                           <span className="text-(--accent) font-bold">
                               {post.author.name || "Admin"}
                            </span>
                         </div>
@@ -241,18 +241,18 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                      {/* Card Actions */}
                      <div className="px-6 pb-6 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                           <button className="w-10 h-10 rounded-full bg-[#1a1a1a] border border-[#1f1f1f] flex items-center justify-center text-gray-500 hover:text-[#6eDD86] hover:border-[#6eDD86]/30 transition-all cursor-pointer">
+                           <button className="w-10 h-10 rounded-full bg-(--bg-dark) border border-(--bg-dark) flex items-center justify-center text-gray-500 hover:text-(--accent) hover:border-(--accent)/30 transition-all cursor-pointer">
                               <BarChart3 size={16} />
                            </button>
                            <Link href={`/admin/blogs/${post.id}`}>
-                              <button className="w-10 h-10 rounded-full bg-[#1a1a1a] border border-[#1f1f1f] flex items-center justify-center text-gray-500 hover:text-[#6eDD86] hover:border-[#6eDD86]/30 transition-all cursor-pointer">
+                              <button className="w-10 h-10 rounded-full bg-(--bg-dark) border border-(--bg-dark) flex items-center justify-center text-gray-500 hover:text-(--accent) hover:border-(--accent)/30 transition-all cursor-pointer">
                                  <Pencil size={16} />
                               </button>
                            </Link>
                         </div>
                         <button
                            onClick={() => handleDelete(post.id)}
-                           className="w-10 h-10 rounded-full bg-[#1a1a1a] border border-[#1f1f1f] flex items-center justify-center text-gray-500 hover:text-red-500 hover:border-red-500/30 transition-all cursor-pointer"
+                           className="w-10 h-10 rounded-full bg-(--bg-dark) border border-(--bg-dark) flex items-center justify-center text-gray-500 hover:text-red-500 hover:border-red-500/30 transition-all cursor-pointer"
                         >
                            <Trash2 size={16} />
                         </button>
@@ -272,7 +272,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                   <button
                      onClick={() => loadPage(Math.max(1, page - 1))}
                      disabled={page === 1}
-                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#1f1f1f] text-gray-500 hover:text-white hover:border-[#2a2a2a] transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                     className="w-10 h-10 flex items-center justify-center rounded-full bg-(--bg-dark) border border-(--bg-dark) text-gray-500 hover:text-(--text-main) hover:border-(--bg-less-dark) transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                      <ChevronLeft size={16} />
                   </button>
@@ -283,8 +283,8 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                            onClick={() => loadPage(p)}
                            className={`w-10 h-10 flex items-center justify-center rounded-full font-bold text-sm transition-all cursor-pointer ${
                               p === page
-                                 ? "bg-[#6eDD86] text-black"
-                                 : "bg-[#1a1a1a] border border-[#1f1f1f] text-gray-400 hover:text-white hover:border-[#2a2a2a]"
+                                 ? "bg-(--accent) text-(--bg-dark)"
+                                 : "bg-(--bg-dark) border border-(--bg-dark) text-gray-400 hover:text-(--text-main) hover:border-(--bg-less-dark)"
                            }`}
                         >
                            {p}
@@ -294,7 +294,7 @@ export default function BlogsClient({ initialData }: { initialData: BlogData }) 
                   <button
                      onClick={() => loadPage(Math.min(data.pages, page + 1))}
                      disabled={page === data.pages}
-                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#1f1f1f] text-gray-500 hover:text-white hover:border-[#2a2a2a] transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                     className="w-10 h-10 flex items-center justify-center rounded-full bg-(--bg-dark) border border-(--bg-dark) text-gray-500 hover:text-(--text-main) hover:border-(--bg-less-dark) transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                      <ChevronRight size={16} />
                   </button>

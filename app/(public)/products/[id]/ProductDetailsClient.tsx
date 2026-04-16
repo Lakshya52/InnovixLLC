@@ -68,7 +68,7 @@ export default function ProductDetailsClient({
   const alreadyInCart = cart.some((item) => item.product.id === product.id);
 
   return (
-    <div className="min-h-screen text-white pt-28 w-full pb-20 px-4 md:px-8 mt-20 relative">
+    <div className="min-h-screen text-(--text-main) pt-28 w-full pb-20 px-4 md:px-8 mt-20 relative">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-(--accent)/20 top-0 rotate-135 w-1/5 left-0 blur-3xl h-1/5 rounded-full shadow-[10px_10px_100px_var(--accent)] z-[-10]" />
 
@@ -112,10 +112,10 @@ export default function ProductDetailsClient({
                 disabled={alreadyInCart}
                 className={`flex-1 w-full font-bold h-16 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(110,221,134,0.3)] flex items-center justify-center gap-3 font-grotesk text-lg group ${
                   alreadyInCart
-                    ? "bg-white/10 text-gray-500 cursor-not-allowed border border-white/5 shadow-none"
+                    ? "bg-(--text-main)/10 text-gray-500 cursor-not-allowed border border-(--text-main)/5 shadow-none"
                     : isAdded
-                    ? "bg-white text-black"
-                    : "bg-[#6eDD86] hover:bg-[#5dbb72] text-black"
+                    ? "bg-(--text-main) text-(--bg-dark)"
+                    : "bg-(--accent) hover:bg-(--accent) text-(--bg-dark)"
                 }`}
               >
                 {alreadyInCart
@@ -131,7 +131,7 @@ export default function ProductDetailsClient({
 
               <button
                 onClick={handleBuyNow}
-                className="flex-1 w-full bg-white/[0.05] hover:bg-white/[0.1] text-white font-bold h-16 rounded-2xl transition-all duration-300 border border-white/10 flex items-center justify-center gap-3 font-grotesk text-lg"
+                className="flex-1 w-full bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) font-bold h-16 rounded-2xl transition-all duration-300 border border-(--text-main)/10 flex items-center justify-center gap-3 font-grotesk text-lg"
               >
                 Buy Now
               </button>
@@ -150,7 +150,7 @@ export default function ProductDetailsClient({
 
         {/* Section 1: Performance & Trust Architecture */}
         {(product.description || product.features.length > 0) && (
-          <div className="mt-32 grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-white/5 pt-32">
+          <div className="mt-32 grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-(--text-main)/5 pt-32">
             <div className="lg:col-span-2">
               <h2 className="text-4xl md:text-5xl font-bold font-grotesk mb-8">
                 {product.featureHeading.split(" ").map((word, i, arr) =>
@@ -170,10 +170,10 @@ export default function ProductDetailsClient({
             </div>
 
             {product.features.length > 0 && (
-              <div className="bg-white/[0.02] backdrop-blur-xl border border-white/5 p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-full h-1 bg-[#6eDD86] opacity-30" />
+              <div className="bg-(--text-main)/[0.02] backdrop-blur-xl border border-(--text-main)/5 p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 left-0 w-full h-1 bg-(--accent) opacity-30" />
                 <h3 className="text-xl font-bold font-grotesk mb-8 flex items-center gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-[#6eDD86]" />
+                  <CheckCircle2 className="w-6 h-6 text-(--accent)" />
                   Trust Architecture
                 </h3>
                 <ul className="space-y-6">
@@ -182,7 +182,7 @@ export default function ProductDetailsClient({
                       key={i}
                       className="flex items-start gap-4 text-sm text-gray-400 font-inter leading-relaxed"
                     >
-                      <Check className="w-4 h-4 text-[#6eDD86] shrink-0 mt-1" />
+                      <Check className="w-4 h-4 text-(--accent) shrink-0 mt-1" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -197,23 +197,23 @@ export default function ProductDetailsClient({
           <div className="mt-32 text-center">
             <h2 className="text-4xl md:text-5xl font-bold font-grotesk mb-4">
               System{" "}
-              <span className="underline decoration-[#6eDD86] decoration-4 underline-offset-12">
+              <span className="underline decoration-(--accent) decoration-4 underline-offset-12">
                 Requirements
               </span>
             </h2>
 
-            <div className="mt-16 overflow-hidden rounded-[40px] border border-white/5 bg-white/[0.01] backdrop-blur-sm">
+            <div className="mt-16 overflow-hidden rounded-[40px] border border-(--text-main)/5 bg-(--text-main)/[0.01] backdrop-blur-sm">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-white/[0.03]">
-                      <th className="p-8 text-[#6eDD86] font-bold font-grotesk uppercase tracking-wider">
+                    <tr className="bg-(--text-main)/[0.03]">
+                      <th className="p-8 text-(--accent) font-bold font-grotesk uppercase tracking-wider">
                         Component
                       </th>
-                      <th className="p-8 text-[#6eDD86] font-bold font-grotesk uppercase tracking-wider">
+                      <th className="p-8 text-(--accent) font-bold font-grotesk uppercase tracking-wider">
                         Minimum Specification
                       </th>
-                      <th className="p-8 text-[#6eDD86] font-bold font-grotesk uppercase tracking-wider">
+                      <th className="p-8 text-(--accent) font-bold font-grotesk uppercase tracking-wider">
                         Recommended Specification
                       </th>
                     </tr>
@@ -222,7 +222,7 @@ export default function ProductDetailsClient({
                     {product.systemRequirements.map((req, i) => (
                       <tr
                         key={i}
-                        className="border-t border-white/5 hover:bg-white/[0.02] transition-colors"
+                        className="border-t border-(--text-main)/5 hover:bg-(--text-main)/[0.02] transition-colors"
                       >
                         <td className="p-8 font-bold font-grotesk text-gray-300">
                           {req.component}
@@ -244,9 +244,9 @@ export default function ProductDetailsClient({
 
         {/* Section 3: Related Products / Ecosystem */}
         {relatedProducts.length > 0 && (
-          <div className="mt-32 pt-32 border-t border-white/5">
+          <div className="mt-32 pt-32 border-t border-(--text-main)/5">
             <h2 className="text-4xl md:text-5xl font-bold font-grotesk mb-16">
-              Complete Your <span className="text-[#6eDD86]">Ecosystem</span>
+              Complete Your <span className="text-(--accent)">Ecosystem</span>
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -254,9 +254,9 @@ export default function ProductDetailsClient({
                 <Link
                   href={`/products/${rp.id}`}
                   key={rp.id}
-                  className="bg-white/[0.02] border border-white/5 p-6 rounded-[35px] hover:bg-white/[0.05] transition-all group relative"
+                  className="bg-(--text-main)/[0.02] border border-(--text-main)/5 p-6 rounded-[35px] hover:bg-(--text-main)/[0.05] transition-all group relative"
                 >
-                  <div className="aspect-square rounded-[25px] overflow-hidden mb-6 bg-white/[0.03]">
+                  <div className="aspect-square rounded-[25px] overflow-hidden mb-6 bg-(--text-main)/[0.03]">
                     {rp.image ? (
                       <img
                         src={rp.image}
@@ -269,14 +269,14 @@ export default function ProductDetailsClient({
                       </div>
                     )}
                   </div>
-                  <h3 className="text-lg font-bold font-grotesk mb-2 text-gray-200 group-hover:text-white transition-colors line-clamp-1">
+                  <h3 className="text-lg font-bold font-grotesk mb-2 text-gray-200 group-hover:text-(--text-main) transition-colors line-clamp-1">
                     {rp.name}
                   </h3>
                   <div className="flex items-center justify-between mt-4">
-                    <span className="text-xl font-bold font-grotesk text-[#6eDD86]">
+                    <span className="text-xl font-bold font-grotesk text-(--accent)">
                       ${rp.price.toFixed(2)}
                     </span>
-                    <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#6eDD86] hover:text-black transition-all">
+                    <div className="w-10 h-10 rounded-full border border-(--text-main)/10 flex items-center justify-center hover:bg-(--accent) hover:text-(--bg-dark) transition-all">
                       <ShoppingCart size={16} />
                     </div>
                   </div>

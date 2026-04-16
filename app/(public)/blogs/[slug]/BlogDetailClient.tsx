@@ -19,7 +19,7 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
 
   if (!post) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-(--bg-dark) text-white">
+      <div className="min-h-screen flex items-center justify-center bg-(--bg-dark) text-(--text-main)">
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-4">Post Not Found</h1>
           <button onClick={() => router.push('/blogs')} className="button-green">
@@ -64,8 +64,8 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
             <article className="prose prose-invert max-w-none 
               prose-h2:text-3xl prose-h3:text-2xl prose-h2:font-grotesk prose-h3:font-grotesk
               prose-p:font-inter prose-p:text-gray-400 prose-p:leading-relaxed prose-p:text-lg
-              prose-h2:text-white prose-h3:text-white prose-strong:text-white prose-li:text-gray-400
-              prose-blockquote:border-l-(--accent) prose-blockquote:bg-white/[0.02] prose-blockquote:p-8 prose-blockquote:rounded-r-3xl text-xl font-inter"
+              prose-h2:text-(--text-main) prose-h3:text-(--text-main) prose-strong:text-(--text-main) prose-li:text-gray-400
+              prose-blockquote:border-l-(--accent) prose-blockquote:bg-(--text-main)/[0.02] prose-blockquote:p-8 prose-blockquote:rounded-r-3xl text-xl font-inter"
               dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         </div>
@@ -123,11 +123,11 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
             <Link 
               key={nextPost.id} 
               href={`/blogs/${nextPost.slug || nextPost.id}`}
-              className="group cursor-pointer bg-white/[0.03] border border-white/5 rounded-[40px] overflow-hidden hover:bg-white/[0.05] transition-all duration-500 flex flex-col relative z-20"
+              className="group cursor-pointer bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[40px] overflow-hidden hover:bg-(--text-main)/[0.05] transition-all duration-500 flex flex-col relative z-20"
             >
               <div className="relative h-48 overflow-hidden">
                 <img src={nextPost.image} alt={nextPost.title} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-(--bg-dark) via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-linear-to-t from-(--bg-dark) via-transparent to-transparent opacity-60" />
               </div>
               <div className="p-8 flex flex-col flex-1">
                 <div className="flex items-center justify-between mb-4">
@@ -137,7 +137,7 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
                 <h3 className="text-xl font-bold font-grotesk mb-4 group-hover:text-(--accent) transition-colors leading-tight line-clamp-2">
                   {nextPost.title}
                 </h3>
-                <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
+                <div className="flex items-center justify-between pt-4 border-t border-(--text-main)/5 mt-auto">
                   <div className="flex items-center gap-2 text-[10px] text-gray-500 font-bold uppercase">
                     <Clock size={14} className="text-gray-600" /> {nextPost.readTime}
                   </div>

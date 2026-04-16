@@ -88,14 +88,14 @@ export default function Login() {
 
         {/* Left Section: Branding */}
         <div className="w-full lg:w-1/2 flex flex-col gap-8">
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 py-2 px-4 rounded-full w-fit">
+          <div className="inline-flex items-center gap-2 bg-(--text-main)/5 border border-(--text-main)/10 py-2 px-4 rounded-full w-fit">
             <span className="w-2 h-2 rounded-full bg-(--accent) animate-ping" />
             <span className="text-(--accent) text-md font-medium tracking-widest uppercase">login</span>
           </div>
 
           <h1 className="text-(--text-main) font-grotesk text-6xl md:text-7xl font-bold leading-tight">
             Experience the<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-(--accent) to-[#a5f3bc]">Digital Kinetic</span>
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-[#a5f3bc]">Digital Kinetic</span>
           </h1>
 
           <p className="text-(--text-main)/70 font-inter text-xl max-w-lg leading-relaxed">
@@ -105,8 +105,8 @@ export default function Login() {
 
         {/* Right Section: Form */}
         <div className="w-full lg:w-1/2 ">
-          <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-(--accent)/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="bg-(--text-main)/[0.03] backdrop-blur-2xl border border-(--text-main)/10 p-8 md:p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-(--accent)/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 relative z-10 font-inter">
               <div className="space-y-1">
@@ -129,7 +129,7 @@ export default function Login() {
                   <label htmlFor="email" className="text-md font-medium text-(--text-main)/60 ml-1">Email Address</label>
                   <input
                     required
-                    className="w-full rounded-2xl bg-white/5 border border-white/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20"
+                    className="w-full rounded-2xl bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20"
                     type="email"
                     name="email"
                     id="email"
@@ -150,7 +150,7 @@ export default function Login() {
                   <div className="relative">
                     <input
                       required
-                      className="w-full rounded-2xl bg-white/5 border border-white/10 text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20"
+                      className="w-full rounded-2xl bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20"
                       type={showPassword ? "text" : "password"}
                       name="password"
                       id="password"
@@ -161,7 +161,7 @@ export default function Login() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-(--accent) transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                     >
                       {showPassword ? <EyeOff size={20} className="cursor-pointer" /> : <Eye size={20} className="cursor-pointer" />}
                     </button>

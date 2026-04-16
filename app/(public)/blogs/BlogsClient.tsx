@@ -42,31 +42,31 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
   const featuredPost = initialPosts.find(p => p.category === "Featured") || initialPosts[0];
 
   return (
-    <div className="min-h-screen bg-(--bg-dark) text-white pt-32 pb-20 px-8 lg:px-20 relative overflow-hidden">
+    <div className="min-h-screen bg-(--bg-dark) text-(--text-main) pt-32 pb-20 px-8 lg:px-20 relative overflow-hidden">
       {/* Background design elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
 
-      <div className="w-[80dvw] mx-auto">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="mb-16">
-          <h1 className="text-5xl font-bold font-grotesk tracking-tighter mb-6">
+        <div className="mb-10 lg:mb-16">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk tracking-tighter mb-4 lg:mb-6">
             Dive Into our <span className="text-(--accent)">Latest Blogs</span>
           </h1>
-          <p className="text-gray-400 text-md font-inter max-w-2/5 leading-relaxed">
+          <p className="text-gray-400 text-sm md:text-md font-inter max-w-2xl leading-relaxed">
             Complete your order for InnovixLLC high-performance digital infrastructure. Your digital assets will be available immediately after verification.
           </p>
         </div>
 
         {/* Featured Hero Card */}
         {featuredPost && (
-          <div className="mb-20">
-            <div className="block relative group overflow-hidden rounded-[50px] border border-white/5 bg-white/[0.02]">
-              <div className="p-16 h-[60dvh] flex flex-col justify-center items-start" style={{ backgroundImage: "url('/BlogsGradient.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
-                <span className="bg-(--accent)/10 text-(--accent) text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8"  >
+          <div className="mb-12 md:mb-20">
+            <div className="block relative group overflow-hidden rounded-[30px] md:rounded-[50px] border border-(--text-main)/5 bg-(--text-main)/[0.02]">
+              <div className="p-8 md:p-16 h-auto md:h-[60dvh] min-h-[50dvh] flex flex-col justify-center items-start" style={{ backgroundImage: "url('/BlogsGradient.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
+                <span className="bg-(--accent)/10 text-(--accent) text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6 md:mb-8"  >
                   Featured Insight
                 </span>
-                <h2 className="text-6xl font-bold font-grotesk mb-6 max-w-1/2 text-white leading-[1.1]">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk mb-4 md:mb-6 max-w-full md:max-w-3/4 lg:max-w-1/2 text-(--text-main) leading-[1.1]">
                   {featuredPost.title.split(" ").map((word, i, arr) =>
                     i >= arr.length - 2 ? (
                       <span key={i} className="text-(--accent)">
@@ -77,7 +77,7 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
                     )
                   )}
                 </h2>
-                <p className="text-gray-400 text-xl font-inter mb-10 leading-relaxed max-w-2xl">
+                <p className="text-gray-400 text-lg md:text-xl font-inter mb-8 md:mb-10 leading-relaxed max-w-2xl">
                   {featuredPost.excerpt}
                 </p>
                 <div className="flex items-center gap-8">
@@ -101,8 +101,8 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 ${activeCategory === cat
-                  ? "bg-(--accent) text-black shadow-lg shadow-(--accent)/20"
-                  : "bg-white/5 text-gray-400 hover:bg-white/10 border border-white/5"
+                  ? "bg-(--accent) text-(--bg-dark) shadow-lg shadow-(--accent)/20"
+                  : "bg-(--text-main)/5 text-gray-400 hover:bg-(--text-main)/10 border border-(--text-main)/5"
                   }`}
               >
                 {cat}
@@ -117,7 +117,7 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
               placeholder="Search blogs..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-full px-16 py-4 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all"
+              className="w-full bg-(--text-main)/5 border border-(--text-main)/10 rounded-full px-16 py-4 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all"
             />
           </div>
         </div>
@@ -126,10 +126,10 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
         {filteredPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
             {filteredPosts.filter(p => p.category !== 'Featured' || (searchQuery !== "" || activeCategory !== "All Posts")).map((post) => (
-              <Link key={post.id} href={`/blogs/${post.slug || post.id}`} className="group bg-white/[0.03] border border-white/5 rounded-[40px] overflow-hidden hover:bg-white/[0.05] transition-all duration-500 flex flex-col">
+              <Link key={post.id} href={`/blogs/${post.slug || post.id}`} className="group bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[40px] overflow-hidden hover:bg-(--text-main)/[0.05] transition-all duration-500 flex flex-col">
                 <div className="relative h-64 overflow-hidden">
                   <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-(--bg-dark) via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-linear-to-t from-(--bg-dark) via-transparent to-transparent opacity-60" />
                 </div>
                 <div className="p-10 flex flex-col flex-1">
                   <div className="flex items-center justify-between mb-6">
@@ -142,11 +142,11 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
                   <p className="text-gray-400 text-sm font-inter leading-relaxed mb-10 flex-1">
                     {post.excerpt}
                   </p>
-                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                  <div className="flex items-center justify-between pt-6 border-t border-(--text-main)/5">
                     <div className="flex items-center gap-2 text-[10px] text-gray-500 font-bold uppercase">
                       <Clock size={14} /> {post.readTime}
                     </div>
-                    <span className="flex items-center gap-2 text-[10px] text-white font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                    <span className="flex items-center gap-2 text-[10px] text-(--text-main) font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
                       Read More <ArrowRight size={14} className="text-(--accent)" />
                     </span>
                   </div>
@@ -155,8 +155,8 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-white/[0.02] border border-white/5 rounded-[50px] mb-20 text-center">
-            <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-gray-600 mb-6 border border-white/5">
+          <div className="flex flex-col items-center justify-center py-20 bg-(--text-main)/[0.02] border border-(--text-main)/5 rounded-[50px] mb-20 text-center">
+            <div className="w-20 h-20 rounded-full bg-(--text-main)/5 flex items-center justify-center text-gray-600 mb-6 border border-(--text-main)/5">
               <Search size={40} />
             </div>
             <h3 className="text-3xl font-bold font-grotesk mb-4">No blogs found</h3>
@@ -176,25 +176,25 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
         )}
 
         {/* Newsletter Section */}
-        <div className="flex items-center justify-center bg-(--bg-less-dark) rounded-[50px] p-16">
-          <div className="w-1/2">
-            <h2 className="text-5xl font-bold font-grotesk mb-4">Stay ahead with the <br /><span className="text-(--accent)">Innovix Blogs</span></h2>
-            <p className="text-gray-400 text-lg font-inter max-w-xl mb-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between bg-(--bg-less-dark) rounded-[30px] md:rounded-[50px] p-8 sm:p-12 md:p-16 gap-10 lg:gap-0">
+          <div className="w-full lg:w-1/2 text-center lg:text-left">
+            <h2 className="text-4xl md:text-5xl font-bold font-grotesk mb-4">Stay ahead with the <br className="hidden md:block"/><span className="text-(--accent)">Innovix Blogs</span></h2>
+            <p className="text-gray-400 text-md md:text-lg font-inter max-w-xl mx-auto lg:mx-0 mb-6 lg:mb-10">
               Get weekly insights on security, engineering productivity, and the future of digital distribution. No spam, just high-fidelity knowledge.
             </p>
           </div>
-          <div className="w-1/2">
-            <form className="flex flex-col md:flex-row items-center justify-center gap-4 max-w-2xl mx-auto" onSubmit={(e) => e.preventDefault()}>
+          <div className="w-full lg:w-1/2">
+            <form className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto lg:max-w-2xl lg:ml-auto lg:mr-0" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Enter your work email"
-                className="w-full flex-1 bg-white/5 border border-white/10 rounded-full px-8 py-5 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all"
+                className="w-full flex-1 bg-(--text-main)/5 border border-(--text-main)/10 rounded-full px-6 md:px-8 py-4 md:py-5 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all text-center sm:text-left"
               />
-              <button className="button-green whitespace-nowrap px-10 py-5">
-                Join Now <ChevronRight size={20} />
+              <button className="button-green whitespace-nowrap px-8 md:px-10 py-4 md:py-5 w-full sm:w-auto">
+                Join Now <ChevronRight size={20} className="hidden sm:inline-block" />
               </button>
             </form>
-            <p className="text-[10px] text-right text-gray-600 font-bold uppercase  mt-4">TRUSTED BY 50,000+ DEVELOPERS WORLDWIDE</p>
+            <p className="text-[10px] text-center lg:text-right text-gray-600 font-bold uppercase mt-6 md:mt-4 w-full mx-auto lg:mx-0 max-w-md lg:max-w-none">TRUSTED BY 50,000+ DEVELOPERS WORLDWIDE</p>
           </div>
         </div>
       </div>

@@ -71,9 +71,9 @@ export default function KeysClient({ products }: { products: Product[] }) {
       <div className="mb-8">
         <Link 
           href="/admin/inventory" 
-          className="flex items-center gap-2 text-gray-500 hover:text-[#6eDD86] transition-colors text-sm font-bold uppercase tracking-widest group"
+          className="flex items-center gap-2 text-gray-500 hover:text-(--accent) transition-colors text-sm font-bold uppercase tracking-widest group"
         >
-          <div className="p-2 bg-[#1a1a1a] rounded-xl border border-[#2a2a2a] group-hover:border-[#6eDD86]/30 transition-all">
+          <div className="p-2 bg-(--bg-dark) rounded-xl border border-(--bg-less-dark) group-hover:border-(--accent)/30 transition-all">
             <ChevronLeft size={16} />
           </div>
           Back to Inventory
@@ -83,7 +83,7 @@ export default function KeysClient({ products }: { products: Product[] }) {
       {/* Header */}
       <div className="mb-12">
         <h1 className="text-5xl font-extrabold mb-4 tracking-tight">
-          Manage <span className="text-[#6eDD86] drop-shadow-[0_0_15px_rgba(110,221,134,0.3)]">Product Keys</span>
+          Manage <span className="text-(--accent) drop-shadow-[0_0_15px_rgba(110,221,134,0.3)]">Product Keys</span>
         </h1>
         <p className="text-gray-400 text-lg max-w-2xl">
           Bulk upload license keys for your digital software catalog. Each key will be securely stored and linked to the selected product for fulfillment.
@@ -93,7 +93,7 @@ export default function KeysClient({ products }: { products: Product[] }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Left Column: Form */}
         <div className="lg:col-span-2 space-y-8">
-          <form onSubmit={handleUpload} className="bg-[#121212] border border-[#1f1f1f] rounded-[40px] p-10 relative overflow-hidden">
+          <form onSubmit={handleUpload} className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-10 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
               <UploadCloud size={200} />
             </div>
@@ -102,14 +102,14 @@ export default function KeysClient({ products }: { products: Product[] }) {
               {/* Product Selection */}
               <div className="space-y-4">
                 <label className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-gray-500 ml-1">
-                  <Package size={16} className="text-[#6eDD86]" />
+                  <Package size={16} className="text-(--accent)" />
                   Internal Product
                 </label>
                 <div className="relative group">
                   <select
                     value={selectedProductId}
                     onChange={(e) => setSelectedProductId(e.target.value)}
-                    className="w-full bg-[#0d0d0d] border border-[#2a2a2a] text-[#e2e2e2] px-6 py-5 rounded-2xl font-bold text-lg appearance-none focus:outline-none focus:border-[#6eDD86] focus:ring-1 focus:ring-[#6eDD86]/30 transition-all cursor-pointer group-hover:border-[#333]"
+                    className="w-full bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-6 py-5 rounded-2xl font-bold text-lg appearance-none focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent)/30 transition-all cursor-pointer group-hover:border-[#333]"
                     required
                   >
                     <option value="" disabled>Select a product to stock...</option>
@@ -129,10 +129,10 @@ export default function KeysClient({ products }: { products: Product[] }) {
               <div className="space-y-4">
                 <div className="flex justify-between items-end ml-1">
                   <label className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-gray-500">
-                    <Key size={16} className="text-[#6eDD86]" />
+                    <Key size={16} className="text-(--accent)" />
                     License Keys (Bulk)
                   </label>
-                  <span className="text-[10px] text-gray-600 font-bold uppercase tracking-widest bg-[#1a1a1a] px-3 py-1 rounded-lg">
+                  <span className="text-[10px] text-gray-600 font-bold uppercase tracking-widest bg-(--bg-dark) px-3 py-1 rounded-lg">
                     One key per line
                   </span>
                 </div>
@@ -140,7 +140,7 @@ export default function KeysClient({ products }: { products: Product[] }) {
                   value={keyInput}
                   onChange={(e) => setKeyInput(e.target.value)}
                   placeholder="XXXXX-XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY-YYYYY"
-                  className="w-full bg-[#0d0d0d] border border-[#2a2a2a] text-[#e2e2e2] px-8 py-6 rounded-3xl font-mono text-base h-[300px] focus:outline-none focus:border-[#6eDD86] focus:ring-1 focus:ring-[#6eDD86]/30 transition-all resize-none placeholder:text-gray-800"
+                  className="w-full bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-8 py-6 rounded-3xl font-mono text-base h-[300px] focus:outline-none focus:border-(--accent) focus:ring-1 focus:ring-(--accent)/30 transition-all resize-none placeholder:text-gray-800"
                   required
                 />
               </div>
@@ -148,7 +148,7 @@ export default function KeysClient({ products }: { products: Product[] }) {
               {/* Status Message */}
               {message && (
                 <div className={`p-6 rounded-2xl flex items-center gap-4 animate-in fade-in slide-in-from-top-2 duration-300 ${
-                  message.type === "success" ? "bg-[#6eDD86]/10 border border-[#6eDD86]/20 text-[#6eDD86]" : "bg-red-500/10 border border-red-500/20 text-red-400"
+                  message.type === "success" ? "bg-(--accent)/10 border border-(--accent)/20 text-(--accent)" : "bg-red-500/10 border border-red-500/20 text-red-400"
                 }`}>
                   {message.type === "success" ? <CheckCircle2 size={24} /> : <AlertCircle size={24} />}
                   <p className="font-bold text-sm tracking-wide">{message.text}</p>
@@ -159,10 +159,10 @@ export default function KeysClient({ products }: { products: Product[] }) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#6eDD86] disabled:bg-gray-800 disabled:text-gray-500 text-black py-6 rounded-[22px] font-black text-sm uppercase tracking-[0.25em] hover:bg-[#5dbb72] transition-all cursor-pointer shadow-[0_10px_30px_rgba(110,221,134,0.15)] hover:shadow-[0_15px_40px_rgba(110,221,134,0.25)] active:scale-[0.985] flex items-center justify-center gap-3 group"
+                className="w-full bg-(--accent) disabled:bg-gray-800 disabled:text-gray-500 text-(--bg-dark) py-6 rounded-[22px] font-(--bg-dark) text-sm uppercase tracking-[0.25em] hover:bg-(--accent) transition-all cursor-pointer shadow-[0_10px_30px_rgba(110,221,134,0.15)] hover:shadow-[0_15px_40px_rgba(110,221,134,0.25)] active:scale-[0.985] flex items-center justify-center gap-3 group"
               >
                 {isSubmitting ? (
-                  <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-(--bg-dark)/30 border-t-(--bg-dark) rounded-full animate-spin" />
                 ) : (
                   <>
                     Deploy Inventory <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -175,28 +175,28 @@ export default function KeysClient({ products }: { products: Product[] }) {
 
         {/* Right Column: Info & Summary */}
         <div className="space-y-8">
-          <div className="bg-[#121212] border border-[#1f1f1f] rounded-[40px] p-8">
+          <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-8">
             <h3 className="text-xl font-bold mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#1a1a1a] rounded-xl flex items-center justify-center border border-[#2a2a2a]">
-                <Plus size={20} className="text-[#6eDD86]" />
+              <div className="w-10 h-10 bg-(--bg-dark) rounded-xl flex items-center justify-center border border-(--bg-less-dark)">
+                <Plus size={20} className="text-(--accent)" />
               </div>
               Import Summary
             </h3>
             
             <div className="space-y-6">
-              <div className="p-6 bg-[#0d0d0d] rounded-2xl border border-[#2a2a2a] group hover:border-[#333] transition-all">
+              <div className="p-6 bg-(--bg-dark) rounded-2xl border border-(--bg-less-dark) group hover:border-[#333] transition-all">
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Target Product</p>
-                <p className="text-lg font-bold text-white leading-tight">
+                <p className="text-lg font-bold text-(--text-main) leading-tight">
                   {selectedProduct?.name || "None Selected"}
                 </p>
-                <p className="text-xs text-[#6eDD86] font-medium mt-1">
+                <p className="text-xs text-(--accent) font-medium mt-1">
                   {selectedProduct?.category || "---"}
                 </p>
               </div>
 
-              <div className="p-6 bg-[#0d0d0d] rounded-2xl border border-[#2a2a2a] group hover:border-[#333] transition-all">
+              <div className="p-6 bg-(--bg-dark) rounded-2xl border border-(--bg-less-dark) group hover:border-[#333] transition-all">
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Batch Size</p>
-                <p className="text-4xl font-black text-white">
+                <p className="text-4xl font-(--bg-dark) text-(--text-main)">
                   {keyInput.split("\n").filter(k => k.trim()).length.toString().padStart(2, '0')}
                 </p>
                 <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Valid keys detected</p>
@@ -213,19 +213,19 @@ export default function KeysClient({ products }: { products: Product[] }) {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-[#121212] to-[#0d0d0d] border border-[#1f1f1f] rounded-[40px] p-8 border-l-4 border-l-[#6eDD86]">
-            <h4 className="text-sm font-bold text-[#6eDD86] uppercase tracking-widest mb-4">Stock Management Tips</h4>
+          <div className="bg-linear-to-br from-(--bg-dark) to-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-8 border-l-4 border-l-(--accent)">
+            <h4 className="text-sm font-bold text-(--accent) uppercase tracking-widest mb-4">Stock Management Tips</h4>
             <ul className="space-y-4">
               <li className="flex gap-3 text-xs text-gray-400 leading-relaxed">
-                <CheckCircle2 size={14} className="shrink-0 text-[#6eDD86]" />
+                <CheckCircle2 size={14} className="shrink-0 text-(--accent)" />
                 Paste raw lists from suppliers directly into the text area.
               </li>
               <li className="flex gap-3 text-xs text-gray-400 leading-relaxed">
-                <CheckCircle2 size={14} className="shrink-0 text-[#6eDD86]" />
+                <CheckCircle2 size={14} className="shrink-0 text-(--accent)" />
                 Validation removes duplicates and empty lines automatically.
               </li>
               <li className="flex gap-3 text-xs text-gray-400 leading-relaxed">
-                <CheckCircle2 size={14} className="shrink-0 text-[#6eDD86]" />
+                <CheckCircle2 size={14} className="shrink-0 text-(--accent)" />
                 Successful uploads are logged in the System Inventory Log.
               </li>
             </ul>

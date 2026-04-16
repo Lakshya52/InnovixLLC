@@ -82,7 +82,7 @@ export default function ResetPassword() {
       </div>
 
       <div className="w-full max-w-[500px] px-6 relative z-10">
-        <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-[40px] shadow-2xl">
+        <div className="bg-(--text-main)/[0.03] backdrop-blur-2xl border border-(--text-main)/10 p-8 md:p-10 rounded-[40px] shadow-2xl">
           
           {!success ? (
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 font-inter">
@@ -110,7 +110,7 @@ export default function ResetPassword() {
                   <div className="relative">
                     <input 
                       required
-                      className={`w-full rounded-2xl bg-white/5 border ${passwordValid ? 'border-green-500/30' : 'border-white/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20`}
+                      className={`w-full rounded-2xl bg-(--text-main)/5 border ${passwordValid ? 'border-green-500/30' : 'border-(--text-main)/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20`}
                       type={showPassword ? "text" : "password"} 
                       name="password" 
                       id="password"
@@ -121,7 +121,7 @@ export default function ResetPassword() {
                     <button 
                       type="button" 
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-(--accent) transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                     >
                       {showPassword ? <EyeOff size={20} className="cursor-pointer" /> : <Eye size={20} className="cursor-pointer" />}
                     </button>
@@ -134,7 +134,7 @@ export default function ResetPassword() {
                   <div className="relative">
                     <input 
                       required
-                      className={`w-full rounded-2xl bg-white/5 border ${passwordMatch ? 'border-green-500/30' : 'border-white/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20`}
+                      className={`w-full rounded-2xl bg-(--text-main)/5 border ${passwordMatch ? 'border-green-500/30' : 'border-(--text-main)/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20`}
                       type={showConfirmPassword ? "text" : "password"} 
                       name="cpass" 
                       id="cpass"
@@ -145,7 +145,7 @@ export default function ResetPassword() {
                     <button 
                       type="button" 
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-(--accent) transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff size={20} className="cursor-pointer" /> : <Eye size={20} className="cursor-pointer" />}
                     </button>
@@ -162,7 +162,7 @@ export default function ResetPassword() {
                     </div>
                   )}
                   {formData.cpass && (
-                    <p className={`text-[10px] items-center gap-1 flex ${passwordMatch ? 'text-green-500' : 'text-red-500'}`}>
+                    <p className={`text-[10px] items-center gap-1 flex ${passwordMatch ? 'text-(--accent)' : 'text-red-500'}`}>
                       {passwordMatch ? <><CheckCircle2 size={10} /> Passwords Match</> : "Passwords do not match"}
                     </p>
                   )}
@@ -186,7 +186,7 @@ export default function ResetPassword() {
             </form>
           ) : (
             <div className="flex flex-col items-center text-center gap-6 py-4 animate-in fade-in zoom-in duration-500">
-              <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-green-500">
+              <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center text-(--accent)">
                 <CheckCircle2 size={40} />
               </div>
               <div className="space-y-2">

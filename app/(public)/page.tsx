@@ -14,7 +14,7 @@ export default function Home() {
     <>
     <Hero />
     <HeroProduct />
-    <ChatBot />
+    <ChatBot /> 
     <WhyChooseUs />
     <FAQ />
     <FooterCTA />

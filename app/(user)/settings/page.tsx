@@ -33,8 +33,8 @@ export default async function SettingsPage() {
   return (
     <div className=" mx-auto w-[90%]">
       <div className="mb-10">
-        <h1 className="text-4xl font-bold mb-2">Account <span className="text-[#6eDD86]">Settings</span></h1>
-        <p className="text-[#a0a0a0] text-sm">Manage your digital identity and security parameters.</p>
+        <h1 className="text-4xl font-bold mb-2">Account <span className="text-(--accent)">Settings</span></h1>
+        <p className="text-(--text-main) text-sm">Manage your digital identity and security parameters.</p>
       </div>
 
       <SettingsForm initialUser={user} />

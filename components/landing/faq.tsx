@@ -35,10 +35,10 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="bg-(--bg-less-dark) w-full py-24 px-4 md:px-8 border-t border-white/5">
-      <div className="max-w-4xl mx-auto">
+    <section id="faq" className="bg-(--bg-less-dark) w-full py-24  border-t border-(--text-main)/5">
+      <div className="max-w-4xl mx-auto w-[80dvw]">
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-6  font-grotesk">
+          <h2 className="text-4xl md:text-6xl font-bold text-(--text-main) mb-6  font-grotesk">
             Frequently Asked Questions
           </h2>
           <p className="text-gray-400 text-lg md:text-xl font-inter">
@@ -50,18 +50,18 @@ export default function FAQ() {
           {faqData.map((item, index) => (
             <div
               key={index}
-              className="group border border-white/5 bg-white/[0.02] rounded-[50px] overflow-hidden transition-all duration-500 hover:bg-white/[0.04] hover:border-white/10 hover:shadow-[0_0_30px_rgba(74,222,128,0.05)]"
+              className="group border border-(--text-main)/5 bg-(--text-main)/[0.02] rounded-[50px] overflow-hidden transition-all duration-500 hover:bg-(--text-main)/[0.04] hover:border-(--text-main)/10 hover:shadow-[0_0_30px_rgba(74,222,128,0.05)]"
             >
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex items-center justify-between p-7 md:p-9 text-left transition-all duration-300"
               >
-                <span className="text-xl md:text-2xl text-white/90 group-hover:text-white transition-colors font-grotesk">
+                <span className="text-xl md:text-2xl text-(--text-main)/90 group-hover:text-(--text-main) transition-colors font-grotesk">
                   {item.question}
                 </span>
                 <div className={`p-2 transition-all duration-300 ${openIndex === index ? "" : ""}`}>
                   <ChevronDown
-                    className={`w-6 h-6 text-[#4ade80] transition-transform duration-500 ${
+                    className={`w-6 h-6 text-(--accent) transition-transform duration-500 ${
                       openIndex === index ? "rotate-180 scale-110" : "rotate-0 scale-100"
                     }`}
                   />
@@ -75,7 +75,7 @@ export default function FAQ() {
                     : "max-h-0 opacity-0"
                 }`}
               >
-                <div className="px-7 pb-7 md:px-9 md:pb-9 text-gray-400 text-xl leading-relaxed border-t border-white/5 pt-6 font-inter">
+                <div className="px-7 pb-7 md:px-9 md:pb-9 text-gray-400 text-xl leading-relaxed border-t border-(--text-main)/5 pt-6 font-inter">
                   {item.answer}
                 </div>
               </div>

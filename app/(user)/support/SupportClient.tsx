@@ -68,7 +68,7 @@ export default function SupportClient({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'IN_PROGRESS': return "bg-yellow-500/10 text-yellow-500";
-      case 'OPEN': return "bg-green-500/10 text-green-500";
+      case 'OPEN': return "bg-green-500/10 text-(--accent)";
       case 'RESOLVED': return "bg-gray-500/10 text-gray-400";
       default: return "bg-gray-500/10 text-gray-400";
     }
@@ -84,12 +84,12 @@ export default function SupportClient({
     <div className=" mx-auto w-[90%] relative">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>
-          <h1 className="text-4xl font-bold mb-2">Support <span className="text-[#6eDD86]">Tickets</span></h1>
-          <p className="text-[#a0a0a0] text-sm">Manage your technical inquiries and track resolution progress with real-time updates.</p>
+          <h1 className="text-4xl font-bold mb-2">Support <span className="text-(--accent)">Tickets</span></h1>
+          <p className="text-(--text-main) text-sm">Manage your technical inquiries and track resolution progress with real-time updates.</p>
         </div>
         <button 
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-[#6eDD86] text-black px-6 py-4 rounded-full font-bold text-sm hover:bg-[#5dbb72] transition-colors cursor-pointer"
+          className="flex items-center gap-2 bg-(--accent) text-(--bg-dark) px-6 py-4 rounded-full font-bold text-sm hover:bg-(--accent) transition-colors cursor-pointer"
         >
           <Plus size={20} />
           Create New Ticket
@@ -98,10 +98,10 @@ export default function SupportClient({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-[#121212] border border-[#1f1f1f] rounded-3xl p-8 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#1a1a1a]/50 rounded-full -mr-16 -mt-16 group-hover:bg-[#1a1a1a] transition-colors"></div>
-            <span className="text-[#a0a0a0] text-xs font-semibold mb-2 block">{stat.label}</span>
-            <span className={`text-6xl font-bold block mb-8 ${stat.label === 'Pending Response' ? 'text-yellow-500' : 'text-[#e2e2e2]'}`}>{stat.value}</span>
+          <div key={i} className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl p-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-(--bg-dark)/50 rounded-full -mr-16 -mt-16 group-hover:bg-(--bg-dark) transition-colors"></div>
+            <span className="text-(--text-main) text-xs font-semibold mb-2 block">{stat.label}</span>
+            <span className={`text-6xl font-bold block mb-8 ${stat.label === 'Pending Response' ? 'text-yellow-500' : 'text-(--text-main)'}`}>{stat.value}</span>
             <div className={`flex items-center gap-2 text-[10px] font-bold tracking-widest ${stat.color}`}>
               {stat.sub}
               {stat.label === 'Total Tickets' && <BarChart3 size={14} />}
@@ -112,13 +112,13 @@ export default function SupportClient({
         ))}
       </div>
 
-      <div className="flex border-b border-[#1f1f1f] mb-8 relative">
-        <button className="px-6 py-4 text-[#6eDD86] text-sm font-bold border-b-2 border-[#6eDD86]">Active Tickets</button>
-        <button className="px-6 py-4 text-[#666] text-sm font-bold hover:text-[#a0a0a0] transition-colors">Archive</button>
-        <button className="px-6 py-4 text-[#666] text-sm font-bold hover:text-[#a0a0a0] transition-colors">Feedback Required</button>
+      <div className="flex border-b border-(--bg-dark) mb-8 relative">
+        <button className="px-6 py-4 text-(--accent) text-sm font-bold border-b-2 border-(--accent)">Active Tickets</button>
+        <button className="px-6 py-4 text-[#666] text-sm font-bold hover:text-(--text-main) transition-colors">Archive</button>
+        <button className="px-6 py-4 text-[#666] text-sm font-bold hover:text-(--text-main) transition-colors">Feedback Required</button>
         <div className="ml-auto flex items-center gap-2 text-[#666] text-sm">
           Filter by:
-          <button className="bg-[#1a1a1a] px-3 py-1 rounded-full text-xs text-[#a0a0a0] flex items-center gap-1 border border-[#2a2a2a]">
+          <button className="bg-(--bg-dark) px-3 py-1 rounded-full text-xs text-(--text-main) flex items-center gap-1 border border-(--bg-less-dark)">
             Recently Updated
             <ChevronDown size={14} />
           </button>
@@ -130,10 +130,10 @@ export default function SupportClient({
           <div 
             key={i} 
             onClick={() => setActiveChatId(ticket.id)}
-            className="bg-[#121212]/50 border border-[#1f1f1f] rounded-3xl p-8 flex items-center justify-between group hover:bg-[#121212] transition-all cursor-pointer"
+            className="bg-(--bg-dark)/50 border border-(--bg-dark) rounded-3xl p-8 flex items-center justify-between group hover:bg-(--bg-dark) transition-all cursor-pointer"
           >
             <div className="flex items-center gap-6">
-              <div className="w-12 h-12 bg-[#1a1a1a] rounded-xl flex items-center justify-center border border-[#2a2a2a]">
+              <div className="w-12 h-12 bg-(--bg-dark) rounded-xl flex items-center justify-center border border-(--bg-less-dark)">
                 {getIcon(ticket.category)}
               </div>
               <div>
@@ -141,7 +141,7 @@ export default function SupportClient({
                   <span className="text-[#666] text-xs font-bold tracking-wider font-mono">#{ticket.id.slice(-8).toUpperCase()}</span>
                   <span className={`px-2 py-0.5 rounded text-[9px] font-bold tracking-wide uppercase ${getStatusColor(ticket.status)}`}>{ticket.status.replace('_', ' ')}</span>
                 </div>
-                <h3 className="text-xl font-bold text-[#e2e2e2] mb-1">{ticket.subject}</h3>
+                <h3 className="text-xl font-bold text-(--text-main) mb-1">{ticket.subject}</h3>
                 <p className="text-[#666] text-xs">
                   Created on {new Date(ticket.createdAt).toLocaleDateString()} • {ticket.status === 'RESOLVED' ? `Resolved: ${new Date(ticket.updatedAt).toLocaleDateString()}` : `Last update: ${new Date(ticket.updatedAt).toLocaleDateString()}`}
                 </p>
@@ -158,26 +158,26 @@ export default function SupportClient({
                    </div>
                 ) : (
                   <div className="flex items-center gap-3 justify-end leading-none">
-                    <span className="text-sm font-medium text-[#a0a0a0]">{ticket.assignedAgent || 'Queueing...'}</span>
+                    <span className="text-sm font-medium text-(--text-main)">{ticket.assignedAgent || 'Queueing...'}</span>
                     {ticket.assignedAgent ? (
-                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.assignedAgent}`} alt="agent" className="w-8 h-8 rounded-full border border-[#2a2a2a]" />
+                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.assignedAgent}`} alt="agent" className="w-8 h-8 rounded-full border border-(--bg-less-dark)" />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center border border-[#2a2a2a]">
+                      <div className="w-8 h-8 rounded-full bg-(--bg-dark) flex items-center justify-center border border-(--bg-less-dark)">
                         <Clock size={14} className="text-gray-500" />
                       </div>
                     )}
                   </div>
                 )}
               </div>
-              <ChevronRight size={20} className="text-[#333] group-hover:text-[#6eDD86] transition-colors" />
+              <ChevronRight size={20} className="text-[#333] group-hover:text-(--accent) transition-colors" />
             </div>
           </div>
         )) : (
-            <div className="py-20 text-center border-2 border-dashed border-[#1f1f1f] rounded-[40px]">
+            <div className="py-20 text-center border-2 border-dashed border-(--bg-dark) rounded-[40px]">
                 <p className="text-gray-600 mb-6">No support tickets found. Our technical team is ready to help if you encounter any issues.</p>
                 <button 
                     onClick={() => setShowModal(true)}
-                    className="text-[#6eDD86] font-bold hover:underline"
+                    className="text-(--accent) font-bold hover:underline"
                 >
                     Create your first ticket
                 </button>
@@ -187,26 +187,26 @@ export default function SupportClient({
 
       {initialTickets.length > 5 && (
         <div className="mt-10 text-center">
-            <button className="text-[#666] text-sm font-bold hover:text-[#a0a0a0] transition-colors cursor-pointer">Load More History</button>
+            <button className="text-[#666] text-sm font-bold hover:text-(--text-main) transition-colors cursor-pointer">Load More History</button>
         </div>
       )}
 
       {/* Modal - Simplified for UI, needs Server Action to connect */}
       {showModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#121212] border border-[#1f1f1f] rounded-[40px] w-full max-w-2xl p-12 relative shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-(--bg-dark)/80 backdrop-blur-sm p-4">
+          <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] w-full max-w-2xl p-12 relative shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
             {/* Background Glow */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#6eDD86]/5 rounded-full blur-[80px] pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-(--accent)/5 rounded-full blur-[80px] pointer-events-none"></div>
 
             <button 
               onClick={() => setShowModal(false)}
-              className="absolute top-10 right-10 text-gray-500 hover:text-white transition-colors cursor-pointer"
+              className="absolute top-10 right-10 text-gray-500 hover:text-(--text-main) transition-colors cursor-pointer"
             >
               <X size={24} />
             </button>
 
-            <h2 className="text-3xl font-bold mb-2">New Support <span className="text-[#6eDD86]">Request</span></h2>
-            <p className="text-[#a0a0a0] text-sm mb-10">Select your product and click below to connect with a technical expert instantly.</p>
+            <h2 className="text-3xl font-bold mb-2">New Support <span className="text-(--accent)">Request</span></h2>
+            <p className="text-(--text-main) text-sm mb-10">Select your product and click below to connect with a technical expert instantly.</p>
 
             <form className="space-y-8 relative">
               <div>
@@ -216,7 +216,7 @@ export default function SupportClient({
                   value={newTicketSubject}
                   onChange={(e) => setNewTicketSubject(e.target.value)}
                   placeholder="Briefly describe the issue"
-                  className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl px-6 py-4 text-sm text-white placeholder:text-[#333] outline-none focus:border-[#6eDD86]/50 transition-all shadow-inner"
+                  className="w-full bg-(--bg-dark) border border-(--bg-less-dark) rounded-2xl px-6 py-4 text-sm text-(--text-main) placeholder:text-[#333] outline-none focus:border-(--accent)/50 transition-all shadow-inner"
                 />
               </div>
 
@@ -226,7 +226,7 @@ export default function SupportClient({
                   <select 
                     value={newTicketCategory}
                     onChange={(e) => setNewTicketCategory(e.target.value)}
-                    className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl px-6 py-4 text-sm text-[#e2e2e2] outline-none focus:border-[#6eDD86]/50 transition-all appearance-none cursor-pointer"
+                    className="w-full bg-(--bg-dark) border border-(--bg-less-dark) rounded-2xl px-6 py-4 text-sm text-(--text-main) outline-none focus:border-(--accent)/50 transition-all appearance-none cursor-pointer"
                   >
                     <option>Windows 11 Home/Pro</option>
                     <option>Office 365 Professional</option>
@@ -245,7 +245,7 @@ export default function SupportClient({
                     setShowModal(false);
                     setActiveChatId("NEW");
                   }}
-                  className="w-full bg-[#6eDD86] text-black py-5 rounded-full font-bold text-sm flex items-center justify-center gap-3 hover:bg-[#5dbb72] disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-[0_0_30px_rgba(110,221,134,0.2)] active:scale-[0.98]"
+                  className="w-full bg-(--accent) text-(--bg-dark) py-5 rounded-full font-bold text-sm flex items-center justify-center gap-3 hover:bg-(--accent) disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-[0_0_30px_rgba(110,221,134,0.2)] active:scale-[0.98]"
                 >
                   <MessageSquare size={18} />
                   Start Support Chat
@@ -256,7 +256,7 @@ export default function SupportClient({
                 <button 
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="text-[#666] text-xs font-semibold hover:text-[#a0a0a0] transition-colors cursor-pointer"
+                  className="text-[#666] text-xs font-semibold hover:text-(--text-main) transition-colors cursor-pointer"
                 >
                   Cancel and return to tickets
                 </button>

@@ -16,7 +16,7 @@ export default function WhyChooseUs() {
 
         {/* Heading */}
         <div className="text-center">
-          <h1 className="text-7xl font-bold font-grotesk text-[var(--text-main)]">
+          <h1 className="text-4xl lg:text-5xl font-bold font-grotesk text-[var(--text-main)]">
             Why people choose <span className="text-[var(--accent)]">InnovixLLC</span>
           </h1>
           <p className="mt-4 text-xl text-[var(--text-main)]/60 font-inter">
@@ -53,7 +53,7 @@ export default function WhyChooseUs() {
             <div
               key={i}
               className={`group p-6 rounded-2xl transition-all duration-300 
-              bg-[var(--bg-less-dark)]/60 backdrop-blur-md border  border-white/5 hover:border-[var(--accent)]`}
+              bg-[var(--bg-less-dark)]/60 backdrop-blur-md border  border-(--text-main)/5 hover:border-[var(--accent)]`}
             >
               {/* Icon */}
               <div className="w-15 h-15 flex items-center justify-center rounded-full bg-[var(--accent)]/10 text-[var(--accent)] mb-4">

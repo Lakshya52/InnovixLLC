@@ -109,29 +109,29 @@ export default function EditProductClient({ product }: { product: any }) {
 
 
    return (
-      <div className="flex min-h-screen bg-[#0d0d0d] text-white p-10">
+      <div className="flex min-h-screen bg-(--bg-dark) text-(--text-main) p-10">
          <main className="flex-grow max-w-[1400px] mx-auto w-full">
             {/* Title Section */}
             <div className="flex items-center justify-between mb-10">
                <div>
                   <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
-                     Inventory <ChevronRight size={12} /> <span className="text-[#6eDD86]">Edit Product</span>
+                     Inventory <ChevronRight size={12} /> <span className="text-(--accent)">Edit Product</span>
                   </div>
-                  <h1 className="text-5xl font-bold tracking-tight">Modify <span className="text-[#6eDD86]">Product</span></h1>
-                  <p className="text-[#a0a0a0] text-sm mt-3 max-w-xl">Editing: {product.name}. ID: {product.id}</p>
+                  <h1 className="text-5xl font-bold tracking-tight">Modify <span className="text-(--accent)">Product</span></h1>
+                  <p className="text-(--text-main) text-sm mt-3 max-w-xl">Editing: {product.name}. ID: {product.id}</p>
                </div>
                <div className="flex items-center gap-4">
                   <button
                      onClick={() => handleSave("Draft")}
                      disabled={loading}
-                     className="px-8 py-4 rounded-full font-bold text-sm bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer"
+                     className="px-8 py-4 rounded-full font-bold text-sm bg-(--text-main)/5 border border-(--text-main)/10 text-gray-300 hover:text-(--text-main) hover:bg-(--text-main)/10 transition-all cursor-pointer"
                   >
                      Move to Draft
                   </button>
                   <button
                      onClick={() => handleSave("Live")}
                      disabled={loading}
-                     className="px-10 py-4 rounded-full font-bold text-sm bg-[#6eDD86] text-black hover:bg-[#5dbb72] transition-all cursor-pointer shadow-[0_0_30px_rgba(110,221,134,0.2)] active:scale-95"
+                     className="px-10 py-4 rounded-full font-bold text-sm bg-(--accent) text-(--bg-dark) hover:bg-(--accent) transition-all cursor-pointer shadow-[0_0_30px_rgba(110,221,134,0.2)] active:scale-95"
                   >
                      {loading ? "Updating..." : "Update Product"}
                   </button>
@@ -141,9 +141,9 @@ export default function EditProductClient({ product }: { product: any }) {
             <div className="grid grid-cols-12 gap-10">
                {/* Form - Left Column */}
                <div className="col-span-8 space-y-10">
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-10">
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-10">
                      <div className="flex items-center gap-3 mb-10">
-                        <div className="w-10 h-10 bg-[#6eDD86]/10 rounded-xl flex items-center justify-center text-[#6eDD86]">
+                        <div className="w-10 h-10 bg-(--accent)/10 rounded-xl flex items-center justify-center text-(--accent)">
                            <Info size={20} />
                         </div>
                         <h2 className="text-xl font-bold">Basic Information</h2>
@@ -156,7 +156,7 @@ export default function EditProductClient({ product }: { product: any }) {
                               type="text"
                               value={formData.name}
                               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all"
                            />
                         </div>
                         <div>
@@ -164,7 +164,7 @@ export default function EditProductClient({ product }: { product: any }) {
                            <select
                               value={formData.category}
                               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all appearance-none cursor-pointer"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all appearance-none cursor-pointer"
                            >
                               <option>OS</option>
                               <option>Security & Privacy</option>
@@ -178,7 +178,7 @@ export default function EditProductClient({ product }: { product: any }) {
                               type="text"
                               value={formData.sku}
                               onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all"
                            />
                         </div>
                         <div className="col-span-2">
@@ -187,15 +187,15 @@ export default function EditProductClient({ product }: { product: any }) {
                               rows={3}
                               value={formData.shortDescription}
                               onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all resize-none"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all resize-none"
                            />
                         </div>
                      </div>
                   </section>
 
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-10">
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-10">
                      <div className="flex items-center gap-3 mb-10">
-                        <div className="w-10 h-10 bg-[#6eDD86]/10 rounded-xl flex items-center justify-center text-[#6eDD86]">
+                        <div className="w-10 h-10 bg-(--accent)/10 rounded-xl flex items-center justify-center text-(--accent)">
                            <FileText size={20} />
                         </div>
                         <h2 className="text-xl font-bold">Product Descriptions</h2>
@@ -207,7 +207,7 @@ export default function EditProductClient({ product }: { product: any }) {
                               type="text"
                               value={formData.featureHeading}
                               onChange={(e) => setFormData({ ...formData, featureHeading: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all"
                            />
                         </div>
                         <div>
@@ -216,7 +216,7 @@ export default function EditProductClient({ product }: { product: any }) {
                               rows={4}
                               value={formData.description}
                               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-[24px] p-6 text-sm outline-none focus:border-[#6eDD86]/30 transition-all resize-none"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-[24px] p-6 text-sm outline-none focus:border-(--accent)/30 transition-all resize-none"
                            />
                         </div>
                         <div>
@@ -225,21 +225,21 @@ export default function EditProductClient({ product }: { product: any }) {
                               rows={4}
                               value={formData.longDescriptionTwo}
                               onChange={(e) => setFormData({ ...formData, longDescriptionTwo: e.target.value })}
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-[24px] p-6 text-sm outline-none focus:border-[#6eDD86]/30 transition-all resize-none"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-[24px] p-6 text-sm outline-none focus:border-(--accent)/30 transition-all resize-none"
                            />
                         </div>
                      </div>
                   </section>
 
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-10">
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-10">
                      <div className="flex items-center gap-3 mb-10">
-                        <div className="w-10 h-10 bg-[#6eDD86]/10 rounded-xl flex items-center justify-center text-[#6eDD86]">
+                        <div className="w-10 h-10 bg-(--accent)/10 rounded-xl flex items-center justify-center text-(--accent)">
                            <Cpu size={20} />
                         </div>
                         <h2 className="text-xl font-bold">System Requirements</h2>
                      </div>
                      <div className="space-y-6">
-                        <div className="grid grid-cols-12 gap-4 pb-2 border-b border-white/5">
+                        <div className="grid grid-cols-12 gap-4 pb-2 border-b border-(--text-main)/5">
                            <div className="col-span-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Requirement</div>
                            <div className="col-span-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Minimum</div>
                            <div className="col-span-4 text-[10px] font-bold text-yellow-500/80 uppercase tracking-widest">Recommended</div>
@@ -254,7 +254,7 @@ export default function EditProductClient({ product }: { product: any }) {
                                     value={req.title}
                                     onChange={(e) => updateRequirement(idx, "title", e.target.value)}
                                     placeholder="e.g. CPU"
-                                    className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none focus:border-[#6eDD86]/30 transition-all font-bold"
+                                    className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none focus:border-(--accent)/30 transition-all font-bold"
                                  />
                               </div>
                               <div className="col-span-4">
@@ -263,7 +263,7 @@ export default function EditProductClient({ product }: { product: any }) {
                                     value={req.minimum}
                                     onChange={(e) => updateRequirement(idx, "minimum", e.target.value)}
                                     placeholder="Minimum..."
-                                    className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none focus:border-[#6eDD86]/30 transition-all text-gray-400"
+                                    className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none focus:border-(--accent)/30 transition-all text-gray-400"
                                  />
                               </div>
                               <div className="col-span-4">
@@ -272,7 +272,7 @@ export default function EditProductClient({ product }: { product: any }) {
                                     value={req.recommended}
                                     onChange={(e) => updateRequirement(idx, "recommended", e.target.value)}
                                     placeholder="Recommended..."
-                                    className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none focus:border-[#6eDD86]/30 transition-all text-yellow-500/70"
+                                    className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none focus:border-(--accent)/30 transition-all text-yellow-500/70"
                                  />
                               </div>
                               <div className="col-span-1 flex justify-end">
@@ -288,7 +288,7 @@ export default function EditProductClient({ product }: { product: any }) {
 
                         <button
                            onClick={addRequirementRow}
-                           className="w-full py-4 border-2 border-dashed border-white/5 rounded-2xl text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:border-[#6eDD86]/30 hover:text-[#6eDD86] transition-all flex items-center justify-center gap-2"
+                           className="w-full py-4 border-2 border-dashed border-(--text-main)/5 rounded-2xl text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:border-(--accent)/30 hover:text-(--accent) transition-all flex items-center justify-center gap-2"
                         >
                            <Plus size={14} /> Add Requirement Row
                         </button>
@@ -297,8 +297,8 @@ export default function EditProductClient({ product }: { product: any }) {
                </div>
 
                <div className="col-span-4 space-y-10">
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-8">
-                     <h3 className="text-[10px] font-bold text-[#6eDD86] tracking-[0.2em] uppercase mb-8">Pricing Struct</h3>
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-8">
+                     <h3 className="text-[10px] font-bold text-(--accent) tracking-[0.2em] uppercase mb-8">Pricing Struct</h3>
                      <div className="space-y-6">
                         <div>
                            <label className="block text-[9px] font-bold text-gray-500 uppercase mb-3">Price (USD)</label>
@@ -309,7 +309,7 @@ export default function EditProductClient({ product }: { product: any }) {
                                  step="0.01"
                                  value={formData.price}
                                  onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
-                                 className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl py-5 pl-12 pr-6 text-2xl font-bold font-mono outline-none focus:border-[#6eDD86]/30"
+                                 className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl py-5 pl-12 pr-6 text-2xl font-bold font-mono outline-none focus:border-(--accent)/30"
                               />
                            </div>
                         </div>
@@ -321,7 +321,7 @@ export default function EditProductClient({ product }: { product: any }) {
                                  type="number"
                                  value={formData.msrp}
                                  onChange={(e) => setFormData({ ...formData, msrp: parseFloat(e.target.value) })}
-                                 className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl py-5 pl-12 pr-6 text-xl font-bold text-gray-500 font-mono outline-none focus:border-[#6eDD86]/30"
+                                 className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl py-5 pl-12 pr-6 text-xl font-bold text-gray-500 font-mono outline-none focus:border-(--accent)/30"
                               />
                            </div>
                         </div>
@@ -329,33 +329,33 @@ export default function EditProductClient({ product }: { product: any }) {
                   </section>
 
                   {/* Image Upload */}
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-8">
-                     <h3 className="text-[10px] font-bold text-[#6eDD86] tracking-[0.2em] uppercase mb-8">Product Media</h3>
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-8">
+                     <h3 className="text-[10px] font-bold text-(--accent) tracking-[0.2em] uppercase mb-8">Product Media</h3>
                      {imagePreview ? (
                         <div className="relative rounded-[24px] overflow-hidden mb-4">
                            <img src={imagePreview} alt="Preview" className="w-full h-[240px] object-cover" />
-                           <button onClick={removeImage} className="absolute top-3 right-3 w-9 h-9 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:text-red-400 transition-all">
+                           <button onClick={removeImage} className="absolute top-3 right-3 w-9 h-9 bg-(--bg-dark)/70 backdrop-blur-sm rounded-full flex items-center justify-center text-(--text-main) hover:text-red-400 transition-all">
                               <X size={16} />
                            </button>
                         </div>
                      ) : (
-                        <div onClick={() => fileInputRef.current?.click()} className="aspect-[16/10] bg-[#1a1a1a] border-2 border-dashed border-white/10 rounded-[24px] flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-[#1f1f1f] transition-all">
+                        <div onClick={() => fileInputRef.current?.click()} className="aspect-[16/10] bg-(--bg-dark) border-2 border-dashed border-(--text-main)/10 rounded-[24px] flex flex-col items-center justify-center gap-4 cursor-pointer hover:bg-(--bg-dark) transition-all">
                            <Upload size={32} className="text-gray-600" />
                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Upload New Image</p>
                         </div>
                      )}
                      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageSelect} className="hidden" />
-                     <input type="text" value={formData.image && !formData.image.startsWith("data:") ? formData.image : ""} onChange={(e) => { setFormData((prev) => ({ ...prev, image: e.target.value })); setImagePreview(e.target.value || null); }} placeholder="Or paste image URL..." className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none mt-4" />
+                     <input type="text" value={formData.image && !formData.image.startsWith("data:") ? formData.image : ""} onChange={(e) => { setFormData((prev) => ({ ...prev, image: e.target.value })); setImagePreview(e.target.value || null); }} placeholder="Or paste image URL..." className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none mt-4" />
                   </section>
 
                   {/* Trust Signals */}
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-8">
-                     <h3 className="text-[10px] font-bold text-[#6eDD86] tracking-[0.2em] uppercase mb-4">Trust Features</h3>
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-8">
+                     <h3 className="text-[10px] font-bold text-(--accent) tracking-[0.2em] uppercase mb-4">Trust Features</h3>
                      <div className="space-y-3">
                         {formData.features.map((feature: string, i: number) => (
-                           <div key={i} className="flex items-center justify-between p-4 bg-[#1a1a1a] border border-white/5 rounded-xl group">
+                           <div key={i} className="flex items-center justify-between p-4 bg-(--bg-dark) border border-(--text-main)/5 rounded-xl group">
                               <div className="flex items-center gap-3">
-                                 <CheckCircle2 size={14} className="text-[#6eDD86]" />
+                                 <CheckCircle2 size={14} className="text-(--accent)" />
                                  <span className="text-xs font-bold text-gray-300">{feature}</span>
                               </div>
                               <button onClick={() => setFormData({ ...formData, features: formData.features.filter((_: any, idx: number) => idx !== i) })} className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-500 transition-all">
@@ -364,8 +364,8 @@ export default function EditProductClient({ product }: { product: any }) {
                            </div>
                         ))}
                         <div className="flex mt-4 gap-2">
-                           <input type="text" value={newFeature} onChange={(e) => setNewFeature(e.target.value)} placeholder="New signal..." className="flex-1 bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none" />
-                           <button onClick={() => { if(newFeature) { setFormData({...formData, features: [...formData.features, newFeature]}); setNewFeature(""); } }} className="p-3 bg-[#6eDD86] text-black rounded-xl hover:bg-[#5dbb72] transition-all">
+                           <input type="text" value={newFeature} onChange={(e) => setNewFeature(e.target.value)} placeholder="New signal..." className="flex-1 bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none" />
+                           <button onClick={() => { if(newFeature) { setFormData({...formData, features: [...formData.features, newFeature]}); setNewFeature(""); } }} className="p-3 bg-(--accent) text-(--bg-dark) rounded-xl hover:bg-(--accent) transition-all">
                               <Plus size={16} />
                            </button>
                         </div>
@@ -373,15 +373,15 @@ export default function EditProductClient({ product }: { product: any }) {
                   </section>
 
                   {/* Product Keys */}
-                  <section className="bg-[#121212] border border-white/5 rounded-[40px] p-8">
+                  <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-8">
                      <div className="flex items-center justify-between mb-8">
-                        <h3 className="text-[10px] font-bold text-[#6eDD86] tracking-[0.2em] uppercase">Inventory Keys</h3>
-                        <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md">Stock Control</span>
+                        <h3 className="text-[10px] font-bold text-(--accent) tracking-[0.2em] uppercase">Inventory Keys</h3>
+                        <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest bg-(--text-main)/5 px-2 py-1 rounded-md">Stock Control</span>
                      </div>
                      <p className="text-[10px] text-gray-500 mb-6 italic">Assign additional license keys to this product. Enter one key per line.</p>
                      <div className="space-y-4">
                         <div className="relative group">
-                           <div className="absolute left-5 top-5 text-gray-700 group-focus-within:text-[#6eDD86] transition-colors">
+                           <div className="absolute left-5 top-5 text-gray-700 group-focus-within:text-(--accent) transition-colors">
                               <Key size={18} />
                            </div>
                            <textarea
@@ -389,12 +389,12 @@ export default function EditProductClient({ product }: { product: any }) {
                               value={formData.newKeys}
                               onChange={(e) => setFormData({ ...formData, newKeys: e.target.value })}
                               placeholder="XXXXX-XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY-YYYYY"
-                              className="w-full bg-[#1a1a1a] border border-white/5 rounded-[24px] pt-14 pb-6 px-6 text-xs font-mono outline-none focus:border-[#6eDD86]/30 transition-all resize-none placeholder:text-gray-800"
+                              className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-[24px] pt-14 pb-6 px-6 text-xs font-mono outline-none focus:border-(--accent)/30 transition-all resize-none placeholder:text-gray-800"
                            />
                         </div>
                         <div className="flex justify-between items-center px-2">
                            <p className="text-[9px] font-bold text-gray-600 uppercase">
-                              Detected: <span className="text-[#6eDD86]">{formData.newKeys.split('\n').filter(k => k.trim()).length} new keys</span>
+                              Detected: <span className="text-(--accent)">{formData.newKeys.split('\n').filter(k => k.trim()).length} new keys</span>
                            </p>
                            <p className="text-[9px] font-bold text-gray-600 uppercase">One per line</p>
                         </div>

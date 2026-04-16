@@ -39,11 +39,11 @@ export default function ForgotPassword() {
     <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-(--bg-dark)">
       {/* Background blobs to match the auth theme */}
       <div className="absolute inset-0 z-0 text-(--accent)">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] aspect-square bg-white/5 blur-[120px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] aspect-square bg-(--text-main)/5 blur-[120px] rounded-full" />
       </div>
 
       <div className="w-full max-w-[450px] px-6 relative z-10">
-        <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-[40px] shadow-2xl">
+        <div className="bg-(--text-main)/[0.03] backdrop-blur-2xl border border-(--text-main)/10 p-8 md:p-10 rounded-[40px] shadow-2xl">
           
           <Link href="/login" className="inline-flex items-center gap-2 text-(--text-main)/40 hover:text-(--accent) transition-colors text-sm mb-8 group">
             <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -70,7 +70,7 @@ export default function ForgotPassword() {
                 <label htmlFor="email" className="text-sm font-medium text-(--text-main)/60 ml-1">Email Address</label>
                 <input 
                   required
-                  className="w-full rounded-2xl bg-white/5 border border-white/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20" 
+                  className="w-full rounded-2xl bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20" 
                   type="email" 
                   name="email" 
                   id="email"

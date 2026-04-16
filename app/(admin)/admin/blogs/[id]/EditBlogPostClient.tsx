@@ -129,17 +129,17 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                      Blogs
                   </Link>
                   <ChevronRight size={12} />
-                  <span className="text-[#6eDD86]">Edit Post</span>
+                  <span className="text-(--accent)">Edit Post</span>
                </div>
                <h1 className="text-4xl lg:text-5xl font-bold tracking-tight">
-                  Edit <span className="text-[#6eDD86]">Blog Post</span>
+                  Edit <span className="text-(--accent)">Blog Post</span>
                </h1>
             </div>
             <div className="flex items-center gap-4">
                <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="px-10 py-4 rounded-full font-bold text-sm bg-[#6eDD86] text-black hover:bg-[#5dbb72] transition-all cursor-pointer shadow-[0_0_30px_rgba(110,221,134,0.2)] active:scale-95 disabled:opacity-50"
+                  className="px-10 py-4 rounded-full font-bold text-sm bg-(--accent) text-(--bg-dark) hover:bg-(--accent) transition-all cursor-pointer shadow-[0_0_30px_rgba(110,221,134,0.2)] active:scale-95 disabled:opacity-50"
                >
                   {loading ? "Saving..." : "Save Changes"}
                </button>
@@ -148,7 +148,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
 
          <div className="grid grid-cols-12 gap-10">
             <div className="col-span-12 lg:col-span-7 xl:col-span-8 space-y-8">
-               <section className="bg-[#121212] border border-white/5 rounded-[32px] p-8">
+               <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[32px] p-8">
                   <div className="mb-6">
                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
                         Post Title
@@ -159,7 +159,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                         onChange={(e) =>
                            setFormData((prev) => ({ ...prev, title: e.target.value }))
                         }
-                        className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all text-white"
+                        className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all text-(--text-main)"
                      />
                   </div>
 
@@ -171,7 +171,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                         <select
                            value={formData.category}
                            onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
-                           className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all appearance-none cursor-pointer"
+                           className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all appearance-none cursor-pointer"
                         >
                            <option>Engineering</option>
                            <option>Infrastructure</option>
@@ -189,19 +189,19 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                            type="text"
                            value={formData.summary}
                            onChange={(e) => setFormData((prev) => ({ ...prev, summary: e.target.value }))}
-                           className="w-full bg-[#1a1a1a] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-[#6eDD86]/30 transition-all"
+                           className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all"
                         />
                      </div>
                   </div>
                </section>
 
-               <section className="bg-[#121212] border border-white/5 rounded-[32px] overflow-hidden">
-                  <div className="flex items-center justify-between px-6 py-4 border-b border-white/5">
+               <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[32px] overflow-hidden">
+                  <div className="flex items-center justify-between px-6 py-4 border-b border-(--text-main)/5">
                      <div className="flex items-center gap-1">
                         <button onClick={() => insertMarkdown("**", "**")} className="toolbar-btn"><Bold size={16} /></button>
                         <button onClick={() => insertMarkdown("*", "*")} className="toolbar-btn"><Italic size={16} /></button>
                         <button onClick={() => insertMarkdown("\n- ")} className="toolbar-btn"><List size={16} /></button>
-                        <div className="w-px h-5 bg-white/10 mx-2"></div>
+                        <div className="w-px h-5 bg-(--text-main)/10 mx-2"></div>
                         <button onClick={() => insertMarkdown("[", "](url)")} className="toolbar-btn"><Link2 size={16} /></button>
                         <button onClick={() => insertMarkdown("![alt](", ")")} className="toolbar-btn"><ImageIcon size={16} /></button>
                         <button onClick={() => insertMarkdown("`", "`")} className="toolbar-btn"><Code size={16} /></button>
@@ -212,21 +212,21 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                      ref={textareaRef}
                      value={formData.content}
                      onChange={(e) => setFormData((prev) => ({ ...prev, content: e.target.value }))}
-                     className="w-full bg-transparent p-8 text-sm text-[#e2e2e2] outline-none resize-none min-h-[400px] leading-relaxed"
+                     className="w-full bg-transparent p-8 text-sm text-(--text-main) outline-none resize-none min-h-[400px] leading-relaxed"
                   />
-                  <div className="flex items-center justify-between px-8 py-4 border-t border-white/5">
+                  <div className="flex items-center justify-between px-8 py-4 border-t border-(--text-main)/5">
                      <span className="text-[10px] font-bold text-gray-600">Word Count: {wordCount}</span>
                   </div>
                </section>
             </div>
 
             <div className="col-span-12 lg:col-span-5 xl:col-span-4 space-y-8">
-               <section className="bg-[#121212] border border-white/5 rounded-[32px] p-8">
+               <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[32px] p-8">
                   <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-6">Featured Image</h3>
                   {formData.featuredImage && (
                      <div className="relative rounded-2xl overflow-hidden mb-4">
                         <img src={formData.featuredImage} alt="Featured" className="w-full h-40 object-cover" />
-                        <button onClick={() => setFormData(prev => ({ ...prev, featuredImage: "" }))} className="absolute top-3 right-3 p-2 bg-black/60 rounded-full text-white"><X size={14} /></button>
+                        <button onClick={() => setFormData(prev => ({ ...prev, featuredImage: "" }))} className="absolute top-3 right-3 p-2 bg-(--bg-dark)/60 rounded-full text-(--text-main)"><X size={14} /></button>
                      </div>
                   )}
                   <input
@@ -234,17 +234,17 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                      value={formData.featuredImage}
                      onChange={(e) => setFormData(prev => ({ ...prev, featuredImage: e.target.value }))}
                      placeholder="Image URL..."
-                     className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none"
+                     className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none"
                   />
                </section>
 
-               <section className="bg-[#121212] border border-white/5 rounded-[32px] p-8">
-                  <h3 className="text-[10px] font-bold text-[#6eDD86] uppercase tracking-[0.2em] mb-6">Metadata</h3>
+               <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[32px] p-8">
+                  <h3 className="text-[10px] font-bold text-(--accent) uppercase tracking-[0.2em] mb-6">Metadata</h3>
                   <div className="mb-6">
                      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Tags</label>
                      <div className="flex flex-wrap gap-2 mb-3">
                         {formData.tags.map((tag: any) => (
-                           <span key={tag} className="px-3 py-1.5 rounded-full bg-[#6eDD86]/10 text-[#6eDD86] text-[10px] font-bold flex items-center gap-1">
+                           <span key={tag} className="px-3 py-1.5 rounded-full bg-(--accent)/10 text-(--accent) text-[10px] font-bold flex items-center gap-1">
                               #{tag} <button onClick={() => removeTag(tag)}><X size={10} /></button>
                            </span>
                         ))}
@@ -255,20 +255,20 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                         onChange={(e) => setNewTag(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
                         placeholder="Add tag..."
-                        className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-xs outline-none"
+                        className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none"
                      />
                   </div>
                </section>
 
-               <section className="bg-[#121212] border border-white/5 rounded-[32px] p-8">
-                  <h3 className="text-[10px] font-bold text-[#6eDD86] uppercase tracking-[0.2em] mb-6">Slug & Status</h3>
+               <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[32px] p-8">
+                  <h3 className="text-[10px] font-bold text-(--accent) uppercase tracking-[0.2em] mb-6">Slug & Status</h3>
                   <div className="space-y-4">
                      <div className="flex flex-col gap-2">
                         <div className="flex items-center justify-between">
                             <span className="text-gray-500 text-[9px] uppercase tracking-widest font-bold">URL Slug</span>
                             <button 
                                 onClick={() => setManualSlug(false)}
-                                className="text-[#6eDD86] text-[9px] font-bold uppercase"
+                                className="text-(--accent) text-[9px] font-bold uppercase"
                             >
                                 Reset to Title
                             </button>
@@ -280,16 +280,16 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                                 setManualSlug(true);
                                 setFormData(prev => ({ ...prev, slug: e.target.value }));
                             }}
-                            className="w-full bg-[#1a1a1a] border border-white/5 rounded-xl p-3 text-[#6eDD86] font-mono text-xs outline-none focus:border-[#6eDD86]/30 transition-all"
+                            className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-(--accent) font-mono text-xs outline-none focus:border-(--accent)/30 transition-all"
                         />
                      </div>
                      
-                     <div className="flex items-center justify-between text-xs font-bold pt-4 border-t border-white/5">
+                     <div className="flex items-center justify-between text-xs font-bold pt-4 border-t border-(--text-main)/5">
                         <span className="text-gray-500">Status</span>
                         <select
                            value={formData.status}
                            onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                           className="bg-transparent text-[#6eDD86] outline-none cursor-pointer font-bold"
+                           className="bg-transparent text-(--accent) outline-none cursor-pointer font-bold"
                         >
                            <option value="PUBLISHED">Published</option>
                            <option value="DRAFT">Draft</option>
@@ -313,7 +313,7 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                cursor: pointer;
             }
             .toolbar-btn:hover {
-               color: white;
+               color: (--text-main);
                background-color: rgba(255, 255, 255, 0.05);
             }
          `}</style>

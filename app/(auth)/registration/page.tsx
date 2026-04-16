@@ -109,7 +109,7 @@ export default function Registration() {
         />
         
         {/* Scanning Line Effect */}
-        {/* <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-(--accent)/20 to-transparent animate-scan" /> */}
+        {/* <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-(--accent)/20 to-transparent animate-scan" /> */}
       </div>
 
       <style jsx global>{`
@@ -134,14 +134,14 @@ export default function Registration() {
         
         {/* Left Section: Branding & Info */}
         <div className="w-full lg:w-1/2 flex flex-col gap-8">
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 py-2 px-4 rounded-full w-fit">
+          <div className="inline-flex items-center gap-2 bg-(--text-main)/5 border border-(--text-main)/10 py-2 px-4 rounded-full w-fit">
             <span className="w-2 h-2 rounded-full bg-(--accent) animate-ping" />
             <span className="text-(--accent) text-sm font-medium tracking-widest uppercase">Registration</span>
           </div>
           
           <h1 className="text-(--text-main) font-grotesk text-6xl md:text-7xl font-bold leading-tight">
             Join the 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-(--accent) to-[#a5f3bc]"> Matrix</span>
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-[#a5f3bc]"> Matrix</span>
           </h1>
           
           <p className="text-(--text-main)/70 font-inter text-xl max-w-lg leading-relaxed">
@@ -150,8 +150,8 @@ export default function Registration() {
           </p>
 
           <div className="flex flex-col gap-6 mt-4 ">
-            <div className="flex items-start gap-4 border border-white/10 bg-(--bg-less-dark)/10 hover:bg-(--bg-less-dark) transition-all duration-300 backdrop-blur-2xl p-5 rounded-full ">
-              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-(--accent)">
+            <div className="flex items-start gap-4 border border-(--text-main)/10 bg-(--bg-less-dark)/10 hover:bg-(--bg-less-dark) transition-all duration-300 backdrop-blur-2xl p-5 rounded-full ">
+              <div className="w-12 h-12 rounded-full bg-(--text-main)/5 border border-(--text-main)/10 flex items-center justify-center text-(--accent)">
                 <CheckCircle2 size={24} />
               </div>
               <div>
@@ -159,8 +159,8 @@ export default function Registration() {
                 <p className="text-(--text-main)/50 text-sm">Enterprise-grade encryption for all your data and assets.</p>
               </div>
             </div>
-            <div className="flex items-start gap-4 border border-white/10 bg-(--bg-less-dark)/10 hover:bg-(--bg-less-dark) transition-all duration-300 backdrop-blur-2xl p-5 rounded-full ">
-              <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-(--accent)">
+            <div className="flex items-start gap-4 border border-(--text-main)/10 bg-(--bg-less-dark)/10 hover:bg-(--bg-less-dark) transition-all duration-300 backdrop-blur-2xl p-5 rounded-full ">
+              <div className="w-12 h-12 rounded-full bg-(--text-main)/5 border border-(--text-main)/10 flex items-center justify-center text-(--accent)">
                 <ArrowRight size={24} />
               </div>
               <div>
@@ -173,8 +173,8 @@ export default function Registration() {
 
         {/* Right Section: Form */}
         <div className="w-full lg:w-1/2">
-          <div className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-(--accent)/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="bg-(--text-main)/[0.03] backdrop-blur-2xl border border-(--text-main)/10 p-8 md:p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-(--accent)/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 relative z-10 font-inter">
               {/* <div className="space-y-1">
@@ -195,7 +195,7 @@ export default function Registration() {
                   <label htmlFor="name" className="text-sm font-medium text-(--text-main)/60 ml-1">Full Name</label>
                   <input 
                     required
-                    className="w-full rounded-full bg-white/5 border border-white/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20" 
+                    className="w-full rounded-full bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20" 
                     type="text" 
                     name="name" 
                     id="name" 
@@ -210,7 +210,7 @@ export default function Registration() {
                   <label htmlFor="email" className="text-sm font-medium text-(--text-main)/60 ml-1">Email Address</label>
                   <input 
                     required
-                    className="w-full rounded-full bg-white/5 border border-white/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20" 
+                    className="w-full rounded-full bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20" 
                     type="email" 
                     name="email" 
                     id="email"
@@ -227,7 +227,7 @@ export default function Registration() {
                     <div className="relative">
                       <input 
                         required
-                        className={`w-full rounded-full bg-white/5 border ${passwordValid ? 'border-green-500/30' : 'border-white/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20`}
+                        className={`w-full rounded-full bg-(--text-main)/5 border ${passwordValid ? 'border-green-500/30' : 'border-(--text-main)/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20`}
                         type={showPassword ? "text" : "password"} 
                         name="password" 
                         id="password"
@@ -238,7 +238,7 @@ export default function Registration() {
                       <button 
                         type="button" 
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-(--accent) transition-colors"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                       >
                         {showPassword ? <EyeOff size={20} className="cursor-pointer" /> : <Eye size={20} className="cursor-pointer" />}
                       </button>
@@ -250,7 +250,7 @@ export default function Registration() {
                     <div className="relative">
                       <input 
                         required
-                        className={`w-full rounded-full bg-white/5 border ${passwordMatch ? 'border-green-500/30' : 'border-white/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-white/[0.08] transition-all placeholder:text-white/20`}
+                        className={`w-full rounded-full bg-(--text-main)/5 border ${passwordMatch ? 'border-green-500/30' : 'border-(--text-main)/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20`}
                         type={showConfirmPassword ? "text" : "password"} 
                         name="cpass" 
                         id="cpass"
@@ -261,7 +261,7 @@ export default function Registration() {
                       <button 
                         type="button" 
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-(--accent) transition-colors"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                       >
                         {showConfirmPassword ? <EyeOff size={20} className="cursor-pointer" /> : <Eye size={20} className="cursor-pointer" />}
                       </button>
@@ -280,7 +280,7 @@ export default function Registration() {
                     </div>
                   )}
                   {formData.cpass && (
-                    <p className={`text-[10px] items-center gap-1 flex ${passwordMatch ? 'text-green-500' : 'text-red-500'}`}>
+                    <p className={`text-[10px] items-center gap-1 flex ${passwordMatch ? 'text-(--accent)' : 'text-red-500'}`}>
                       {passwordMatch ? <><CheckCircle2 size={10} /> Passwords Match</> : "Passwords do not match"}
                     </p>
                   )}
@@ -295,7 +295,7 @@ export default function Registration() {
                       name="terms"
                       checked={formData.terms}
                       onChange={handleChange}
-                      className="peer w-5 h-5 appearance-none border-2 border-white/10 rounded-full checked:border-(--accent) checked:bg-(--accent) cursor-pointer transition-all hover:border-(--accent)/50"
+                      className="peer w-5 h-5 appearance-none border-2 border-(--text-main)/10 rounded-full checked:border-(--accent) checked:bg-(--accent) cursor-pointer transition-all hover:border-(--accent)/50"
                     />
                     {/* <CheckCircle2 size={12} className="absolute text-(--bg-dark) opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" /> */}
                   </div>

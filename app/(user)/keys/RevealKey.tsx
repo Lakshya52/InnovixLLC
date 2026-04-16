@@ -15,10 +15,10 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
 
   return (
     <div className="space-y-6 w-full">
-      <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl p-4 flex items-center justify-between">
+      <div className="bg-(--bg-dark) border border-(--bg-less-dark) rounded-2xl p-4 flex items-center justify-between">
         <div className="flex-1 font-mono text-sm tracking-wider">
           {revealed ? (
-            <span className="text-[#6eDD86] select-all animate-in fade-in duration-300">
+            <span className="text-(--accent) select-all animate-in fade-in duration-300">
               {keyValue}
             </span>
           ) : (
@@ -36,7 +36,7 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
         </div>
         <button
           onClick={() => setRevealed(!revealed)}
-          className="p-2 hover:bg-white/5 rounded-lg transition-colors text-gray-500 hover:text-white"
+          className="p-2 hover:bg-(--text-main)/5 rounded-lg transition-colors text-gray-500 hover:text-(--text-main)"
         >
           {revealed ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
@@ -46,8 +46,8 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
         onClick={copyToClipboard}
         className={`w-full py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
           copied 
-            ? "bg-green-500/20 text-green-500 border border-green-500/30" 
-            : "bg-[#6eDD86] text-black hover:bg-[#5dbb72]"
+            ? "bg-green-500/20 text-(--accent) border border-green-500/30" 
+            : "bg-(--accent) text-(--bg-dark) hover:bg-(--accent)"
         }`}
       >
         {copied ? (

@@ -8,7 +8,7 @@
   --foreground: #171717; */
 
   --bg-dark: #131313;
-  --bg-less-dark: #1b1b1b;
+  --bg-less-dark: #242424;
   --text-main: #e2e2e2;
   --accent: #6eDD86;
 }
@@ -26,7 +26,7 @@
   --foreground: #ededed; */
   --bg-dark: #e2e2e2;
   --bg-less-dark: #ffffff;
-  --text-main: #131313;
+  --text-main: #222222;
   --accent: #44c45f;
 }
 

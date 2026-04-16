@@ -75,21 +75,21 @@ export default function SupportClientAdmin({
   const activeTicket = tickets.find(t => t.id === activeTicketId);
 
   return (
-    <div className="flex h-[calc(100vh-80px)] bg-[#0d0d0d]">
+    <div className="flex h-[calc(100vh-80px)] bg-(--bg-dark)">
       {/* Sidebar Queue */}
-      <aside className="w-[320px] border-r border-[#1f1f1f] flex flex-col shrink-0">
+      <aside className="w-[320px] border-r border-(--bg-dark) flex flex-col shrink-0">
         <div className="p-6">
           <h2 className="text-xl font-bold mb-4">Live Queues</h2>
-          <div className="flex gap-4 border-b border-[#1f1f1f] mb-6">
+          <div className="flex gap-4 border-b border-(--bg-dark) mb-6">
             <button
               onClick={() => setFilter('Active')}
-              className={`pb-2 text-sm font-bold transition-all ${filter === 'Active' ? 'text-[#6eDD86] border-b-2 border-[#6eDD86]' : 'text-gray-500 hover:text-white'}`}
+              className={`pb-2 text-sm font-bold transition-all ${filter === 'Active' ? 'text-(--accent) border-b-2 border-(--accent)' : 'text-gray-500 hover:text-(--text-main)'}`}
             >
               Active
             </button>
             <button
               onClick={() => setFilter('Waiting')}
-              className={`pb-2 text-sm font-bold transition-all ${filter === 'Waiting' ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-500 hover:text-white'}`}
+              className={`pb-2 text-sm font-bold transition-all ${filter === 'Waiting' ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-500 hover:text-(--text-main)'}`}
             >
               Waiting
             </button>
@@ -102,7 +102,7 @@ export default function SupportClientAdmin({
               placeholder="Filter queue..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl py-3 pl-12 pr-4 text-xs text-white placeholder:text-gray-700 outline-none focus:border-[#6eDD86]/30 transition-all font-medium"
+              className="w-full bg-(--bg-dark) border border-(--bg-less-dark) rounded-xl py-3 pl-12 pr-4 text-xs text-(--text-main) placeholder:text-gray-700 outline-none focus:border-(--accent)/30 transition-all font-medium"
             />
           </div>
 
@@ -112,8 +112,8 @@ export default function SupportClientAdmin({
                 key={ticket.id}
                 onClick={() => setActiveTicketId(ticket.id)}
                 className={`p-4 rounded-[24px] border transition-all cursor-pointer group ${activeTicketId === ticket.id
-                    ? 'bg-[#1a1a1a] border-[#6eDD86]/50 shadow-[0_0_20px_rgba(110,221,134,0.1)]'
-                    : 'bg-[#121212] border-[#1f1f1f] hover:border-[#2a2a2a]'
+                    ? 'bg-(--bg-dark) border-(--accent)/50 shadow-[0_0_20px_rgba(110,221,134,0.1)]'
+                    : 'bg-(--bg-dark) border-(--bg-dark) hover:border-(--bg-less-dark)'
                   }`}
               >
                 <div className="flex items-start gap-3 mb-2">
@@ -121,14 +121,14 @@ export default function SupportClientAdmin({
                     <img
                       src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.user.email}`}
                       alt="avatar"
-                      className="w-10 h-10 rounded-xl border border-[#1f1f1f]"
+                      className="w-10 h-10 rounded-xl border border-(--bg-dark)"
                     />
-                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#6eDD86] rounded-full border-2 border-[#121212]"></div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-(--accent) rounded-full border-2 border-(--bg-dark)"></div>
                   </div>
                   <div className="flex-grow min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <p className="text-xs font-bold text-[#e2e2e2] truncate">{ticket.user.name || 'Anonymous'}</p>
-                      <span className="text-[9px] text-gray-600 font-bold whitespace-nowrap">
+                      <p className="text-xs font-bold text-(--text-main) truncate">{ticket.user.name || 'Anonymous'}</p>
+                      <span className="text-[9px] text-gray-600 font-bold (--text-main)space-nowrap">
                         {new Date(ticket.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export default function SupportClientAdmin({
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
-                  <span className="px-1.5 py-0.5 rounded-md bg-[#6eDD86]/10 text-[#6eDD86] text-[8px] font-bold uppercase tracking-wider">AWS</span>
+                  <span className="px-1.5 py-0.5 rounded-md bg-(--accent)/10 text-(--accent) text-[8px] font-bold uppercase tracking-wider">AWS</span>
                   <span className="px-1.5 py-0.5 rounded-md bg-yellow-500/10 text-yellow-500 text-[8px] font-bold uppercase tracking-wider">API</span>
                 </div>
 
@@ -151,7 +151,7 @@ export default function SupportClientAdmin({
       </aside>
 
       {/* Main Chat Display */}
-      <div className="flex-grow flex flex-col bg-[#0d0d0d]">
+      <div className="flex-grow flex flex-col bg-(--bg-dark)">
         {activeTicketId ? (
           <SupportChat
             onBack={() => setActiveTicketId(null)}

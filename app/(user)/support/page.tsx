@@ -27,9 +27,9 @@ export default async function SupportPage() {
   ]);
 
   const stats = [
-    { label: "Total Tickets", value: String(totalTickets).padStart(2, '0'), sub: "LIFETIME ACTIVITY", color: "text-[#6eDD86]" },
+    { label: "Total Tickets", value: String(totalTickets).padStart(2, '0'), sub: "LIFETIME ACTIVITY", color: "text-(--accent)" },
     { label: "Pending Response", value: String(pendingTickets).padStart(2, '0'), sub: "AWAITING ENGINEER", color: "text-yellow-500" },
-    { label: "Resolved", value: String(resolvedTickets).padStart(2, '0'), sub: `SUCCESS RATE ${totalTickets > 0 ? Math.round((resolvedTickets/totalTickets)*100) : 0}%`, color: "text-[#6eDD86]" },
+    { label: "Resolved", value: String(resolvedTickets).padStart(2, '0'), sub: `SUCCESS RATE ${totalTickets > 0 ? Math.round((resolvedTickets/totalTickets)*100) : 0}%`, color: "text-(--accent)" },
   ];
 
   return (
