@@ -95,7 +95,7 @@ export default function EditProductClient({ product }: { product: any }) {
    const removeRequirementRow = (index: number) => {
       setFormData((prev) => ({
          ...prev,
-         systemRequirements: prev.systemRequirements.filter((_, i) => i !== index)
+         systemRequirements: prev.systemRequirements.filter((_: any, i: number) => i !== index)
       }));
    };
 
@@ -246,7 +246,7 @@ export default function EditProductClient({ product }: { product: any }) {
                            <div className="col-span-1"></div>
                         </div>
 
-                        {formData.systemRequirements.map((req: any, idx: number) => (
+                        {formData.systemRequirements.map((req: { title: string; minimum: string; recommended: string }, idx: number) => (
                            <div key={idx} className="grid grid-cols-12 gap-4 items-center group">
                               <div className="col-span-3">
                                  <input
@@ -352,13 +352,13 @@ export default function EditProductClient({ product }: { product: any }) {
                   <section className="bg-[#121212] border border-white/5 rounded-[40px] p-8">
                      <h3 className="text-[10px] font-bold text-[#6eDD86] tracking-[0.2em] uppercase mb-4">Trust Features</h3>
                      <div className="space-y-3">
-                        {formData.features.map((feature, i) => (
+                        {formData.features.map((feature: string, i: number) => (
                            <div key={i} className="flex items-center justify-between p-4 bg-[#1a1a1a] border border-white/5 rounded-xl group">
                               <div className="flex items-center gap-3">
                                  <CheckCircle2 size={14} className="text-[#6eDD86]" />
                                  <span className="text-xs font-bold text-gray-300">{feature}</span>
                               </div>
-                              <button onClick={() => setFormData({ ...formData, features: formData.features.filter((_, idx) => idx !== i) })} className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-500 transition-all">
+                              <button onClick={() => setFormData({ ...formData, features: formData.features.filter((_: any, idx: number) => idx !== i) })} className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-500 transition-all">
                                  <Trash2 size={12} />
                               </button>
                            </div>
