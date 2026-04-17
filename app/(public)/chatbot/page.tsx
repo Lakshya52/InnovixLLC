@@ -102,7 +102,7 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="h-fit  text-(--text-main) pt-32 w-full px-[10dvw] pb-20 mt-[15dvh] relative overflow-hidden">
+    <div className="h-fit  text-(--text-main)  w-full px-[10dvw] py-5 mt-[15dvh] pb-15 relative overflow-hidden">
       {/* Background blur blobs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
@@ -110,9 +110,9 @@ export default function ChatBot() {
       <div className="w-full  mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
         {/* Left Column: Resource Library */}
-        <div className="flex flex-col items-start justify-between gap-8 lg:gap-12">
+        <div className="flex flex-col items-start justify-between gap-8 lg:gap-12 mt-10">
           <div className="space-y-4 lg:space-y-6">
-            <h1 className="text-5xl lg:text-6xl font-bold font-grotesk leading-[0.9] tracking-tighter">
+            <h1 className="text-4xl lg:text-5xl font-bold font-grotesk leading-[0.9] tracking-tighter">
               How can we <span className="text-(--accent)">help</span> <br />
               <span className="text-(--accent)">you</span> today?
             </h1>
@@ -147,10 +147,10 @@ export default function ChatBot() {
         {/* Right Column: Chat Interface */}
         <div className="relative group lg:sticky lg:top-32">
           {/* Glass Card */}
-          <div className="bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[30px] md:rounded-[50px] overflow-hidden flex flex-col h-[75dvh] lg:h-[80dvh] shadow-2xl shadow-(--bg-dark)/40 mt-8 lg:mt-0">
+          <div className="bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[30px] md:rounded-[40px] overflow-hidden flex flex-col h-[75dvh] lg:h-[80dvh] shadow-2xl shadow-(--bg-dark)/40 mt-8 lg:mt-0">
 
             {/* Chat Header */}
-            <div className="bg-(--text-main)/[0.05] border-b border-(--text-main)/5 p-5 md:p-8 flex items-center justify-between">
+            <div className="bg-(--text-main)/[0.05] border-b border-(--text-main)/5 p-5 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="relative">
                   <img src="https://api.dicebear.com/9.x/glass/svg?seed=Sara" alt="Sara" className="min-w-14 w-14 min-h-14 h-14 rounded-2xl object-cover bg-(--text-main)/10" />
@@ -172,22 +172,23 @@ export default function ChatBot() {
             </div>
 
             {/* Chat Messages */}
-            <div className="flex-1 overflow-y-auto p-5 md:p-10 space-y-6 md:space-y-10 custom-scrollbar">
-              <div className="flex justify-center">
+            <div className="flex-1 overflow-y-auto p-5  space-y-6 md:space-y-10 custom-scrollbar">
+              {/* <div className="flex justify-center">
                 <span className="bg-(--text-main)/[0.03] border border-(--text-main)/5 px-6 py-2 rounded-full text-[10px] font-bold text-gray-500 tracking-widest uppercase text-center">
                   ACTIVE SUPPORT SESSION
                 </span>
-              </div>
+              </div> */}
+              
 
               {messages.map((msg: any) => (
-                <div key={msg.id} className={`flex gap-3 md:gap-6 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                <div key={msg.id} className={`flex gap-2 md:gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   {msg.role === 'bot' && (
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-(--accent)/10 flex items-center justify-center shrink-0">
                       <MessageCircle size={18} className="text-(--accent)" />
                     </div>
                   )}
                   <div className={`flex flex-col gap-2 md:gap-3 max-w-[85%] md:max-w-[80%] ${msg.role === 'user' ? 'items-end' : ''}`}>
-                    <div className={`p-4 md:p-6 rounded-[20px] md:rounded-[30px] font-inter leading-relaxed text-sm ${msg.role === 'user'
+                    <div className={`p-4 rounded-[10px] md:rounded-[20px] font-inter leading-relaxed text-[0.8rem] md:text-[1rem] ${msg.role === 'user'
                       ? 'bg-(--accent) text-(--text-main) shadow-[rgba(110,221,134,0.3)_0px_10px_30px]'
                       : 'bg-(--bg-less-dark) text-(--text-main) border border-(--text-main)/5'
                       }`}>
@@ -200,7 +201,7 @@ export default function ChatBot() {
                         </div>
                       )}
                     </div>
-                    <span className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">{msg.sender} • {msg.time}</span>
+                    <span className="text-[7px] text-gray-600 font-bold uppercase tracking-widest">{msg.sender} • {msg.time}</span>
                   </div>
                   {msg.role === 'user' && (
                     <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-(--text-main)/5 flex items-center justify-center shrink-0">
@@ -209,6 +210,8 @@ export default function ChatBot() {
                   )}
                 </div>
               ))}
+              <div ref={messagesEndRef} />
+              
 
               {isTyping && (
                 <div className="flex items-center gap-4">
@@ -223,11 +226,12 @@ export default function ChatBot() {
                 </div>
               )}
 
-              <div ref={messagesEndRef} />
+              
             </div>
+            
 
             {/* Chat Input */}
-            <div className="p-5 md:p-8 pb-8 md:pb-12 bg-linear-to-t from-(--text-main)/5 to-transparent border-t border-(--text-main)/5">
+            <div className="p-5 bg-linear-to-t from-(--text-main)/5 to-transparent border-t border-(--text-main)/5">
               <div className="relative bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-[20px] md:rounded-[30px] p-1.5 md:p-2 flex items-center gap-2 focus-within:border-(--accent)/30 transition-all">
                 <input
                   type="text"
@@ -235,7 +239,7 @@ export default function ChatBot() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                  className="flex-1 bg-transparent px-4 md:px-6 py-3 md:py-4 text-sm font-inter outline-none"
+                  className="flex-1 bg-transparent px-2 md:px-3 py-1.5 md:py-2 text-sm font-inter outline-none"
                 />
                 <div className="flex items-center gap-1 pr-1 md:pr-2">
                   <button onClick={handleSend} className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-(--accent) text-(--bg-dark) flex items-center justify-center hover:bg-(--accent) transition-all shadow-lg shadow-(--accent)/20 ml-1 md:ml-2">

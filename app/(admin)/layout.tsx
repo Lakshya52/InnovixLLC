@@ -36,7 +36,7 @@ export default function AdminLayout({
   ];
 
   return (
-    <div className="flex min-h-screen w-full bg-(--bg-dark) text-(--text-main) font-inter">
+    <div className="flex min-h-screen w-full bg-(--bg-less-dark) text-(--text-main) font-inter">
       {/* Sidebar */}
       <aside className={`bg-(--bg-dark) border-r border-(--bg-dark) flex flex-col p-6 fixed top-0 bottom-0 left-0 z-50 transition-all duration-300 ${sidebar ? "w-[260px]" : "w-[85px]"}`}>
         <div className={`text-lg font-bold text-(--accent) mb-10 flex items-center ${sidebar ? 'justify-between gap-2' : 'justify-center'}`}>

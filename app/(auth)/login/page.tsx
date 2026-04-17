@@ -53,7 +53,7 @@ export default function Login() {
   };
 
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-(--bg-dark)">
+    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-(--bg-dark) mt-[10dvh]">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0">
         <div
@@ -93,7 +93,7 @@ export default function Login() {
             <span className="text-(--accent) text-md font-medium tracking-widest uppercase">login</span>
           </div>
 
-          <h1 className="text-(--text-main) font-grotesk text-6xl md:text-7xl font-bold leading-tight">
+          <h1 className="text-(--text-main) font-grotesk text-4xl lg:text-5xl font-bold leading-tight">
             Experience the<br />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-[#a5f3bc]">Digital Kinetic</span>
           </h1>

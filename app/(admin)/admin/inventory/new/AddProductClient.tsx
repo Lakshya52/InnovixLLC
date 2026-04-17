@@ -115,7 +115,7 @@ export default function AddProductClient() {
    };
 
    return (
-      <div className="flex min-h-screen bg-(--bg-dark) text-(--text-main)">
+      <div className="flex min-h-screen bg-(--bg-less-dark) text-(--text-main)">
          {/* Main Content */}
          <main className="flex-grow p-10 max-h-screen overflow-y-auto scrollbar-hide">
             {/* Title Section */}

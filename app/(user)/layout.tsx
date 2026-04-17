@@ -47,7 +47,7 @@ export default function UserLayout({
 
 
   return (
-    <div className="flex min-h-screen w-full bg-(--bg-dark) text-(--text-main) font-inter">
+    <div className="flex min-h-screen w-full bg-(--bg-less-dark) text-(--text-main) font-inter">
       {/* Sidebar */}
       <aside className={`bg-(--bg-dark) border-r border-(--bg-dark) flex flex-col p-6 fixed top-0 bottom-0 left-0 z-50 transition-all duration-300 ${sidebar ? "w-1/5" : "w-[85px]"}`}>
         <div className={`text-xl font-bold text-(--accent) mb-10 flex items-center ${sidebar ? 'justify-between gap-2' : 'justify-center'}`}>
@@ -100,7 +100,7 @@ export default function UserLayout({
           <div className="sticky top-0 z-40">
             <Navbar isSidebar={true} isLoggedIn={true} />
           </div>
-          <div className="w-full flex items-center justify-center" > 
+          {/* <div className="w-full flex items-center justify-center" > 
 
           <header className="h-[100px] w-[90%] flex items-center justify-between border-b border-(--bg-dark) bg-(--bg-dark)  ">
             <div className="flex items-center bg-(--bg-dark) border border-(--bg-less-dark) rounded-full px-4 py-2 w-[400px] group focus-within:border-(--accent)/50 transition-all w-full mr-10">
@@ -127,7 +127,7 @@ export default function UserLayout({
               </Link>
             </div>
           </header>
-          </div>
+          </div> */}
 
         </div>
 

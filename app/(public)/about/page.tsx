@@ -22,17 +22,17 @@ export default function About() {
 
   return (
     <>
-      <div className="flex flex-col bg-(--bg-less-dark) items-center justify-center w-full">
+      <div className="flex flex-col bg-(--bg-less-dark) items-center justify-center w-full mt-[5dvh]">
 
-        <div className=" w-[80dvw] flex items-center justify-center pt-[10dvh] md:pt-[5dvh]">
-          <div className="flex flex-col lg:flex-row items-center justify-center min-h-[90dvh] py-16 lg:py-0 w-full max-w-7xl mx-auto gap-12 lg:gap-0">
+        <div className="w-[80dvw] flex items-center justify-center pt-[10dvh] md:pt-[5dvh]">
+          <div className="flex flex-col lg:flex-row items-center justify-center min-h-[90dvh] py-16 lg:py-0 w-full  mx-auto gap-12 lg:gap-0">
             <div className="flex flex-col gap-6 lg:gap-10 w-full lg:w-1/2" >
               {/* left section */}
               <span className=" text-(--bg-light) text-xs rounded-full w-fit font-inter border p-2 px-3 button-dark" >About Us</span>
               <h1 className="text-(--text-main) font-grotesk text-4xl lg:text-5xl font-bold max-w-3xl leading-tight" >
                 High-performance <span className="text-(--accent)">digital delivery </span> at scale.
               </h1>
-              <p className="text-(--text-main) font-inter text-lg md:text-xl max-w-3xl leading-relaxed">
+              <p className="text-(--text-main) font-inter text-lg lg:text-xl max-w-3xl leading-relaxed">
                 InnovixLLC is dedicated to bridging the gap between
                 enterprise-grade technology and everyday efficiency. We
                 provide the infrastructure for seamless digital
@@ -48,10 +48,10 @@ export default function About() {
             </div>
           </div>
         </div>
-        <div className="h-fit py-20 lg:py-40  flex flex-col items-start justify-center w-[80dvw] max-w-7xl mx-auto  gap-16 lg:gap-32">
+        <div className="h-fit py-20 lg:py-40  flex flex-col items-start justify-center w-[80dvw]  mx-auto  gap-16 lg:gap-32">
 
           {/* Heading */}
-          <h1 className="pl-6 md:pl-10 border-l-[4px] md:border-l-[7px] border-(--accent) font-grotesk font-bold text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="pl-6 md:pl-10 border-l-[4px] md:border-l-[7px] border-(--accent) font-grotesk font-bold text-4xl lg:text-5xl">
             The Pillars Of our Reliability
           </h1>
 

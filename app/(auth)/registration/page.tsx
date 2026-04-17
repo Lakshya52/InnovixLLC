@@ -86,28 +86,28 @@ export default function Registration() {
   const passwordValid = formData.password.length >= 8;
 
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-(--bg-dark)">
+    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-(--bg-dark) mt-[10dvh]">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0">
         {/* Animated Blobs */}
-        <div 
-          className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-(--accent)/15 blur-[100px] rounded-full animate-float-slow" 
+        <div
+          className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-(--accent)/15 blur-[100px] rounded-full animate-float-slow"
           style={{ animationDuration: '15s' }}
         />
-        <div 
-          className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-(--accent)/10 blur-[80px] rounded-full animate-float-slow" 
+        <div
+          className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-(--accent)/10 blur-[80px] rounded-full animate-float-slow"
           style={{ animationDuration: '18s', animationDelay: '-5s' }}
         />
-        
+
         {/* Subtle Grid Texture */}
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-          style={{ 
-            backgroundImage: `radial-gradient(var(--accent) 1px, transparent 0)`, 
-            backgroundSize: '40px 40px' 
-          }} 
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage: `radial-gradient(var(--accent) 1px, transparent 0)`,
+            backgroundSize: '40px 40px'
+          }}
         />
-        
+
         {/* Scanning Line Effect */}
         {/* <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-transparent via-(--accent)/20 to-transparent animate-scan" /> */}
       </div>
@@ -129,23 +129,23 @@ export default function Registration() {
           animation: scan 8s linear infinite;
         }
       `}</style>
-      
+
       <div className="flex flex-col lg:flex-row items-center justify-between w-[80dvw] py-12 relative z-10 gap-16">
-        
+
         {/* Left Section: Branding & Info */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-8">
+        <div className="w-full lg:w-1/2 flex flex-col  gap-4 ">
           <div className="inline-flex items-center gap-2 bg-(--text-main)/5 border border-(--text-main)/10 py-2 px-4 rounded-full w-fit">
             <span className="w-2 h-2 rounded-full bg-(--accent) animate-ping" />
             <span className="text-(--accent) text-sm font-medium tracking-widest uppercase">Registration</span>
           </div>
-          
-          <h1 className="text-(--text-main) font-grotesk text-6xl md:text-7xl font-bold leading-tight">
-            Join the 
+
+          <h1 className="text-(--text-main) font-grotesk text-4xl lg:text-5xl font-bold leading-tight">
+            Join the
             <span className="text-transparent bg-clip-text bg-linear-to-r from-(--accent) to-[#a5f3bc]"> Matrix</span>
           </h1>
-          
-          <p className="text-(--text-main)/70 font-inter text-xl max-w-lg leading-relaxed">
-            Access the full suite of InnovixLLC digital solutions. 
+
+          <p className="text-(--text-main)/70 font-inter text-lg lg:text-xl max-w-lg leading-relaxed">
+            Access the full suite of InnovixLLC digital solutions.
             High-performance precision starts with your global identity.
           </p>
 
@@ -175,7 +175,7 @@ export default function Registration() {
         <div className="w-full lg:w-1/2">
           <div className="bg-(--text-main)/[0.03] backdrop-blur-2xl border border-(--text-main)/10 p-8 md:p-10 rounded-[40px] shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-(--accent)/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
+
             <form onSubmit={handleSubmit} className="flex flex-col gap-6 relative z-10 font-inter">
               {/* <div className="space-y-1">
                 <h2 className="text-2xl font-bold text-(--text-main)">Create Account</h2>
@@ -193,30 +193,30 @@ export default function Registration() {
                 {/* Full Name */}
                 <div className="flex flex-col gap-2">
                   <label htmlFor="name" className="text-sm font-medium text-(--text-main)/60 ml-1">Full Name</label>
-                  <input 
+                  <input
                     required
-                    className="w-full rounded-full bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20" 
-                    type="text" 
-                    name="name" 
-                    id="name" 
+                    className="w-full rounded-full bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20"
+                    type="text"
+                    name="name"
+                    id="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="John Doe" 
+                    placeholder="John Doe"
                   />
                 </div>
 
                 {/* Email */}
                 <div className="flex flex-col gap-2">
                   <label htmlFor="email" className="text-sm font-medium text-(--text-main)/60 ml-1">Email Address</label>
-                  <input 
+                  <input
                     required
-                    className="w-full rounded-full bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20" 
-                    type="email" 
-                    name="email" 
+                    className="w-full rounded-full bg-(--text-main)/5 border border-(--text-main)/10 text-(--text-main) p-4 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20"
+                    type="email"
+                    name="email"
                     id="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="john@example.com" 
+                    placeholder="john@example.com"
                   />
                 </div>
 
@@ -225,18 +225,18 @@ export default function Registration() {
                   <div className="flex flex-col gap-2">
                     <label htmlFor="password" className="text-sm font-medium text-(--text-main)/60 ml-1">Password</label>
                     <div className="relative">
-                      <input 
+                      <input
                         required
                         className={`w-full rounded-full bg-(--text-main)/5 border ${passwordValid ? 'border-green-500/30' : 'border-(--text-main)/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20`}
-                        type={showPassword ? "text" : "password"} 
-                        name="password" 
+                        type={showPassword ? "text" : "password"}
+                        name="password"
                         id="password"
                         value={formData.password}
                         onChange={handleChange}
-                        placeholder="••••••••" 
+                        placeholder="••••••••"
                       />
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                       >
@@ -248,18 +248,18 @@ export default function Registration() {
                   <div className="flex flex-col gap-2">
                     <label htmlFor="cpass" className="text-sm font-medium text-(--text-main)/60 ml-1">Confirm</label>
                     <div className="relative">
-                      <input 
+                      <input
                         required
                         className={`w-full rounded-full bg-(--text-main)/5 border ${passwordMatch ? 'border-green-500/30' : 'border-(--text-main)/10'} text-(--text-main) p-4 pr-12 outline-none focus:border-(--accent)/50 focus:bg-(--text-main)/[0.08] transition-all placeholder:text-(--text-main)/20`}
-                        type={showConfirmPassword ? "text" : "password"} 
-                        name="cpass" 
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="cpass"
                         id="cpass"
                         value={formData.cpass}
                         onChange={handleChange}
-                        placeholder="••••••••" 
+                        placeholder="••••••••"
                       />
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-(--text-main)/30 hover:text-(--accent) transition-colors"
                       >
@@ -305,8 +305,8 @@ export default function Registration() {
                 </div>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="button-green w-full h-[60px] relative overflow-hidden group/btn flex items-center justify-center gap-3 mt-2"
               >

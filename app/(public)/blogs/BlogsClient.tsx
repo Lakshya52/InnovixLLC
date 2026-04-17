@@ -50,10 +50,10 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
       <div className="w-[80dvw] mx-auto">
         {/* Header Section */}
         <div className="mb-10 lg:mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk tracking-tighter mb-4 lg:mb-6">
+          <h1 className="text-4xl lg:text-5xl font-bold font-grotesk tracking-tighter mb-4 lg:mb-6">
             Dive Into our <span className="text-(--accent)">Latest Blogs</span>
           </h1>
-          <p className="text-gray-400 text-sm md:text-md font-inter max-w-2xl leading-relaxed">
+          <p className="text-gray-400 text-lg lg:text-xl font-inter max-w-2xl leading-relaxed">
             Complete your order for InnovixLLC high-performance digital infrastructure. Your digital assets will be available immediately after verification.
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
                 <span className="bg-(--accent)/10 text-(--accent) text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6 md:mb-8"  >
                   Featured Insight
                 </span>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk mb-4 md:mb-6 max-w-full md:max-w-3/4 lg:max-w-1/2 text-(--text-main) leading-[1.1]">
+                <h2 className="text-4xl lg:text-5xl font-bold font-grotesk mb-4 md:mb-6 max-w-full md:max-w-3/4 lg:max-w-1/2 text-(--text-main) leading-[1.1]">
                   {featuredPost.title.split(" ").map((word, i, arr) =>
                     i >= arr.length - 2 ? (
                       <span key={i} className="text-(--accent)">
