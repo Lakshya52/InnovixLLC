@@ -43,7 +43,7 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
   const featuredPost = initialPosts.find(p => p.promoted === true) || initialPosts[0];
 
   return (
-    <div className="min-h-screen bg-(--bg-less-dark) text-(--text-main) pt-32 pb-20  relative overflow-hidden mt-[10dvh]">
+    <div className="min-h-screen text-(--text-main) pt-32 pb-20  relative overflow-hidden mt-[10dvh]">
       {/* Background design elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
