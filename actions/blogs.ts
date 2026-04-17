@@ -45,6 +45,7 @@ export async function getBlogPosts() {
       },
       image: post.featuredImage || "/BlogsPage.png",
       keyTakeaways: post.tags || [],
+      promoted: post.promoted,
     }));
   } catch (error) {
     console.error("Error fetching blog posts:", error);
@@ -91,6 +92,7 @@ export async function getBlogPostBySlug(slug: string) {
       },
       image: post.featuredImage || "/BlogsPage.png",
       keyTakeaways: post.tags || [],
+      promoted: post.promoted,
     };
   } catch (error) {
     console.error("Error fetching blog post by slug:", error);
@@ -139,6 +141,7 @@ export async function getBlogPostById(id: string) {
       },
       image: post.featuredImage || "/BlogsPage.png",
       keyTakeaways: post.tags || [],
+      promoted: post.promoted,
     };
   } catch (error) {
     console.error("Error fetching blog post by id/slug:", error);

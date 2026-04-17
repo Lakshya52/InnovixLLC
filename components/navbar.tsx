@@ -27,7 +27,7 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
     }
 
     return (
-        <div className="flex flex-col items-center justify-center  bg-[var(--bg-less-dark)]/50 backdrop-blur-xl  h-[13dvh] z-[9999] w-full ">
+        <div className="flex flex-col items-center justify-center  bg-[var(--bg-less-dark)]/50 backdrop-blur-xl  h-[15dvh] z-[9999] w-full ">
             <nav className={`flex items-center justify-between ${isSidebar ? "w-[90%]" : "w-[80%]"} mx-auto `}>
 
                 {/* Logo */}

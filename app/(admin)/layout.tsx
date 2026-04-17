@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { 
-  BarChart3, 
-  Users, 
-  Package, 
-  MessageSquare, 
-  Settings, 
-  BookOpen, 
+import {
+  BarChart3,
+  Users,
+  Package,
+  MessageSquare,
+  Settings,
+  BookOpen,
   LogOut,
   Search,
   Bell,
@@ -43,7 +43,7 @@ export default function AdminLayout({
           <span className={`${sidebar ? "block" : "hidden"} transition-all duration-300 (--text-main)space-nowrap`} >
             Admin Dashboard
           </span>
-          <button 
+          <button
             onClick={() => setSidebar(prev => !prev)}
             className="text-gray-600 cursor-pointer hover:text-(--accent) transition-colors p-1 rounded-md hover:bg-(--text-main)/5"
           >
@@ -100,15 +100,15 @@ export default function AdminLayout({
               <Bell size={20} className="text-(--text-main) group-hover:text-red-500 transition-colors" />
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-(--bg-dark)"></span>
             </div>
-            
+
             <div className="flex items-center gap-3">
-               <div className="text-right hidden sm:block">
-                  <p className="text-xs font-bold text-(--text-main)">Full Name</p>
-                  <p className="text-[10px] text-gray-500 font-medium">Administrator</p>
-               </div>
-               <div className="w-[35px] h-[35px] rounded-full bg-(--bg-dark) flex items-center justify-center border border-(--bg-less-dark) overflow-hidden cursor-pointer hover:border-(--accent)/50 transition-all">
-                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="admin" />
-               </div>
+              <div className="text-right hidden sm:block">
+                <p className="text-xs font-bold text-(--text-main)">Admin</p>
+                <p className="text-[10px] text-gray-500 font-medium">Administrator</p>
+              </div>
+              <div className="w-[35px] h-[35px] rounded-full bg-(--bg-dark) flex items-center justify-center border border-(--bg-less-dark) overflow-hidden cursor-pointer hover:border-(--accent)/50 transition-all">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="admin" />
+              </div>
             </div>
           </div>
         </header>

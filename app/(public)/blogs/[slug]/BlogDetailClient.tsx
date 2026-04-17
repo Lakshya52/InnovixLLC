@@ -34,10 +34,10 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
     <div className="flex flex-col items-center justify-center" >
       {/* blog page header / title */}
       <div className="h-[60dvh] w-dvw flex gap-10 flex-col items-center justify-center font-bold" style={{ backgroundImage: "url('/BlogsDetailsHeaderImage.png')", backgroundSize: "cover", backgroundPosition: "center" }} >
-        <h1 className="text-[8rem] leading-none max-w-6/10 text-center font-grotesk mt-20" >
+        <h1 className=" text-4xl  leading-none max-w-6/10 text-center font-grotesk mt-20" >
           {post.title.split(" ").map((word: string, i: number, arr: string[]) =>
             i >= arr.length - 2 ? (
-              <span key={i} className="text-(--accent)">
+              <span key={i} className="text-(--accent) text-center">
                 {word + " "}
               </span>
             ) : (
@@ -58,10 +58,57 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
       </div>
 
       {/* content and key takeaways section */}
-      <div className="flex justify-between w-[80dvw] mx-auto my-20 gap-10">
-        <div className="w-4/6">
+      <div className="flex xl:flex-row flex-col justify-between w-[80dvw] mx-auto my-20 gap-10">
+        <div className="xl:w-4/6 w-full">
           <div className="h-fit">
-            <article className="prose prose-invert max-w-none 
+            <style dangerouslySetInnerHTML={{ __html: `
+              .blog-content-wrapper img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 12px;
+              }
+              .blog-content-wrapper .ql-align-center {
+                text-align: center;
+              }
+              .blog-content-wrapper .ql-align-right {
+                text-align: right;
+              }
+              .blog-content-wrapper .ql-align-justify {
+                text-align: justify;
+              }
+              .blog-content-wrapper .ql-size-small {
+                font-size: 0.75em;
+              }
+              .blog-content-wrapper .ql-size-large {
+                font-size: 1.5em;
+                line-height: 1.2;
+              }
+              .blog-content-wrapper .ql-size-huge {
+                font-size: 2.5em;
+                line-height: 1.2;
+              }
+              .blog-content-wrapper .ql-font-serif {
+                font-family: serif;
+              }
+              .blog-content-wrapper .ql-font-monospace {
+                font-family: monospace;
+              }
+              .blog-content-wrapper p {
+                margin-bottom: 1.5rem;
+                white-space: pre-wrap;
+              }
+              /* ensure empty lines (from Enter key) preserve their height */
+              .blog-content-wrapper p:empty::after, .blog-content-wrapper p br {
+                content: "";
+                display: block;
+                min-height: 1.5rem;
+              }
+              .blog-content-wrapper p, .blog-content-wrapper h1, .blog-content-wrapper h2, .blog-content-wrapper h3, .blog-content-wrapper h4, .blog-content-wrapper h5, .blog-content-wrapper h6, .blog-content-wrapper span {
+                word-break: break-word;
+                overflow-wrap: break-word;
+              }
+            ` }} />
+            <article className="prose prose-invert max-w-full break-words overflow-hidden blog-content-wrapper
               prose-h2:text-3xl prose-h3:text-2xl prose-h2:font-grotesk prose-h3:font-grotesk
               prose-p:font-inter prose-p:text-gray-400 prose-p:leading-relaxed prose-p:text-lg
               prose-h2:text-(--text-main) prose-h3:text-(--text-main) prose-strong:text-(--text-main) prose-li:text-gray-400
@@ -70,7 +117,7 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
           </div>
         </div>
 
-        <div className="w-2/6 relative">
+        <div className="xl:w-2/6 w-full relative">
           <div className="sticky top-50">
             <div className="h-fit flex flex-col gap-10">
               <div className="rounded-[40px] h-fit bg-(--bg-less-dark) p-10">
@@ -120,8 +167,8 @@ export default function BlogDetailClient({ post, readNextPosts }: { post: any, r
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20 relative z-10">
           {readNextPosts.map((nextPost: any) => (
-            <Link 
-              key={nextPost.id} 
+            <Link
+              key={nextPost.id}
               href={`/blogs/${nextPost.slug || nextPost.id}`}
               className="group cursor-pointer bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[40px] overflow-hidden hover:bg-(--text-main)/[0.05] transition-all duration-500 flex flex-col relative z-20"
             >
