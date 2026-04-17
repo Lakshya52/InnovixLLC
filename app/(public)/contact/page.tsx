@@ -21,10 +21,10 @@ export default function ContactPage() {
       <div className=" w-[80dvw] mx-auto">
         {/* Header Section */}
         <div className="mb-20">
-          <h1 className="text-7xl font-bold font-grotesk tracking-tighter mb-6">
+          <h1 className="text-4xl lg:text-5xl font-bold font-grotesk tracking-tighter mb-6">
             Connect with <span className="text-(--accent)">Us.</span>
           </h1>
-          <p className="text-gray-400 text-xl font-inter max-w-2xl leading-relaxed">
+          <p className="text-gray-400 text-lg lg:text-xl font-inter max-w-2xl leading-relaxed">
             The hub for high-performance support. Reach our technical team through our verified channels or initiate a secure live session.
           </p>
         </div>

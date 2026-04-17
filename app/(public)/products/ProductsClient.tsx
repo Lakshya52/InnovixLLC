@@ -59,7 +59,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
           <h1 className=" text-4xl lg:text-5xl font-bold font-grotesk mb-8 tracking-tight">
             Premium <span className="text-(--accent)">Digital</span> Solutions
           </h1>
-          <p className="text-(--text-main) text-xl max-w-2xl font-inter leading-relaxed">
+          <p className="text-(--text-main) text-lg lg:text-xl max-w-2xl font-inter leading-relaxed">
             High-performance Microsoft enterprise software and operating systems
             tailored for professional scale and reliability.
           </p>
@@ -74,7 +74,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
               placeholder="Search products, licenses, or packages..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-(--bg-dark) border border-(--bg-dark) rounded-full py-6 pl-20 pr-10 text-xl focus:outline-none focus:border-(--accent)/30 transition-all font-inter shadow-2xl"
+              className="w-full bg-(--bg-dark) border border-(--bg-dark) rounded-full py-6 pl-20 pr-10 text-xl focus:outline-none border-(--accent) border-1 focus:border-(--accent)/30 transition-all font-inter shadow-2xl"
             />
           </div>
 
