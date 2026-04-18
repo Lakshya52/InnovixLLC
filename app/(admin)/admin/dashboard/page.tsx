@@ -16,12 +16,13 @@ import {
 } from "lucide-react";
 import { getDashboardStats, getRecentOrders } from "@/actions/dashboard";
 
-export default async function AdminDashboard({ searchParams }: { searchParams: { page?: string; status?: string }}) {
+export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ page?: string; status?: string }>}) {
   const stats = await getDashboardStats();
   const orders = await getRecentOrders(10);
 
-  const page = parseInt(searchParams.page || "1");
-  const statusFilter = searchParams.status;
+  const resolvedSearchParams = await searchParams;
+  const page = parseInt(resolvedSearchParams.page || "1");
+  const statusFilter = resolvedSearchParams.status;
 
   return (
     <div className="p-8 mx-auto w-full">

@@ -40,7 +40,7 @@ export default function Footer() {
                         Licensing
                     </Link>
                     <Link
-                        href="/support"
+                        href="/chatbot"
                         className="text-gray-400 hover:text-(--text-main) text-sm font-inter transition-colors duration-200"
                     >
                         Support
