@@ -76,14 +76,16 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
                     </div>
 
                     {/* CTA */}
-                    <Link
-                        href={isLoggedIn ? "/dashboard" : "/registration"}
-                        className={` sm:block hidden ${isSidebar ? "hidden" : ""}`}
-                    >
-                        <button className="button-green">
-                            {isLoggedIn ? "Dashboard" : "Get Started"}
-                        </button>
-                    </Link>
+                    {!(isSidebar && isLoggedIn) && (
+                        <Link
+                            href={isLoggedIn ? "/dashboard" : "/registration"}
+                            className="hidden sm:block"
+                        >
+                            <button className="button-green">
+                                {isLoggedIn ? "Dashboard" : "Get Started"}
+                            </button>
+                        </Link>
+                    )}
 
                 </div>
             </nav>
@@ -109,14 +111,16 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
                             );
                         })}
                     </ul>
-                    <Link
-                        href={isLoggedIn ? "/dashboard" : "/registration"}
-                        className={` w-full px-10 sm:hidden block ${isSidebar ? "hidden" : ""}`}
-                    >
-                        <button className="button-green w-full flex items-center justify-center">
-                            {isLoggedIn ? "Dashboard" : "Get Started"}
-                        </button>
-                    </Link>
+                    {!(isSidebar && isLoggedIn) && (
+                        <Link
+                            href={isLoggedIn ? "/dashboard" : "/registration"}
+                            className="w-full px-10 sm:hidden block"
+                        >
+                            <button className="button-green w-full flex items-center justify-center">
+                                {isLoggedIn ? "Dashboard" : "Get Started"}
+                            </button>
+                        </Link>
+                    )}
                 </div>
             )}
         </div>
