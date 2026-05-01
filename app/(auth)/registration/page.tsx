@@ -300,7 +300,7 @@ export default function Registration() {
                     {/* <CheckCircle2 size={12} className="absolute text-(--bg-dark) opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" /> */}
                   </div>
                   <label htmlFor="terms" className="text-sm text-(--text-main)/60 cursor-pointer select-none group-hover/terms:text-(--text-main)/80 transition-colors">
-                    I agree to the <Link href="/terms" className="text-(--accent) hover:underline font-medium">Terms of service</Link> and <Link href="/privacy" className="text-(--accent) hover:underline font-medium">Privacy Policy</Link>
+                    I agree to the <Link href="/terms" className="text-(--accent) hover:underline font-medium">Terms of service</Link> and <Link href="/privacy-policy" className="text-(--accent) hover:underline font-medium">Privacy Policy</Link>
                   </label>
                 </div>
               </div>

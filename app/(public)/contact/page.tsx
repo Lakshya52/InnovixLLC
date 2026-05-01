@@ -1,19 +1,80 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { 
   Send, 
   MessageSquare, 
   Phone, 
   Mail, 
   ShieldCheck, 
-  ChevronDown 
+  ChevronDown,
+  Loader2,
+  CheckCircle2,
+  AlertCircle
 } from "lucide-react";
 import Link from "next/link";
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "Licensing & Authentication",
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Client-side validation
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setStatus("error");
+      setStatusMessage("Please fill in all fields.");
+      return;
+    }
+
+    setStatus("loading");
+    setStatusMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus("error");
+        setStatusMessage(data.error || "Something went wrong.");
+        return;
+      }
+
+      setStatus("success");
+      setStatusMessage(data.message || "Message sent successfully!");
+      setFormData({ name: "", email: "", subject: "Licensing & Authentication", message: "" });
+
+      // Reset status after 5 seconds
+      setTimeout(() => {
+        setStatus("idle");
+        setStatusMessage("");
+      }, 5000);
+    } catch {
+      setStatus("error");
+      setStatusMessage("Network error. Please check your connection and try again.");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-(--bg-dark) text-(--text-main) pt-32 pb-20 w-full relative overflow-hidden">
+    <div className="min-h-screen bg-(--bg-dark) text-(--text-main) py-20 mt-[15dvh] w-full relative overflow-hidden">
       {/* Background design elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-(--accent)/5 rounded-full blur-[120px] -z-10" />
@@ -32,25 +93,34 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Left Column: Contact Form */}
-          <div className="lg:col-span-7 h-full bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[50px] p-12 shadow-2xl">
-            {/* <h2 className="text-3xl font-bold font-grotesk mb-10">Direct Transmission</h2> */}
+          <div className="lg:col-span-7 h-full bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-4xl sm:rounded-[50px] p-5 sm:p-12 shadow-2xl">
             
-            <form className="space-y-8 " onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-8 " onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <label className="text-xs font-bold font-inter text-gray-500 uppercase tracking-widest ml-1">Full Name</label>
                   <input 
-                    type="text" 
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="Enter full name"
-                    className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-2xl px-6 py-4 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all"
+                    required
+                    disabled={status === "loading"}
+                    className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-2xl px-6 py-4 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all disabled:opacity-50"
                   />
                 </div>
                 <div className="space-y-3">
                   <label className="text-xs font-bold font-inter text-gray-500 uppercase tracking-widest ml-1">Email ID</label>
                   <input 
-                    type="email" 
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="name@domain.com"
-                    className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-2xl px-6 py-4 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all"
+                    required
+                    disabled={status === "loading"}
+                    className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-2xl px-6 py-4 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -58,11 +128,17 @@ export default function ContactPage() {
               <div className="space-y-3">
                 <label className="text-xs font-bold font-inter text-gray-500 uppercase tracking-widest ml-1">Technical Inquiry Subject</label>
                 <div className="relative">
-                  <select className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-2xl px-6 py-4 text-sm font-inter appearance-none focus:outline-none focus:border-(--accent)/30 transition-all cursor-pointer text-gray-400">
-                    <option value="">Licensing & Authentication</option>
-                    <option value="">Enterprise Deployment</option>
-                    <option value="">Installation Support</option>
-                    <option value="">Billing & Wholesale</option>
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    disabled={status === "loading"}
+                    className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-2xl px-6 py-4 text-sm font-inter appearance-none focus:outline-none focus:border-(--accent)/30 transition-all cursor-pointer text-gray-400 disabled:opacity-50"
+                  >
+                    <option value="Licensing & Authentication">Licensing &amp; Authentication</option>
+                    <option value="Enterprise Deployment">Enterprise Deployment</option>
+                    <option value="Installation Support">Installation Support</option>
+                    <option value="Billing & Wholesale">Billing &amp; Wholesale</option>
                   </select>
                   <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" size={18} />
                 </div>
@@ -71,16 +147,54 @@ export default function ContactPage() {
               <div className="space-y-3">
                 <label className="text-xs font-bold font-inter text-gray-500 uppercase tracking-widest ml-1">Message Payload</label>
                 <textarea 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="How can our engineers assist?"
                   rows={12}
-                  className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-3xl px-6 py-5 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all resize-none"
+                  required
+                  disabled={status === "loading"}
+                  className="w-full bg-(--text-main)/[0.04] border border-(--text-main)/10 rounded-3xl px-6 py-5 text-sm font-inter focus:outline-none focus:border-(--accent)/30 transition-all resize-none disabled:opacity-50"
                 ></textarea>
               </div>
 
-              <button className="button-green w-full flex justify-center" style={{padding:"20px"}}>
-                {/* <span className="flex items-center justify-center gap-2 group-hover:scale-105 transition-all"> */}
-                   Submit Message <Send size={20} />
-                {/* </span> */}
+              {/* Status Message */}
+              {statusMessage && (
+                <div
+                  className={`flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-inter transition-all ${
+                    status === "success"
+                      ? "bg-green-500/10 border border-green-500/20 text-green-400"
+                      : "bg-red-500/10 border border-red-500/20 text-red-400"
+                  }`}
+                >
+                  {status === "success" ? (
+                    <CheckCircle2 size={18} className="shrink-0" />
+                  ) : (
+                    <AlertCircle size={18} className="shrink-0" />
+                  )}
+                  {statusMessage}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="button-green w-full flex justify-center items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{padding:"20px"}}
+              >
+                {status === "loading" ? (
+                  <>
+                    Sending... <Loader2 size={20} className="animate-spin" />
+                  </>
+                ) : status === "success" ? (
+                  <>
+                    Message Sent <CheckCircle2 size={20} />
+                  </>
+                ) : (
+                  <>
+                    Submit Message <Send size={20} />
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -89,7 +203,7 @@ export default function ContactPage() {
           <div className="lg:col-span-5 flex flex-col gap-8">
             
             {/* Live Chat Card */}
-            <div className="bg-(--text-main)/[0.05] border border-(--text-main)/10 rounded-[50px] p-10 relative overflow-hidden group">
+            <div className="bg-(--text-main)/[0.05] border border-(--text-main)/10 rounded-4xl sm:rounded-[50px] p-5 sm:p-12 relative overflow-hidden group">
               {/* Background gradient effect */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-(--accent)/10 blur-[80px] -z-10 group-hover:bg-(--accent)/15 transition-all duration-500" />
               
@@ -111,7 +225,7 @@ export default function ContactPage() {
             </div>
 
             {/* Global Access Points Card */}
-            <div className="bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-[50px] p-12 space-y-10">
+            <div className="bg-(--text-main)/[0.03] border border-(--text-main)/5 rounded-4xl sm:rounded-[50px] p-5 sm:p-12 space-y-10">
               <h2 className="text-2xl font-bold font-grotesk mb-4">Global Access Points</h2>
               
               <div className="space-y-10">
@@ -122,7 +236,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-(--accent) font-bold uppercase tracking-[0.2em] mb-1">Global Hotline</p>
-                    <p className="text-xl font-bold font-grotesk tracking-tight">+1 (800) 555-TECH</p>
+                    <p className="sm:text-xl font-bold font-grotesk tracking-tight">+1 (800) 555-TECH</p>
                     <p className="text-[10px] text-gray-500 font-inter mt-1">Available 24/7 for Enterprise Clients</p>
                   </div>
                 </div>
@@ -133,7 +247,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-(--accent) font-bold uppercase tracking-[0.2em] mb-1">Technical Support</p>
-                    <p className="text-xl font-bold font-grotesk tracking-tight">support@innovixllc.com</p>
+                    <p className="sm:text-xl font-bold font-grotesk tracking-tight">support@innovixllc.com</p>
                     <p className="text-[10px] text-gray-500 font-inter mt-1">Average response: 2 Hours</p>
                   </div>
                 </div>
@@ -144,7 +258,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-(--accent) font-bold uppercase tracking-[0.2em] mb-1">Microsoft Partnership</p>
-                    <p className="text-xl font-bold font-grotesk tracking-tight">Certified Digital Distributor</p>
+                    <p className="sm:text-xl font-bold font-grotesk tracking-tight">Certified Digital Distributor</p>
                     <p className="text-[10px] text-gray-500 font-inter mt-1">Verification ID: MS-INV-9920-X</p>
                   </div>
                 </div>

@@ -8,11 +8,13 @@ export async function getDashboardStats() {
 
   const [totalRevenue, currentMonthRevenue, lastMonthRevenue, totalOrders, currentMonthOrders, fulfilledOrders] = await Promise.all([
     prisma.order.aggregate({
-      _sum: { amount: true }
+      _sum: { amount: true },
+      where: { status: 'Fulfilled' }
     }),
     prisma.order.aggregate({
       _sum: { amount: true },
       where: {
+        status: 'Fulfilled',
         createdAt: {
           gte: new Date(now.getFullYear(), now.getMonth(), 1)
         }
@@ -21,6 +23,7 @@ export async function getDashboardStats() {
     prisma.order.aggregate({
       _sum: { amount: true },
       where: {
+        status: 'Fulfilled',
         createdAt: {
           gte: lastMonth,
           lt: new Date(now.getFullYear(), now.getMonth(), 1)

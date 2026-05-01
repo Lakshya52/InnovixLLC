@@ -19,7 +19,12 @@ function OrderSuccessContent() {
   const sessionId = searchParams.get("session_id");
   const orderId = searchParams.get("orderId");
 
+  const hasRun = React.useRef(false);
+
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     setMounted(true);
     clearCart();
 

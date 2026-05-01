@@ -162,3 +162,17 @@ export async function verifyAndChangePassword(formData: FormData) {
     return { error: "Failed to update password" };
   }
 }
+
+export async function updateActivity() {
+  const session = await getSession();
+  if (!session) return;
+
+  try {
+    await (prisma.user as any).update({
+      where: { id: session.id },
+      data: { lastActive: new Date() }
+    });
+  } catch (error) {
+    // Silent fail for activity tracking
+  }
+}

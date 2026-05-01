@@ -36,6 +36,12 @@ export interface Product {
     title: string;
     points: string[];
   };
+  stockKeys?: {
+    id: string;
+    productId: string;
+    keyValue: string;
+    isSold: boolean;
+  }[];
 }
 
 export const products: Product[] = [

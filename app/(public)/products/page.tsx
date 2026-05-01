@@ -5,6 +5,11 @@ import { prisma } from "@/lib/prisma";
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
     where: { status: 'Live' },
+    include: {
+      stockKeys: {
+        where: { isSold: false }
+      }
+    },
     orderBy: { updatedAt: 'desc' }
   });
 

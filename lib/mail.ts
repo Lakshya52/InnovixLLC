@@ -133,3 +133,62 @@ export async function sendOTPEmail(email: string, otp: string) {
   }
 }
 
+export async function sendContactEmail(
+  name: string,
+  email: string,
+  subject: string,
+  message: string
+) {
+  const mailOptions = {
+    from: `"InnovixLLC Contact Form" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_USER,
+    replyTo: email,
+    subject: `[Contact Form] ${subject} — from ${name}`,
+    html: `
+      <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #0b0b0b; color: #ffffff; border-radius: 20px; border: 1px solid #ffffff10;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #6eDD86; margin: 0; font-size: 28px;">InnovixLLC</h1>
+          <p style="color: #666; font-size: 14px; margin-top: 5px;">New Contact Form Submission</p>
+        </div>
+        
+        <div style="background-color: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid #ffffff05;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #ffffff08; color: #888; font-size: 13px; font-weight: 600; width: 120px; vertical-align: top;">Name</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #ffffff08; color: #ffffff; font-size: 14px;">${name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #ffffff08; color: #888; font-size: 13px; font-weight: 600; vertical-align: top;">Email</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #ffffff08; color: #6eDD86; font-size: 14px;"><a href="mailto:${email}" style="color: #6eDD86; text-decoration: none;">${email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; border-bottom: 1px solid #ffffff08; color: #888; font-size: 13px; font-weight: 600; vertical-align: top;">Subject</td>
+              <td style="padding: 12px 0; border-bottom: 1px solid #ffffff08; color: #ffffff; font-size: 14px;">${subject}</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 0; color: #888; font-size: 13px; font-weight: 600; vertical-align: top;">Message</td>
+              <td style="padding: 12px 0; color: #ffffff; font-size: 14px; line-height: 1.7; white-space: pre-wrap;">${message}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="mailto:${email}" style="background-color: #6eDD86; color: #000000; padding: 12px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; display: inline-block;">Reply to ${name}</a>
+        </div>
+        
+        <p style="font-size: 12px; color: #444; text-align: center; margin-top: 40px;">
+          InnovixLLC &copy; 2026. All rights reserved.<br />
+          This message was sent via the Contact Us form on your website.
+        </p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return { success: true };
+  } catch (error) {
+    console.error("Contact form email error:", error);
+    return { error: "Failed to send contact email" };
+  }
+}

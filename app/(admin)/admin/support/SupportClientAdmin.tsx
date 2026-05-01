@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import SupportChat from "../../../(user)/support/SupportChat";
-import { Search, ChevronDown, CheckCircle2, AlertCircle, MessageSquare } from "lucide-react";
+import { Search, ChevronDown, CheckCircle2, AlertCircle, MessageSquare, Star } from "lucide-react";
 import { getTickets } from "@/actions/chat";
 import { useEffect } from "react";
 
@@ -16,11 +16,13 @@ interface Ticket {
     id: string;
     name: string | null;
     email: string;
+    image: string | null;
   };
   messages: {
     text: string;
     createdAt: string;
   }[];
+  resolution?: string | null;
 }
 
 export default function SupportClientAdmin({
@@ -34,7 +36,7 @@ export default function SupportClientAdmin({
 }) {
   const [tickets, setTickets] = useState<Ticket[]>(initialTickets);
   const [activeTicketId, setActiveTicketId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'Active' | 'Waiting'>('Active');
+  const [filter, setFilter] = useState<'Active' | 'Waiting' | 'Resolved'>('Active');
   const [searchQuery, setSearchQuery] = useState("");
 
   // Poll for new/updated tickets every 5 seconds
@@ -55,8 +57,9 @@ export default function SupportClientAdmin({
   const filteredTickets = useMemo(() => {
     return tickets.filter(ticket => {
       // Status filter
-      if (filter === 'Active' && ticket.status === 'RESOLVED') return false;
+      if (filter === 'Active' && (ticket.status === 'RESOLVED' || ticket.status === 'OPEN' || ticket.status === 'WAITING_FOR_USER')) return false;
       if (filter === 'Waiting' && ticket.status !== 'OPEN') return false;
+      if (filter === 'Resolved' && (ticket.status !== 'RESOLVED' && ticket.status !== 'WAITING_FOR_USER')) return false;
 
       // Search filter
       if (searchQuery) {
@@ -74,24 +77,47 @@ export default function SupportClientAdmin({
 
   const activeTicket = tickets.find(t => t.id === activeTicketId);
 
+  const counts = useMemo(() => {
+    return {
+      Active: tickets.filter(t => t.status === 'IN_PROGRESS').length,
+      Waiting: tickets.filter(t => t.status === 'OPEN').length,
+      Resolved: tickets.filter(t => t.status === 'RESOLVED').length,
+    };
+  }, [tickets]);
+
   return (
-    <div className="flex h-[calc(100vh-80px)] bg-(--bg-dark)">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)] bg-(--bg-less-dark)">
       {/* Sidebar Queue */}
-      <aside className="w-[320px] border-r border-(--bg-dark) flex flex-col shrink-0">
+      <aside className={`w-full lg:w-[320px] border-r border-(--bg-dark) flex-col shrink-0 ${activeTicketId ? 'hidden lg:flex' : 'flex'}`}>
         <div className="p-6">
           <h2 className="text-xl font-bold mb-4">Live Queues</h2>
           <div className="flex gap-4 border-b border-(--bg-dark) mb-6">
             <button
               onClick={() => setFilter('Active')}
-              className={`pb-2 text-sm font-bold transition-all ${filter === 'Active' ? 'text-(--accent) border-b-2 border-(--accent)' : 'text-gray-500 hover:text-(--text-main)'}`}
+              className={`pb-2 border-b-2 border-transparent cursor-pointer text-sm font-bold transition-all flex items-center gap-2 ${filter === 'Active' ? 'text-(--accent)  border-(--accent)' : 'text-gray-500 hover:text-(--text-main)'}`}
             >
               Active
+              <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${filter === 'Active' ? 'bg-(--accent) text-(--bg-dark)' : 'bg-(--bg-dark) text-gray-500 border border-(--bg-less-dark)'}`}>
+                {counts.Active}
+              </span>
             </button>
             <button
               onClick={() => setFilter('Waiting')}
-              className={`pb-2 text-sm font-bold transition-all ${filter === 'Waiting' ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-500 hover:text-(--text-main)'}`}
+              className={`pb-2 border-b-2 border-transparent cursor-pointer text-sm font-bold transition-all flex items-center gap-2 ${filter === 'Waiting' ? 'text-yellow-500  border-yellow-500' : 'text-gray-500 hover:text-(--text-main)'}`}
             >
               Waiting
+              <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${filter === 'Waiting' ? 'bg-yellow-500 text-(--bg-dark)' : 'bg-(--bg-dark) text-gray-500 border border-(--bg-less-dark)'}`}>
+                {counts.Waiting}
+              </span>
+            </button>
+            <button
+              onClick={() => setFilter('Resolved')}
+              className={`pb-2 border-b-2 border-transparent cursor-pointer text-sm font-bold transition-all flex items-center gap-2 ${filter === 'Resolved' ? 'text-blue-500  border-blue-500' : 'text-gray-500 hover:text-(--text-main)'}`}
+            >
+              Resolved
+              <span className={`px-1.5 py-0.5 rounded-full text-[10px] ${filter === 'Resolved' ? 'bg-blue-500 text-(--bg-dark)' : 'bg-(--bg-dark) text-gray-500 border border-(--bg-less-dark)'}`}>
+                {counts.Resolved}
+              </span>
             </button>
           </div>
 
@@ -112,14 +138,14 @@ export default function SupportClientAdmin({
                 key={ticket.id}
                 onClick={() => setActiveTicketId(ticket.id)}
                 className={`p-4 rounded-[24px] border transition-all cursor-pointer group ${activeTicketId === ticket.id
-                    ? 'bg-(--bg-dark) border-(--accent)/50 shadow-[0_0_20px_rgba(110,221,134,0.1)]'
-                    : 'bg-(--bg-dark) border-(--bg-dark) hover:border-(--bg-less-dark)'
+                  ? 'bg-(--bg-dark) border-(--accent)/50 shadow-[0_0_20px_rgba(110,221,134,0.1)]'
+                  : 'bg-(--bg-dark) border-(--bg-dark) hover:border-(--bg-less-dark)'
                   }`}
               >
                 <div className="flex items-start gap-3 mb-2">
                   <div className="relative">
                     <img
-                      src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.user.email}`}
+                      src={ticket.user.image || `https://api.dicebear.com/7.x/avataaars/svg?seed=${ticket.user.email}`}
                       alt="avatar"
                       className="w-10 h-10 rounded-xl border border-(--bg-dark)"
                     />
@@ -137,8 +163,12 @@ export default function SupportClientAdmin({
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
-                  <span className="px-1.5 py-0.5 rounded-md bg-(--accent)/10 text-(--accent) text-[8px] font-bold uppercase tracking-wider">AWS</span>
-                  <span className="px-1.5 py-0.5 rounded-md bg-yellow-500/10 text-yellow-500 text-[8px] font-bold uppercase tracking-wider">API</span>
+                  <span className="px-1.5 py-0.5 rounded-md bg-(--accent)/10 text-(--accent) text-[8px] font-bold uppercase tracking-wider">{ticket.status === 'WAITING_FOR_USER' ? 'Awaiting Feedback' : 'AWS'}</span>
+                  {ticket.resolution?.includes('[USER FEEDBACK]') && (
+                    <span className="px-1.5 py-0.5 rounded-md bg-yellow-500/10 text-yellow-500 text-[8px] font-bold uppercase tracking-wider flex items-center gap-1">
+                      <Star size={8} fill="currentColor" /> Feedback Received
+                    </span>
+                  )}
                 </div>
 
                 <p className="text-[10px] text-gray-500 line-clamp-1 italic leading-tight">
@@ -151,7 +181,7 @@ export default function SupportClientAdmin({
       </aside>
 
       {/* Main Chat Display */}
-      <div className="flex-grow flex flex-col bg-(--bg-dark)">
+      <div className={`flex-grow flex-col items-center justify-center bg-(--bg-less-dark) ${!activeTicketId ? 'hidden lg:flex' : 'flex w-full'}`}>
         {activeTicketId ? (
           <SupportChat
             onBack={() => setActiveTicketId(null)}

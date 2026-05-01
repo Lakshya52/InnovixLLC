@@ -20,7 +20,8 @@ import {
   Key
 } from "lucide-react";
 import Link from "next/link";
-import { deleteProduct } from "@/actions/inventory";
+import { deleteProduct, getProductKeys, addStock, deleteStockKey, clearUnsoldStock } from "@/actions/inventory";
+import { X, Check, Loader2, List, Trash } from "lucide-react";
 
 interface InventoryKey {
   id: string;
@@ -74,6 +75,86 @@ export default function InventoryClient({
     lowStock: products.filter(p => p.stockKeys.length < 10).length
   };
 
+  const [selectedProductForStock, setSelectedProductForStock] = useState<Product | null>(null);
+  const [isStockModalOpen, setIsStockModalOpen] = useState(false);
+  const [currentKeys, setCurrentKeys] = useState<InventoryKey[]>([]);
+  const [isLoadingKeys, setIsLoadingKeys] = useState(false);
+  const [newKeysInput, setNewKeysInput] = useState("");
+  const [isAddingStock, setIsAddingStock] = useState(false);
+
+  const openStockModal = async (product: Product) => {
+    setSelectedProductForStock(product);
+    setIsStockModalOpen(true);
+    setIsLoadingKeys(true);
+    try {
+      const keys = await getProductKeys(product.id);
+      setCurrentKeys(keys as any);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoadingKeys(false);
+    }
+  };
+
+  const handleAddStock = async () => {
+    if (!selectedProductForStock || !newKeysInput.trim()) return;
+    setIsAddingStock(true);
+    const keys = newKeysInput.split("\n").map(k => k.trim()).filter(k => k.length > 0);
+    try {
+      await addStock(selectedProductForStock.id, keys);
+      const updatedKeys = await getProductKeys(selectedProductForStock.id);
+      setCurrentKeys(updatedKeys as any);
+      setNewKeysInput("");
+      
+      // Update local products state
+      setProducts(prev => prev.map(p => 
+        p.id === selectedProductForStock.id 
+        ? { ...p, stockKeys: updatedKeys as any } 
+        : p
+      ));
+    } catch (err) {
+      alert("Failed to add stock");
+    } finally {
+      setIsAddingStock(false);
+    }
+  };
+
+  const handleDeleteKey = async (keyId: string) => {
+    if (!confirm("Are you sure you want to delete this key?")) return;
+    try {
+      await deleteStockKey(keyId);
+      setCurrentKeys(prev => prev.filter(k => k.id !== keyId));
+      
+      // Update local products state
+      if (selectedProductForStock) {
+        setProducts(prev => prev.map(p => 
+          p.id === selectedProductForStock.id 
+          ? { ...p, stockKeys: p.stockKeys.filter(k => k.id !== keyId) } 
+          : p
+        ));
+      }
+    } catch (err) {
+      alert("Failed to delete key");
+    }
+  };
+
+  const handleClearStock = async () => {
+    if (!selectedProductForStock || !confirm("CRITICAL: This will delete ALL unsold keys for this product. Continue?")) return;
+    try {
+      await clearUnsoldStock(selectedProductForStock.id);
+      setCurrentKeys([]);
+      
+      // Update local products state
+      setProducts(prev => prev.map(p => 
+        p.id === selectedProductForStock.id 
+        ? { ...p, stockKeys: [] } 
+        : p
+      ));
+    } catch (err) {
+      alert("Failed to clear stock");
+    }
+  };
+
   const handleDelete = async (id: string, name: string) => {
     if (confirm(`Are you sure you want to delete ${name}? This action cannot be undone.`)) {
       try {
@@ -86,7 +167,7 @@ export default function InventoryClient({
   };
 
   return (
-    <div className="p-8 mx-auto w-full max-w-[1400px]">
+    <div className="p-4 md:p-8 mx-auto w-full max-w-[1400px]">
       {/* Header */}
       <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -233,6 +314,12 @@ export default function InventoryClient({
                             style={{ width: `${progressWidth}%` }}
                           ></div>
                         </div>
+                        <button 
+                          onClick={() => openStockModal(p)}
+                          className="mt-2 text-[9px] font-bold text-(--accent) hover:underline flex items-center gap-1 uppercase tracking-tighter cursor-pointer"
+                        >
+                          <Plus size={10} /> Manage Quantities
+                        </button>
                       </div>
                     </td>
                     <td className="px-6 py-8">
@@ -309,6 +396,114 @@ export default function InventoryClient({
           View Full Log
         </button>
       </div>
+
+      {/* Stock Management Modal */}
+      {isStockModalOpen && selectedProductForStock && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-(--bg-dark)/90 backdrop-blur-md p-4 animate-in fade-in duration-300">
+          <div className="bg-(--bg-dark) border border-(--bg-less-dark) rounded-[40px] w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl scale-in-center">
+            <div className="p-8 border-b border-(--bg-less-dark)/50 flex items-center justify-between bg-(--bg-dark)/50">
+              <div>
+                <h3 className="text-2xl font-bold text-(--text-main)">Manage <span className="text-(--accent)">Quantities</span></h3>
+                <p className="text-xs text-gray-500 font-medium mt-1">{selectedProductForStock.name} • {selectedProductForStock.category}</p>
+              </div>
+              <button 
+                onClick={() => setIsStockModalOpen(false)} 
+                className="w-10 h-10 rounded-full bg-(--bg-less-dark)/20 flex items-center justify-center text-gray-500 hover:text-(--text-main) hover:bg-(--bg-less-dark)/50 transition-all cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                {/* Add Stock Section */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 text-(--accent)">
+                    <Plus size={20} />
+                    <h4 className="font-bold uppercase tracking-widest text-sm">Add New Stock</h4>
+                  </div>
+                  <div className="bg-(--bg-less-dark)/10 p-6 rounded-3xl border border-(--bg-less-dark)/30">
+                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Paste keys here (one per line)</p>
+                    <textarea 
+                      value={newKeysInput}
+                      onChange={(e) => setNewKeysInput(e.target.value)}
+                      placeholder="XXXXX-XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY-YYYYY"
+                      className="w-full h-48 bg-(--bg-dark) border border-(--bg-less-dark) rounded-2xl p-4 text-sm font-mono text-(--text-main) focus:outline-none focus:border-(--accent) transition-all resize-none mb-4"
+                    />
+                    <button 
+                      onClick={handleAddStock}
+                      disabled={isAddingStock || !newKeysInput.trim()}
+                      className="w-full bg-(--accent) text-(--bg-dark) py-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all cursor-pointer"
+                    >
+                      {isAddingStock ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+                      Confirm Upload
+                    </button>
+                  </div>
+
+                  <div className="p-6 border border-red-500/20 rounded-3xl bg-red-500/5">
+                    <h5 className="text-red-400 font-bold text-xs uppercase mb-2 flex items-center gap-2">
+                      <AlertTriangle size={14} /> Danger Zone
+                    </h5>
+                    <p className="text-[10px] text-gray-500 mb-4">Wipe all current unsold keys from the database. This action is irreversible.</p>
+                    <button 
+                      onClick={handleClearStock}
+                      className="w-full py-3 rounded-xl border border-red-500/30 text-red-400 font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-(--bg-dark) transition-all cursor-pointer"
+                    >
+                      Clear All Unsold Stock
+                    </button>
+                  </div>
+                </div>
+
+                {/* Current Stock Section */}
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between text-blue-400">
+                    <div className="flex items-center gap-3">
+                      <List size={20} />
+                      <h4 className="font-bold uppercase tracking-widest text-sm">Active Inventory</h4>
+                    </div>
+                    <span className="bg-blue-400/10 text-blue-400 px-3 py-1 rounded-full text-[10px] font-bold border border-blue-400/20">
+                      {currentKeys.length} Available
+                    </span>
+                  </div>
+
+                  <div className="bg-(--bg-less-dark)/10 rounded-3xl border border-(--bg-less-dark)/30 overflow-hidden h-[450px] flex flex-col">
+                    {isLoadingKeys ? (
+                      <div className="flex-grow flex flex-col items-center justify-center gap-4 text-gray-500">
+                        <Loader2 size={32} className="animate-spin text-(--accent)" />
+                        <p className="text-xs font-bold uppercase tracking-widest">Scanning Vault...</p>
+                      </div>
+                    ) : currentKeys.length > 0 ? (
+                      <div className="flex-grow overflow-y-auto p-2 custom-scrollbar">
+                        <div className="space-y-2">
+                          {currentKeys.map((k) => (
+                            <div key={k.id} className="flex items-center justify-between p-4 bg-(--bg-dark) rounded-2xl border border-(--bg-less-dark)/50 group">
+                              <code className="text-xs font-bold text-gray-400 group-hover:text-(--text-main) transition-colors">{k.keyValue}</code>
+                              <button 
+                                onClick={() => handleDeleteKey(k.id)}
+                                className="p-2 text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer opacity-0 group-hover:opacity-100"
+                              >
+                                <Trash size={14} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex-grow flex flex-col items-center justify-center gap-4 text-gray-500 text-center p-8">
+                        <Package size={40} className="opacity-20" />
+                        <div>
+                          <p className="text-sm font-bold text-gray-400">Warehouse Empty</p>
+                          <p className="text-[10px] mt-1">Add new keys to resume sales.</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

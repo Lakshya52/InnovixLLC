@@ -18,9 +18,6 @@ export default async function AdminSupport() {
 
   // Fetch all open tickets to populate the queue
   const tickets = await prisma.supportTicket.findMany({
-    where: { 
-        status: { not: 'RESOLVED' } 
-    },
     include: { 
         user: true,
         messages: {

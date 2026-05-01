@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, User as UserIcon } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,8 +8,14 @@ import { useCart } from "@/context/CartContext";
 import { Menu, X } from "lucide-react"
 import { useState } from "react";
 
+interface NavbarProps {
+    isSidebar?: boolean;
+    isLoggedIn?: boolean;
+    user?: any;
+    onMenuClick?: () => void;
+}
 
-export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSidebar?: boolean, isLoggedIn?: boolean }) {
+export default function Navbar({ isSidebar = false, isLoggedIn = false, user, onMenuClick }: NavbarProps) {
     const pathname = usePathname();
     const { cartCount } = useCart();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -22,8 +28,8 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
         { name: "Blog", href: "/blogs" },
         { name: "Contact", href: "/contact" },
     ];
-    const handleMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen)
+    const handleMenuToggle = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
     }
 
     return (
@@ -68,10 +74,17 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
                                 </span>
                             )}
                         </Link>
+
+                        {/* Mobile Menu Icon (<1024px) - Controls Dashboard Sidebar */}
+                        {onMenuClick && (
+                            <Menu className="block lg:hidden h-5 w-5 sm:h-6 sm:w-6 cursor-pointer" onClick={onMenuClick} />
+                        )}
+
+                        {/* Tablet/Global Menu Icon (Controls Navbar Dropdown) */}
                         {isMobileMenuOpen ? (
-                            <X className="xl:hidden block h-5 w-5 sm:h-6 sm:w-6   " onClick={handleMenu} />
+                            <X className={`${onMenuClick ? 'hidden lg:block' : 'block'} xl:hidden h-5 w-5 sm:h-6 sm:w-6 cursor-pointer`} onClick={handleMenuToggle} />
                         ) : (
-                            <Menu className="xl:hidden block h-5 w-5 sm:h-6 sm:w-6   " onClick={handleMenu} />
+                            <Menu className={`${onMenuClick ? 'hidden lg:block' : 'block'} xl:hidden h-5 w-5 sm:h-6 sm:w-6 cursor-pointer`} onClick={handleMenuToggle} />
                         )}
                     </div>
 
@@ -90,8 +103,7 @@ export default function Navbar({ isSidebar = false, isLoggedIn = false }: { isSi
                 </div>
             </nav>
             {isMobileMenuOpen && (
-
-                <div className="xl:hidden border-b border-(--accent) shadow-2xl absolute z-9999 top-0 mt-[15dvh] h-fit w-full bg-[var(--bg-less-dark)] backdrop-blur-xl  flex flex-col items-center justify-center gap-10 py-10">
+                <div className={`${onMenuClick ? 'hidden lg:flex' : 'flex'} xl:hidden border-b border-(--accent) shadow-2xl absolute z-[9999] top-0 mt-[15dvh] h-fit w-full bg-[var(--bg-less-dark)] backdrop-blur-xl flex-col items-center justify-center gap-10 py-10`}>
                     <ul className="flex flex-col gap-5 h-fit items-center ">
                         {navLinks.map((link) => {
                             const isActive = pathname === link.href;

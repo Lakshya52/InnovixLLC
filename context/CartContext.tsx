@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { Product } from "@/lib/products";
 
 interface CartItem {
@@ -42,7 +42,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const MAX_ITEMS = 50;
 
-  const addToCart = (product: Product, _quantity: number) => {
+  const addToCart = useCallback((product: Product, _quantity: number) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.product.id === product.id);
       if (existingItem) {
@@ -51,37 +51,40 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prevCart, { product, quantity: 1 }];
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = useCallback((productId: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
       return;
     }
 
-    // Calculate count without the item being updated
-    const currentItem = cart.find(item => item.product.id === productId);
-    const otherItemsCount = cartCount - (currentItem?.quantity || 0);
+    setCart((prevCart) => {
+      // Calculate count without the item being updated
+      const currentItem = prevCart.find(item => item.product.id === productId);
+      // Note: we can't use cartCount here easily as it's computed outside, 
+      // but we can compute it from prevCart
+      const currentCount = prevCart.reduce((count, item) => count + item.quantity, 0);
+      const otherItemsCount = currentCount - (currentItem?.quantity || 0);
 
-    if (otherItemsCount + quantity > MAX_ITEMS) {
-      alert(`Limit reached: You can only have up to ${MAX_ITEMS} items in your cart.`);
-      return;
-    }
+      if (otherItemsCount + quantity > MAX_ITEMS) {
+        alert(`Limit reached: You can only have up to ${MAX_ITEMS} items in your cart.`);
+        return prevCart;
+      }
 
-    setCart((prevCart) =>
-      prevCart.map((item) =>
+      return prevCart.map((item) =>
         item.product.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
+      );
+    });
+  }, [removeFromCart]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
-  };
+  }, []);
 
   const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
   const cartTotal = cart.reduce(

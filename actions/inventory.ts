@@ -201,3 +201,36 @@ export async function deleteProduct(id: string) {
   revalidatePath("/admin/inventory");
   return { success: true };
 }
+
+export async function getProductKeys(productId: string) {
+  await checkAdmin();
+  return await prisma.inventoryKey.findMany({
+    where: { productId, isSold: false },
+    orderBy: { createdAt: "desc" }
+  });
+}
+
+export async function deleteStockKey(keyId: string) {
+  await checkAdmin();
+  await prisma.inventoryKey.delete({
+    where: { id: keyId }
+  });
+  revalidatePath("/admin/inventory");
+}
+
+export async function clearUnsoldStock(productId: string) {
+  await checkAdmin();
+  const deleted = await prisma.inventoryKey.deleteMany({
+    where: { productId, isSold: false }
+  });
+
+  await prisma.inventoryLog.create({
+    data: {
+      type: "STOCK_CLEAR",
+      message: `Admin cleared all unsold stock (${deleted.count} keys) for product ID: ${productId}`
+    }
+  });
+
+  revalidatePath("/admin/inventory");
+  return { count: deleted.count };
+}

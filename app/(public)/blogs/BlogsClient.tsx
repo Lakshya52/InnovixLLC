@@ -195,7 +195,7 @@ export default function BlogsClient({ initialPosts }: { initialPosts: BlogPost[]
                 Join Now <ChevronRight size={20} className="hidden sm:inline-block" />
               </button>
             </form>
-            <p className="text-[10px] text-center lg:text-right text-gray-600 font-bold uppercase mt-6 md:mt-4 w-full mx-auto lg:mx-0 max-w-md lg:max-w-none">TRUSTED BY 50,000+ DEVELOPERS WORLDWIDE</p>
+            {/* <p className="text-[10px] text-center lg:text-right text-gray-600 font-bold uppercase mt-6 md:mt-4 w-full mx-auto lg:mx-0 max-w-md lg:max-w-none">TRUSTED BY 50,000+ DEVELOPERS WORLDWIDE</p> */}
           </div>
         </div>
       </div>

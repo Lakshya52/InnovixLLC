@@ -1,5 +1,5 @@
 import React from "react";
-import { Download, FileText, ChevronLeft, ChevronRight, Filter, Calendar } from "lucide-react";
+import OrdersClient from "@/components/orders/OrdersClient";
 import { cookies } from "next/headers";
 import { decrypt } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -18,105 +18,30 @@ export default async function OrdersPage() {
 
   const orders = await prisma.order.findMany({
     where: { userId: session.id },
+    include: {
+      keys: true,
+      user: {
+        select: {
+          name: true,
+          email: true
+        }
+      }
+    },
     orderBy: { createdAt: 'desc' }
   });
 
   return (
-    <div className=" mx-auto w-[90%]">
-      <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">My <span className="text-(--accent)">Orders</span></h1>
-          <p className="text-(--text-main) text-sm">Manage your transaction history and download invoices.</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button className="flex items-center gap-2 bg-(--accent) text-(--bg-dark) px-4 py-2 rounded-lg font-bold text-sm hover:bg-(--accent) transition-colors cursor-pointer">
-            <Download size={16} />
-            Export CSV
-          </button>
-          <button className="flex items-center gap-2 bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-4 py-2 rounded-lg font-medium text-sm hover:bg-[#222] transition-colors cursor-pointer">
-            <Calendar size={16} className="text-(--text-main)" />
-            Last 30 Days
-            <ChevronRight size={14} className="rotate-90 text-(--text-main)" />
-          </button>
-          <button className="flex items-center gap-2 bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-4 py-2 rounded-lg font-medium text-sm hover:bg-[#222] transition-colors cursor-pointer">
-            <Filter size={16} className="text-(--text-main)" />
-            All Status
-            <ChevronRight size={14} className="rotate-90 text-(--text-main)" />
-          </button>
-        </div>
+    <div className="mx-auto w-[90%] relative">
+      <div className="mb-10 px-2">
+        <h1 className="text-3xl md:text-4xl font-bold mb-2 font-grotesk tracking-tight">
+          My <span className="text-(--accent)">Orders</span>
+        </h1>
+        <p className="text-[#666] text-sm font-medium">
+          Manage your transaction history, track fulfillment, and download invoices.
+        </p>
       </div>
 
-      <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-(--bg-dark)">
-                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666]">Order-ID</th>
-                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666]">Product</th>
-                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666]">Date</th>
-                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666]">Amount</th>
-                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666]">Status</th>
-                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666] text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.length > 0 ? orders.map((order, i) => (
-                <tr key={i} className="border-b border-(--bg-dark) last:border-none group hover:bg-(--bg-dark)/40 transition-colors">
-                  <td className="px-8 py-8 font-bold text-(--accent) text-sm font-mono">#{order.id.slice(-8).toUpperCase()}</td>
-                  <td className="px-8 py-8">
-                    <div className="flex flex-col">
-                      <span className="font-bold text-(--text-main)">{order.productName}</span>
-                      <span className="text-[#666] text-xs font-medium">{order.productType}</span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-8 text-(--text-main) font-medium text-sm leading-relaxed (--text-main)space-pre">
-                    {order.createdAt.toLocaleDateString(undefined, { month: 'short', day: '2-digit' })},<br />
-                    {order.createdAt.getFullYear()}
-                  </td>
-                  <td className="px-8 py-8 font-bold text-lg text-(--text-main)">${order.amount.toFixed(2)}</td>
-                  <td className="px-8 py-8">
-                    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase mt-1 tracking-wider ${
-                      order.status === 'Fulfilled' ? 'text-green-400 bg-green-400/10' : 'text-yellow-400 bg-yellow-400/10'
-                    }`}>
-                      <div className={`w-1 h-1 rounded-full ${order.status === 'Fulfilled' ? 'bg-green-400' : 'bg-yellow-400'}`}></div>
-                      {order.status}
-                    </div>
-                  </td>
-                  <td className="px-8 py-8 text-right px-8">
-                    <div className="flex items-center justify-end gap-3">
-                      <button className="text-(--text-main) hover:text-(--text-main) transition-colors cursor-pointer" title="View Details">
-                        <FileText size={20} />
-                      </button>
-                      <button className="text-(--text-main) hover:text-(--accent) transition-colors cursor-pointer" title="Download Invoice">
-                        <Download size={20} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )) : (
-                <tr>
-                  <td colSpan={6} className="px-8 py-20 text-center text-gray-600 font-medium">
-                    No orders found. Once you make a purchase, it will appear here.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="px-8 py-6 border-t border-(--bg-dark) flex items-center justify-between">
-          <p className="text-[#666] text-xs font-medium">Showing {orders.length} transactions</p>
-          <div className="flex items-center gap-2">
-            <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-colors text-gray-500 cursor-pointer">
-              <ChevronLeft size={16} />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-(--accent) text-(--bg-dark) text-xs font-bold cursor-pointer">1</button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-colors text-gray-500 cursor-pointer">
-              <ChevronRight size={16} />
-            </button>
-          </div>
-        </div>
-      </div>
+      <OrdersClient initialOrders={orders} />
     </div>
   );
 }

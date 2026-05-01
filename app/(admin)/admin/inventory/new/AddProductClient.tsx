@@ -175,10 +175,8 @@ export default function AddProductClient() {
                               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                               className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all appearance-none cursor-pointer"
                            >
-                              <option>OS</option>
-                              <option>Security & Privacy</option>
-                              <option>Enterprise</option>
-                              <option>Productivity</option>
+                              <option>Windows</option>
+                              <option>Office</option>
                            </select>
                         </div>
                         <div>
@@ -466,7 +464,7 @@ export default function AddProductClient() {
                         </div>
                      </div>
                   </section>
-                  
+
                   {/* Product Keys */}
                   <section className="bg-(--bg-dark) border border-(--text-main)/5 rounded-[40px] p-8">
                      <div className="flex items-center justify-between mb-8">

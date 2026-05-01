@@ -174,16 +174,16 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
   return (
     <div className="space-y-8 pb-20">
       {/* Profile Information */}
-      <form onSubmit={handleUpdateProfile} className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-10 relative group">
+      <form onSubmit={handleUpdateProfile} className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl md:rounded-[40px] p-6 md:p-10 relative group overflow-hidden md:overflow-visible">
         <div className="absolute top-0 right-0 w-40 h-40 bg-(--bg-dark)/40 rounded-full -mr-16 -mt-16 pointer-events-none transition-transform group-hover:scale-110"></div>
-        <Fingerprint size={80} className="absolute top-10 right-10 text-[#222] pointer-events-none" />
+        <Fingerprint size={80} className="absolute top-10 right-10 text-[#222] pointer-events-none hidden md:block" />
 
         <div className="flex items-center gap-3 mb-10 text-(--accent)">
           <User size={20} />
           <h2 className="text-xl font-bold">Profile Information</h2>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 items-start">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start">
           <div className="relative shrink-0">
             <div className="w-32 h-32 rounded-3xl overflow-hidden border-2 border-(--bg-dark) group-hover:border-(--accent)/30 transition-all bg-(--bg-dark)">
               <img
@@ -219,11 +219,11 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
                     <Edit2 size={20} className="text-(--accent)/50 group-hover/upload:text-(--accent)" />
                     <span className="text-[10px] font-bold text-[#666] group-hover/upload:text-(--accent)">UPLOAD PHOTO</span>
                   </div>
-                  <input 
-                    type="file" 
+                  <input
+                    type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="absolute inset-0 opacity-0 cursor-pointer" 
+                    className="absolute inset-0 opacity-0 cursor-pointer"
                   />
                 </div>
               </div>
@@ -272,7 +272,7 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
                 <X size={20} />
               </button>
             </div>
-            
+
             <div className="relative h-96 w-full bg-[#000]">
               <Cropper
                 image={imageToCrop}
@@ -301,9 +301,9 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
                   className="w-full h-1 bg-(--bg-dark) rounded-lg appearance-none cursor-pointer accent-(--accent)"
                 />
               </div>
-              
+
               <div className="flex items-center justify-end gap-4 pt-4">
-                <button 
+                <button
                   onClick={() => setIsCropping(false)}
                   className="text-[#666] hover:text-(--text-main) font-bold text-xs transition-colors"
                 >
@@ -324,7 +324,7 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Authentication */}
-        <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-10 space-y-8">
+        <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl md:rounded-[40px] p-6 md:p-10 space-y-8">
           <div className="flex items-center gap-3 text-(--accent)">
             <Shield size={20} />
             <h2 className="text-xl font-bold">Authentication</h2>
@@ -399,7 +399,7 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
         </div>
 
         {/* Preferences */}
-        <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-10 space-y-10">
+        <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl md:rounded-[40px] p-6 md:p-10 space-y-10">
           <div className="flex items-center gap-3 text-(--accent)">
             <BellRing size={20} />
             <h2 className="text-xl font-bold">Preferences</h2>

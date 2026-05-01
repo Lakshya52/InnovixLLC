@@ -112,7 +112,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
 
         {/* Product Grid */}
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-32">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}

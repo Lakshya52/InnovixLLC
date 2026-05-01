@@ -286,7 +286,7 @@ export default function CartPage() {
             <div className="bg-(--text-main)/[0.02] border border-(--text-main)/5 p-6 rounded-[30px] flex gap-4">
               <Info className="text-gray-500 shrink-0 mt-1" size={20} />
               <p className="text-[11px] text-gray-500 font-inter leading-relaxed uppercase tracking-wider">
-                By clicking "Complete Purchase", you agree to our <Link href="/terms" className="text-(--text-main) hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-(--text-main) hover:underline">Refund Policy</Link>. Digital keys will be delivered to your registered email immediately after payment verification.
+                By clicking "Complete Purchase", you agree to our <Link href="/terms" className="text-(--text-main) hover:underline">Terms of Service</Link>, <Link href="/privacy-policy" className="text-(--text-main) hover:underline">Privacy Policy</Link> and <Link href="/refund-policy" className="text-(--text-main) hover:underline">Refund Policy</Link>. Digital keys will be delivered to your registered email immediately after payment verification.
               </p>
             </div>
           </div>

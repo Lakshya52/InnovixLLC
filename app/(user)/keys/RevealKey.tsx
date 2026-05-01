@@ -22,21 +22,19 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
               {keyValue}
             </span>
           ) : (
-            <div className="flex items-center gap-1 opacity-20">
-              {[...Array(4)].map((_, i) => (
-                <span key={i} className="flex gap-1">
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full" />
-                  {i < 3 && <span className="mx-1 mt-[-2px]">,</span>}
+            <div className="flex items-center opacity-20">
+              {/* {[...Array(5)].map((_, i) => (
+                <span key={i} className="flex items-center">
+                  XXXXX{i < 4 && <span className="mx-1 mt-[-2px]">-</span>}
                 </span>
-              ))}
+              ))} */}
+              XXXXX-XXXXX-XXXXX-XXXXX
             </div>
           )}
         </div>
         <button
           onClick={() => setRevealed(!revealed)}
-          className="p-2 hover:bg-(--text-main)/5 rounded-lg transition-colors text-gray-500 hover:text-(--text-main)"
+          className="p-2 cursor-pointer hover:bg-(--text-main)/5 rounded-lg transition-colors text-gray-500 hover:text-(--text-main)"
         >
           {revealed ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
@@ -44,16 +42,15 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
 
       <button
         onClick={copyToClipboard}
-        className={`w-full py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${
-          copied 
-            ? "bg-green-500/20 text-(--accent) border border-green-500/30" 
-            : "bg-(--accent) text-(--bg-dark) hover:bg-(--accent)"
-        }`}
+        className={`w-full cursor-pointer py-4 rounded-full font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] ${copied
+          ? "bg-green-500/20 text-(--accent) border border-green-500/30"
+          : "bg-(--accent) text-(--bg-dark) hover:bg-(--accent)"
+          }`}
       >
         {copied ? (
           <>
             <Check size={16} />
-            Copied to Clipboard
+            Copied
           </>
         ) : (
           <>

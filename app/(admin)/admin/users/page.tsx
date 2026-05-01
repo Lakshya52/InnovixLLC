@@ -1,166 +1,94 @@
 import React from "react";
 import {
    Users,
-   Activity,
-   Filter,
-   Download,
-   Printer,
-   Edit3,
-   Key,
-   Ban,
-   ChevronLeft,
-   ChevronRight,
    ShieldAlert,
    MessageCircle,
-   Clock,
-   History
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { getDashboardStats } from "@/actions/dashboard";
-
+import UsersClient from "./UsersClient";
 
 export default async function AdminUsers() {
    const stats = await getDashboardStats();
 
+   // Fetch only non-admin users
    const users = await prisma.user.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 10
+      where: {
+         role: {
+            not: "ADMIN"
+         }
+      },
+      orderBy: { createdAt: 'desc' }
+   });
+
+   // Calculate actual active users (active in the last 15 minutes)
+   const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+   const activeUsersCount = await prisma.user.count({
+      where: {
+         role: { not: "ADMIN" },
+         lastActive: {
+            gte: fifteenMinutesAgo
+         }
+      }
    });
 
    return (
-      <div className="p-8 mx-auto w-full">
+      <div className="p-4 md:p-8 mx-auto w-full">
          <div className="mb-10">
-            <h1 className="text-4xl font-bold mb-2">User <span className="text-(--accent)">Management</span></h1>
-            <p className="text-(--text-main) text-sm">Control and monitor your digital ecosystem.</p>
+            <h1 className="text-4xl font-bold mb-2 font-grotesk tracking-tight">User <span className="text-(--accent)">Management</span></h1>
+            <p className="text-[#666] text-sm font-medium">Monitor user activity, manage permissions, and maintain platform integrity.</p>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-4xl">
-            <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[32px] p-8 flex items-center justify-between group overflow-hidden relative">
-               <div className="absolute top-0 right-0 w-32 h-full bg-(--bg-dark)/40 rounded-full -mr-16 translate-x-4 pointer-events-none group-hover:scale-110 transition-transform"></div>
-               <div>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Total Users</p>
-                  <h3 className="text-4xl font-bold mb-2">{stats.totalUsers.toLocaleString()}</h3>
-                  {/* <p className="text-(--accent) text-xs font-bold flex items-center gap-1">
-                     <Activity size={12} /> +14% from last month
-                  </p> */}
+         {/* Stats Overview */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="bg-(--bg-dark) border border-(--bg-less-dark)/50 rounded-[32px] p-8 flex items-center justify-between group overflow-hidden relative shadow-sm">
+               <div className="absolute top-0 right-0 w-32 h-full bg-(--accent)/5 rounded-full -mr-16 translate-x-4 pointer-events-none group-hover:scale-110 transition-transform duration-500"></div>
+               <div className="relative z-10">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Total Non-Admin Users</p>
+                  <h3 className="text-4xl font-bold mb-2 font-grotesk">{users.length.toLocaleString()}</h3>
                </div>
-               <Users size={60} className="text-(--bg-dark) shrink-0" />
+               <Users size={48} className="text-(--accent)/20 shrink-0 group-hover:text-(--accent)/40 transition-colors duration-500" />
             </div>
 
-            {/* <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[32px] p-8 flex items-center justify-between group overflow-hidden relative">
-               <div className="absolute top-0 right-0 w-32 h-full bg-(--bg-dark)/40 rounded-full -mr-16 translate-x-4 pointer-events-none group-hover:scale-110 transition-transform"></div>
-               <div>
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Active Today</p>
-                  <h3 className="text-4xl font-bold mb-2">3,109</h3>
-                  <p className="text-yellow-500 text-xs font-bold flex items-center gap-1">
-                     <Zap size={12} className="fill-yellow-500" /> 89% engagement rate
-                  </p>
+            <div className="bg-(--bg-dark) border border-(--bg-less-dark)/50 rounded-[32px] p-8 flex items-center justify-between group overflow-hidden relative shadow-sm">
+               <div className="absolute top-0 right-0 w-32 h-full bg-blue-500/5 rounded-full -mr-16 translate-x-4 pointer-events-none group-hover:scale-110 transition-transform duration-500"></div>
+               <div className="relative z-10">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Active Now</p>
+                  <h3 className="text-4xl font-bold mb-2 font-grotesk">{activeUsersCount}</h3>
                </div>
-               <Activity size={60} className="text-(--bg-dark) shrink-0" />
-            </div> */}
-         </div>
-
-         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-            <div className="flex items-center gap-3">
-               <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-(--bg-dark) border border-(--bg-dark) text-xs font-bold text-(--text-main) hover:text-(--text-main) transition-all cursor-pointer">
-                  <Filter size={14} /> Filter: All Roles
-               </button>
-               <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-(--bg-dark) border border-(--bg-dark) text-xs font-bold text-(--text-main) hover:text-(--text-main) transition-all cursor-pointer">
-                  Status: Active
-               </button>
-            </div>
-            <div className="flex items-center gap-4 text-gray-500">
-               <Download size={20} className="hover:text-(--text-main) cursor-pointer transition-colors" />
-               <Printer size={20} className="hover:text-(--text-main) cursor-pointer transition-colors" />
-            </div>
-         </div>
-
-         <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[32px] overflow-hidden mb-8">
-            <div className="overflow-x-auto">
-               <table className="w-full text-left border-collapse text-[13px]">
-                  <thead>
-                     <tr className="border-b border-(--bg-dark)">
-                        <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-gray-500">User Identity</th>
-                        <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-gray-500">Role</th>
-                        <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-gray-500">Status</th>
-                        <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-gray-500">Last Activity</th>
-                        <th className="px-8 py-5 text-[10px] font-bold uppercase tracking-widest text-gray-500 text-right">Actions</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {users.map((user) => (
-                        <tr key={user.id} className="border-b border-(--bg-dark) last:border-none group hover:bg-(--bg-dark)/30 transition-colors">
-                           <td className="px-8 py-6">
-                              <div className="flex items-center gap-3">
-                                 <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.email}`} className="w-10 h-10 rounded-xl border border-(--bg-dark)" alt="avatar" />
-                                 <div>
-                                    <p className="font-bold text-(--text-main)">{user.name || 'Anonymous User'}</p>
-                                    <p className="text-[10px] text-gray-500">{user.email}</p>
-                                 </div>
-                              </div>
-                           </td>
-                           <td className="px-8 py-6">
-                              <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${user.role === 'ADMIN' ? 'bg-(--accent)/10 text-(--accent)' : 'bg-gray-500/10 text-gray-500'
-                                 }`}>
-                                 {user.role}
-                              </span>
-                           </td>
-                           <td className="px-8 py-6">
-                              <div className="flex items-center gap-2">
-                                 <div className="w-1.5 h-1.5 rounded-full bg-(--accent)"></div>
-                                 <span className="font-medium text-(--text-main)">Active</span>
-                              </div>
-                           </td>
-                           <td className="px-8 py-6 text-gray-500 font-medium">
-                              {Math.floor(Math.random() * 60)} mins ago
-                           </td>
-                           <td className="px-8 py-6 text-right">
-                              <div className="flex items-center justify-end gap-3 text-gray-600">
-                                 <Edit3 size={18} className="hover:text-(--text-main) cursor-pointer transition-colors" />
-                                 <Key size={18} className="hover:text-(--accent) cursor-pointer transition-colors" />
-                                 <Ban size={18} className="hover:text-red-500 cursor-pointer transition-colors" />
-                              </div>
-                           </td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
-            </div>
-            <div className="px-8 py-6 border-t border-(--bg-dark) flex items-center justify-between text-xs text-gray-500 font-medium">
-               <p>Showing 1-10 of 12,842 users</p>
-               <div className="flex items-center gap-2">
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-all cursor-pointer"><ChevronLeft size={14} /></button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg bg-(--accent) text-(--bg-dark) font-bold">1</button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-all cursor-pointer">2</button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-all cursor-pointer">3</button>
-                  <span className="px-1 text-[#333]">...</span>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-all cursor-pointer">128</button>
-                  <button className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--bg-dark) transition-all cursor-pointer"><ChevronRight size={14} /></button>
+               <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/20">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
                </div>
             </div>
          </div>
 
-         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
-            <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[32px] p-6 flex items-center justify-between group">
+         {/* Interactive Users List */}
+         <UsersClient initialUsers={users} totalUserCount={users.length} />
+
+         {/* Maintenance Section */}
+         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 mt-12">
+            <div className="bg-(--bg-dark) border border-(--bg-less-dark)/50 rounded-[32px] p-8 flex flex-col sm:flex-row items-center justify-between gap-6 group shadow-sm">
                <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 bg-red-400/10 rounded-full flex items-center justify-center text-red-400">
-                     <ShieldAlert size={28} />
+                  <div className="w-16 h-16 bg-red-400/10 rounded-full flex items-center justify-center text-red-400 border border-red-400/10">
+                     <ShieldAlert size={32} />
                   </div>
                   <div>
-                     <h4 className="font-bold text-(--text-main)">Security Audit Overdue</h4>
-                     <p className="text-xs text-gray-500">The last full permission audit was performed 32 days ago.</p>
+                     <h4 className="font-bold text-(--text-main) text-lg">Platform Security Compliance</h4>
+                     <p className="text-xs text-gray-500 max-w-md">The last automated security audit was completed 2 hours ago. 0 critical vulnerabilities found.</p>
                   </div>
                </div>
-               <button className="bg-(--accent) text-(--bg-dark) px-6 py-2 rounded-xl font-bold text-sm hover:bg-(--accent) transition-colors cursor-pointer">Start Audit</button>
+               <button className="bg-(--accent) text-(--bg-dark) px-8 py-3 rounded-2xl font-bold text-sm hover:opacity-90 transition-all cursor-pointer shadow-[0_0_20px_rgba(110,221,134,0.3)]">
+                  Refresh Audit
+               </button>
             </div>
 
-            <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[32px] p-6 flex items-center gap-4 group">
-               <div className="w-12 h-12 bg-yellow-500/10 rounded-2xl flex items-center justify-center text-yellow-500">
-                  <MessageCircle size={24} />
+            <div className="bg-(--bg-dark) border border-(--bg-less-dark)/50 rounded-[32px] p-8 flex items-center gap-5 group shadow-sm">
+               <div className="w-14 h-14 bg-yellow-500/10 rounded-2xl flex items-center justify-center text-yellow-500 border border-yellow-500/10 transition-transform group-hover:rotate-12">
+                  <MessageCircle size={28} />
                </div>
                <div>
-                  <h4 className="font-bold text-(--text-main) flex items-center gap-2">12 New Tickets <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div></h4>
-                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">Awaiting response</p>
+                  <h4 className="font-bold text-(--text-main) text-lg flex items-center gap-2">8 Support</h4>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active Threads</p>
                </div>
             </div>
          </div>

@@ -40,6 +40,7 @@ export async function getBlogs(page = 1, perPage = 6) {
       createdAt: p.createdAt.toISOString(),
       updatedAt: p.updatedAt.toISOString(),
       publishDate: p.publishDate?.toISOString() || null,
+      tags: Array.isArray(p.tags) ? (p.tags as string[]) : [],
     })),
     total,
     pages: Math.ceil(total / perPage),

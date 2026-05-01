@@ -3,10 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  ArrowUpRight, 
   ShoppingCart, 
-  Plus, 
-  Minus,
   Monitor
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -22,6 +19,8 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const router = useRouter();
+  
+  const stockCount = product.stockKeys?.length || 0;
 
   const handleBuyNow = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,28 +40,39 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
     setQuantity(1); // Reset quantity after adding
   };
 
-  const adjustQuantity = (e: React.MouseEvent, amount: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setQuantity(Math.max(1, quantity + amount));
-  };
-
   return (
     <Link
       href={`/products/${product.id}`}
-      className="group bg-(--text-main)/[0.02] border border-(--text-main)/5 rounded-[40px] overflow-hidden transition-all duration-500 hover:bg-(--text-main)/[0.04] hover:border-(--text-main)/10 flex flex-col cursor-pointer"
+      className="group bg-(--text-main)/[0.02] border border-(--text-main)/5 rounded-[40px] overflow-hidden transition-all duration-500 hover:bg-(--text-main)/[0.04] hover:border-(--text-main)/10 flex flex-col cursor-pointer h-full"
     >
-      <div className="aspect-square w-full h-full bg-(--bg-dark) border-b border-(--text-main)/5 flex items-center justify-center overflow-hidden">
+      {/* Image Section */}
+      <div className="aspect-square w-full bg-(--bg-dark) border-b border-(--text-main)/5 flex items-center justify-center overflow-hidden relative">
         {product.image ? (
           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
         ) : (
           <Monitor className="w-20 h-20 text-(--accent)/20" />
         )}
+
+        {/* Stock Badge */}
+        {stockCount === 0 ? (
+          <div className="absolute inset-0 bg-(--bg-dark)/60 backdrop-blur-[2px] flex items-center justify-center">
+            <span className="bg-red-500 text-(--text-main) px-6 py-2 rounded-full font-bold text-sm uppercase tracking-widest shadow-lg">
+              Out of Stock
+            </span>
+          </div>
+        ) : stockCount < 10 ? (
+          <div className="absolute top-6 left-6">
+            <span className="bg-yellow-500/90 backdrop-blur-md text-(--bg-dark) px-4 py-1.5 rounded-full font-bold text-[10px] uppercase tracking-widest shadow-lg flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-(--bg-dark) animate-pulse"></span>
+              Only {stockCount} Left
+            </span>
+          </div>
+        ) : null}
       </div>
       
+      {/* Content Section */}
       <div className="p-8 flex flex-col flex-grow">
         <div className="flex items-start justify-between gap-5 mb-4">
-          {categoryIcon || <Monitor className="min-w-10 max-w-10 min-h-10 max-h-10 text-(--accent)" />}
           <h3 className="text-2xl font-bold font-grotesk">{product.name}</h3>
         </div>
 
@@ -70,43 +80,29 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
           {product.description}
         </p>
 
-        <div className="space-y-1">
-          <span className="block text-3xl mb-6 font-bold font-grotesk">${product.price}</span>
-        </div>
+        {/* Price and Actions - Pushed to bottom */}
+        <div className="mt-auto pt-4">
+          <div className="mb-6">
+            <span className="block text-3xl font-bold font-grotesk">${product.price}</span>
+          </div>
 
-        {/* Quantity Selector */}
-        {/* <div className="flex items-center gap-4 mb-8 bg-(--bg-dark)/40 border border-(--text-main)/10 rounded-2xl p-2 w-fit">
+          <div className="grid grid-cols-2 gap-3">
             <button 
-                onClick={(e) => adjustQuantity(e, -1)}
-                className="w-10 h-10 flex items-center justify-center hover:bg-(--text-main)/5 rounded-xl transition-colors"
-                type="button"
+              onClick={handleBuyNow}
+              disabled={stockCount === 0}
+              className="flex items-center justify-center gap-2 bg-(--accent) text-(--bg-dark) px-6 py-4 rounded-2xl transition-all duration-300 font-bold hover:bg-(--accent) active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed disabled:grayscale cursor-pointer"
             >
-                <Minus className="w-4 h-4" />
+              <span>{stockCount === 0 ? "Unavailable" : "Buy Now"}</span>
             </button>
-            <span className="w-8 text-center font-bold font-grotesk">{quantity}</span>
+            
             <button 
-                onClick={(e) => adjustQuantity(e, 1)}
-                className="w-10 h-10 flex items-center justify-center hover:bg-(--text-main)/5 rounded-xl transition-colors"
-                type="button"
+              onClick={handleAddToCart}
+              disabled={stockCount === 0}
+              className="flex items-center justify-center gap-2 bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) px-6 py-4 rounded-2xl transition-all duration-300 font-bold border border-(--text-main)/5 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             >
-                <Plus className="w-4 h-4" />
+              <ShoppingCart className="w-5 h-5" />
             </button>
-        </div> */}
-
-        <div className="grid grid-cols-2 gap-3 mt-auto">
-          <button 
-            onClick={handleBuyNow}
-            className="flex items-center justify-center gap-2 bg-(--accent) text-(--bg-dark) px-6 py-4 rounded-2xl transition-all duration-300 font-bold hover:bg-(--accent) active:scale-[0.98]"
-          >
-            <span>Buy Now</span>
-          </button>
-          
-          <button 
-            onClick={handleAddToCart}
-            className="flex items-center justify-center gap-2 bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) px-6 py-4 rounded-2xl transition-all duration-300 font-bold border border-(--text-main)/5 active:scale-[0.98]"
-          >
-            <ShoppingCart className="w-5 h-5" />
-          </button>
+          </div>
         </div>
       </div>
     </Link>

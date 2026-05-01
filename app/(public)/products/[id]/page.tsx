@@ -7,6 +7,11 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
 
   const product = await prisma.product.findUnique({
     where: { id },
+    include: {
+      stockKeys: {
+        where: { isSold: false }
+      }
+    }
   });
 
   if (!product) {
@@ -36,13 +41,11 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
       status: "Live",
     },
     take: 4,
-    select: {
-      id: true,
-      name: true,
-      price: true,
-      image: true,
-      category: true,
-    },
+    include: {
+      stockKeys: {
+        where: { isSold: false }
+      }
+    }
   });
 
   // Serialize for client component
@@ -57,8 +60,10 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
     price: product.price,
     msrp: product.msrp || null,
     image: product.image || "",
-    features: product.features || [],
+    // features: product.features || [],
+    features: Array.isArray(product.features) ? (product.features as string[]) : [],
     systemRequirements,
+    stockKeys: product.stockKeys || [],
   };
 
   const serializedRelated = relatedProducts.map((rp) => ({
@@ -67,6 +72,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
     price: rp.price,
     image: rp.image || "",
     category: rp.category,
+    stockKeys: rp.stockKeys || [],
   }));
 
   return (

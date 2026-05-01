@@ -23,6 +23,7 @@ interface ProductData {
   image: string;
   features: string[];
   systemRequirements: { component: string; minimum: string; recommended: string }[];
+  stockKeys: any[];
 }
 
 interface RelatedProduct {
@@ -31,6 +32,7 @@ interface RelatedProduct {
   price: number;
   image: string;
   category: string;
+  stockKeys: any[];
 }
 
 export default function ProductDetailsClient({
@@ -66,6 +68,7 @@ export default function ProductDetailsClient({
   };
 
   const alreadyInCart = cart.some((item) => item.product.id === product.id);
+  const stockCount = product.stockKeys?.length || 0;
 
   return (
     <div className="min-h-screen text-(--text-main) pt-28 w-full pb-20 px-4 md:px-8 mt-20 relative">
@@ -78,16 +81,16 @@ export default function ProductDetailsClient({
           {/* Left: Product Info */}
           <div className="flex flex-col">
             <h1 className="text-4xl max-w-xl md:text-6xl font-bold font-grotesk mb-6 leading-tight">
-              
+
               {product.name.split(" ").map((word, i, arr) =>
-              i >= arr.length - 1 ? (
-                <span key={i} className="text-(--accent)">
-                  {word + " "}
-                </span>
-              ) : (
-                word + " "
-              )
-            )}
+                i >= arr.length - 1 ? (
+                  <span key={i} className="text-(--accent)">
+                    {word + " "}
+                  </span>
+                ) : (
+                  word + " "
+                )
+              )}
             </h1>
 
             <p className="text-gray-400 text-lg md:text-xl font-inter leading-relaxed mb-8">
@@ -109,21 +112,22 @@ export default function ProductDetailsClient({
             <div className="flex flex-col sm:flex-row items-center gap-6 mb-12">
               <button
                 onClick={handleAddToCart}
-                disabled={alreadyInCart}
-                className={`flex-1 w-full font-bold h-16 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(110,221,134,0.3)] flex items-center justify-center gap-3 font-grotesk text-lg group ${
-                  alreadyInCart
+                disabled={alreadyInCart || stockCount === 0}
+                className={`flex-1 w-full font-bold h-16 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(110,221,134,0.3)] flex items-center justify-center gap-3 font-grotesk text-lg group ${(alreadyInCart || stockCount === 0)
                     ? "bg-(--text-main)/10 text-gray-500 cursor-not-allowed border border-(--text-main)/5 shadow-none"
                     : isAdded
-                    ? "bg-(--text-main) text-(--bg-dark)"
-                    : "bg-(--accent) hover:bg-(--accent) text-(--bg-dark)"
-                }`}
+                      ? "bg-(--text-main) text-(--bg-dark)"
+                      : "bg-(--accent) hover:bg-(--accent) text-(--bg-dark)"
+                  }`}
               >
-                {alreadyInCart
-                  ? "Already Added"
-                  : isAdded
-                  ? "Added!"
-                  : "Add to Cart"}
-                {!isAdded && !alreadyInCart && (
+                {stockCount === 0
+                  ? "Out of Stock"
+                  : alreadyInCart
+                    ? "Already Added"
+                    : isAdded
+                      ? "Added!"
+                      : "Add to Cart"}
+                {!isAdded && !alreadyInCart && stockCount > 0 && (
                   <ShoppingCart className="w-5 h-5 transition-transform group-hover:scale-110" />
                 )}
                 {alreadyInCart && <Check className="w-5 h-5" />}
@@ -131,11 +135,22 @@ export default function ProductDetailsClient({
 
               <button
                 onClick={handleBuyNow}
-                className="flex-1 w-full bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) font-bold h-16 rounded-2xl transition-all duration-300 border border-(--text-main)/10 flex items-center justify-center gap-3 font-grotesk text-lg"
+                disabled={stockCount === 0}
+                className="flex-1 w-full bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) font-bold h-16 rounded-2xl transition-all duration-300 border border-(--text-main)/10 flex items-center justify-center gap-3 font-grotesk text-lg disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                Buy Now
+                {stockCount === 0 ? "Unavailable" : "Buy Now"}
               </button>
             </div>
+
+            {/* Low Stock Indicator */}
+            {stockCount > 0 && stockCount < 10 && (
+              <div className="mb-8 flex items-center gap-3 bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-2xl w-fit animate-in slide-in-from-left duration-500">
+                <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div>
+                <p className="text-yellow-500 text-sm font-bold uppercase tracking-widest">
+                  Limited Supply: Only {stockCount} licenses left
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Product Image */}
@@ -154,14 +169,14 @@ export default function ProductDetailsClient({
             <div className="lg:col-span-2">
               <h2 className="text-4xl md:text-5xl font-bold font-grotesk mb-8">
                 {product.featureHeading.split(" ").map((word, i, arr) =>
-              i >= arr.length - 1 ? (
-                <span key={i} className="text-(--accent)">
-                  {word + " "}
-                </span>
-              ) : (
-                word + " "
-              )
-            )}
+                  i >= arr.length - 1 ? (
+                    <span key={i} className="text-(--accent)">
+                      {word + " "}
+                    </span>
+                  ) : (
+                    word + " "
+                  )
+                )}
               </h2>
               <div className="space-y-6 text-gray-400 text-lg leading-relaxed font-inter">
                 {product.description && <p>{product.description}</p>}
@@ -256,7 +271,7 @@ export default function ProductDetailsClient({
                   key={rp.id}
                   className="bg-(--text-main)/[0.02] border border-(--text-main)/5 p-6 rounded-[35px] hover:bg-(--text-main)/[0.05] transition-all group relative"
                 >
-                  <div className="aspect-square rounded-[25px] overflow-hidden mb-6 bg-(--text-main)/[0.03]">
+                  <div className="aspect-square rounded-[25px] overflow-hidden mb-6 bg-(--text-main)/[0.03] relative">
                     {rp.image ? (
                       <img
                         src={rp.image}
@@ -268,6 +283,17 @@ export default function ProductDetailsClient({
                         No Image
                       </div>
                     )}
+
+                    {/* Stock Badge for Related */}
+                    {(rp.stockKeys?.length || 0) === 0 ? (
+                      <div className="absolute inset-0 bg-(--bg-dark)/60 flex items-center justify-center">
+                        <span className="bg-red-500 text-[8px] text-(--text-main) px-3 py-1 rounded-full font-bold uppercase tracking-widest">Sold Out</span>
+                      </div>
+                    ) : (rp.stockKeys?.length || 0) < 10 ? (
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-yellow-500 text-(--bg-dark) text-[8px] px-2 py-1 rounded-full font-bold uppercase tracking-widest">Low Stock</span>
+                      </div>
+                    ) : null}
                   </div>
                   <h3 className="text-lg font-bold font-grotesk mb-2 text-gray-200 group-hover:text-(--text-main) transition-colors line-clamp-1">
                     {rp.name}

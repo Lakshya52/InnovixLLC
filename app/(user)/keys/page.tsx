@@ -24,9 +24,9 @@ export default async function KeysPage() {
   });
 
   return (
-    <div className="mx-auto w-[90%] pb-20">
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold mb-2">Digital <span className="text-(--accent)">Vault</span></h1>
+    <div className="mx-auto w-[90%] relative pb-20">
+      <div className="mb-8 md:mb-10">
+        <h1 className="text-3xl md:text-4xl font-bold mb-2">Digital <span className="text-(--accent)">Vault</span></h1>
         <p className="text-(--text-main) text-sm max-w-xl">
           Secure, end-to-end storage for your premium software licenses. Any product keys you purchase are instantly delivered here.
         </p>
@@ -37,10 +37,10 @@ export default async function KeysPage() {
           keys.map((key) => (
             <div
               key={key.id}
-              className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-8 flex flex-col relative group hover:border-(--bg-less-dark) transition-all"
+              className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl md:rounded-[40px] p-6 md:p-8 flex flex-col relative group hover:border-(--bg-less-dark) transition-all"
             >
               <div
-                className={`absolute top-8 right-8 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
+                className={`absolute top-6 right-6 md:top-8 md:right-8 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
                   key.status === "Active"
                     ? "bg-green-400/10 text-green-400"
                     : "bg-yellow-400/10 text-yellow-400"
