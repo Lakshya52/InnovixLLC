@@ -121,7 +121,7 @@ export async function updateProductPrice(productId: string, newPrice: number) {
 
 export async function updateProduct(id: string, data: any) {
   await checkAdmin();
-  
+
   console.log("ACTUAL updateProduct CALL for ID:", id);
 
   // Explicitly extract only the fields we want to save

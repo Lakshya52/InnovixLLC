@@ -94,7 +94,7 @@ export async function login(formData: FormData) {
       sameSite: "lax",
       path: "/",
     });
-    
+
     // Check role inside the block where user is defined
     if (user.role === "ADMIN") {
       redirect("/admin/dashboard");

@@ -17,7 +17,7 @@ model User {
   name             String?
   password         String
   role             String          @default("USER") // USER or ADMIN
-  image            String?
+  image            String?         @db.LongText
   marketingEmails  Boolean         @default(false)
   transactionalEmails Boolean      @default(true)
   verificationOTP  String?
@@ -61,7 +61,7 @@ model Product {
   msrp        Float?
   status      String         @default("Live") // Live, Draft, Archive
   iconVariant String?
-  image       String? @db.Text
+  image       String? @db.LongText
   features    Json?          // Array of strings, stored as JSON for MySQL
   
   // System Requirements
@@ -139,7 +139,7 @@ model BlogPost {
   category       String   // Engineering, Infrastructure, Security, Licensing, etc.
   tags           Json?    // Array of strings, stored as JSON for MySQL
   seoDescription String? @db.Text
-  featuredImage  String? @db.Text
+  featuredImage  String? @db.LongText
   status         String   @default("DRAFT") // PUBLISHED, DRAFT, SCHEDULED
   visibility     String   @default("Public") // Public, Private
   publishDate    DateTime?

@@ -365,7 +365,7 @@ export default function EditProductClient({ product }: { product: any }) {
                         ))}
                         <div className="flex mt-4 gap-2">
                            <input type="text" value={newFeature} onChange={(e) => setNewFeature(e.target.value)} placeholder="New signal..." className="flex-1 bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none" />
-                           <button onClick={() => { if(newFeature) { setFormData({...formData, features: [...formData.features, newFeature]}); setNewFeature(""); } }} className="p-3 bg-(--accent) text-(--bg-dark) rounded-xl hover:bg-(--accent) transition-all">
+                           <button onClick={() => { if (newFeature) { setFormData({ ...formData, features: [...formData.features, newFeature] }); setNewFeature(""); } }} className="p-3 bg-(--accent) text-(--bg-dark) rounded-xl hover:bg-(--accent) transition-all">
                               <Plus size={16} />
                            </button>
                         </div>
