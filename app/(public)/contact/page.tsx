@@ -230,7 +230,7 @@ export default function ContactPage() {
               
               <div className="space-y-10">
                 {/* Information Row */}
-                <div className="flex items-center gap-6">
+                {/* <div className="flex items-center gap-6">
                   <div className="w-14 h-14 rounded-2xl bg-(--text-main)/5 flex items-center justify-center text-gray-400">
                     <Phone size={24} />
                   </div>
@@ -239,7 +239,7 @@ export default function ContactPage() {
                     <p className="sm:text-xl font-bold font-grotesk tracking-tight">+1 (800) 555-TECH</p>
                     <p className="text-[10px] text-gray-500 font-inter mt-1">Available 24/7 for Enterprise Clients</p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex items-center gap-6">
                   <div className="w-14 h-14 rounded-2xl bg-(--text-main)/5 flex items-center justify-center text-gray-400">
@@ -247,8 +247,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="text-[10px] text-(--accent) font-bold uppercase tracking-[0.2em] mb-1">Technical Support</p>
-                    <p className="sm:text-xl font-bold font-grotesk tracking-tight">support@innovixllc.com</p>
-                    <p className="text-[10px] text-gray-500 font-inter mt-1">Average response: 2 Hours</p>
+                    <p className="sm:text-xl font-bold font-grotesk tracking-tight">info@innovixllc.us</p>
+                    {/* <p className="text-[10px] text-gray-500 font-inter mt-1">Average response: 2 Hours</p> */}
                   </div>
                 </div>
 
@@ -259,7 +259,7 @@ export default function ContactPage() {
                   <div>
                     <p className="text-[10px] text-(--accent) font-bold uppercase tracking-[0.2em] mb-1">Microsoft Partnership</p>
                     <p className="sm:text-xl font-bold font-grotesk tracking-tight">Certified Digital Distributor</p>
-                    <p className="text-[10px] text-gray-500 font-inter mt-1">Verification ID: MS-INV-9920-X</p>
+                    {/* <p className="text-[10px] text-gray-500 font-inter mt-1">Verification ID: MS-INV-9920-X</p> */}
                   </div>
                 </div>
               </div>

@@ -7,15 +7,16 @@ export default function TermsOfService() {
         <h1 className="text-4xl md:text-5xl font-bold mb-8 bg-gradient-to-r from-(--accent) to-emerald-400 bg-clip-text text-transparent">
           Website Terms of Use
         </h1>
-        <p className="text-(--text-dim) mb-8">Last Updated: April 27, 2026</p>
-        <p>The Innovix LLC website located at https://www.innovixllc.com/ is a copyrighted work belonging to Innovix LLC. Certain features of the Site may be subject to additional guidelines, terms, or rules, which will be posted on the Site in connection with such features.</p><br />
+        <p className="text-(--text-dim) mb-8">Version 1.0</p>
+        {/* <p className="text-(--text-dim) mb-8">Last Updated: April 27, 2026</p> */}
+        <p>The Innovix LLC website located at https://www.innovixllc.us/ is a copyrighted work belonging to Innovix LLC. Certain features of the Site may be subject to additional guidelines, terms, or rules, which will be posted on the Site in connection with such features.</p><br />
         <p>All such additional terms, guidelines, and rules are incorporated by reference into these Terms.</p><br />
         <p>These Terms of Use described the legally binding terms and conditions that oversee your use of the Site. BY LOGGING INTO THE SITE, YOU ARE BEING COMPLIANT THAT THESE TERMS and you represent that you have the authority and capacity to enter into these Terms. YOU SHOULD BE AT LEAST 18 YEARS OF AGE TO ACCESS THE SITE. IF YOU DISAGREE WITH ALL OF THE PROVISION OF THESE TERMS, DO NOT LOG INTO AND/OR USE THE SITE.</p><br />
         <p>These terms require the use of arbitration Section 10.2 on an individual basis to resolve disputes and also limit the remedies available to you in the event of a dispute.</p> <br />
 
         <section className="space-y-8 text-sm md:text-base leading-relaxed text-(--text-main)/80">
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">1. Access to the Site</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Access to the Site</h2>
             <p><b>Subject to these Terms.</b> Company grants you a non-transferable, non-exclusive, revocable, limited license to access the Site solely for your own personal, non-commercial use.</p> <br />
             <p><b>Certain Restrictions.</b> The rights approved to you in these Terms are subject to the following restrictions: (a) you shall not sell, rent, lease, transfer, assign, distribute, host, or otherwise commercially exploit the Site; (b) you shall not change, make derivative works of, disassemble, reverse compile or reverse engineer any part of the Site; (c) you shall not access the Site in order to build a similar or competitive website; and (d) except as expressly stated herein, no part of the Site may be copied, reproduced, distributed, republished, downloaded, displayed, posted or transmitted in any form or by any means unless otherwise indicated, any future release, update, or other addition to functionality of the Site shall be subject to these Terms.  All copyright and other proprietary notices on the Site must be retained on all copies thereof.</p> <br />
             <p>Company reserves the right to change, suspend, or cease the Site with or without notice to you.  You approved that Company will not be held liable to you or any third-party for any change, interruption, or termination of the Site or any part.</p> <br />
@@ -24,7 +25,7 @@ export default function TermsOfService() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">2. Third-Party Links & Ads; Other Users</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Third-Party Links & Ads; Other Users</h2>
             <p>
               <b>Third-Party Links & Ads.</b>
               The Site may contain links to third-party websites and services, and/or display advertisements for third parties.  Such Third-Party Links & Ads are not under the control of Company, and Company is not responsible for any Third-Party Links & Ads.  Company provides access to these Third-Party Links & Ads only as a convenience to you, and does not review, approve, monitor, endorse, warrant, or make any representations with respect to Third-Party Links & Ads.  You use all Third-Party Links & Ads at your own risk and should apply a suitable level of caution and discretion in doing so. When you click on any of the Third-Party Links & Ads, the applicable third party's terms and policies apply, including the third party's privacy and data gathering practices.
@@ -42,7 +43,7 @@ export default function TermsOfService() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">3. Disclaimers</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Disclaimers</h2>
             <p>
               The site is provided on an "as-is" and "as available" basis, and company and our suppliers expressly disclaim any and all warranties and conditions of any kind, whether express, implied, or statutory, including all warranties or conditions of merchantability, fitness for a particular purpose, title, quiet enjoyment, accuracy, or non-infringement.  We and our suppliers make not guarantee that the site will meet your requirements, will be available on an uninterrupted, timely, secure, or error-free basis, or will be accurate, reliable, free of viruses or other harmful code, complete, legal, or safe.  If applicable law requires any warranties with respect to the site, all such warranties are limited in duration to ninety (90) days from the date of first use.
             </p><br />
@@ -52,7 +53,7 @@ export default function TermsOfService() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">4. Limitation on Liability</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Limitation on Liability</h2>
             <p>
               To the maximum extent permitted by law, in no event shall company or our suppliers be liable to you or any third-party for any lost profits, lost data, costs of procurement of substitute products, or any indirect, consequential, exemplary, incidental, special or punitive damages arising from or relating to these terms or your use of, or incapability to use the site even if company has been advised of the possibility of such damages.  Access to and use of the site is at your own discretion and risk, and you will be solely responsible for any damage to your device or computer system, or loss of data resulting therefrom.
             </p>
@@ -68,7 +69,7 @@ export default function TermsOfService() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">5. Copyright Policy.</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Copyright Policy.</h2>
             <p>
               Company respects the intellectual property of others and asks that users of our Site do the same.  In connection with our Site, we have adopted and implemented a policy respecting copyright law that provides for the removal of any infringing materials and for the termination of users of our online Site who are repeated infringers of intellectual property rights, including copyrights.  If you believe that one of our users is, through the use of our Site, unlawfully infringing the copyright(s) in a work, and wish to have the allegedly infringing material removed, the following information in the form of a written notification (pursuant to 17 U.S.C. § 512(c)) must be provided to our designated Copyright Agent:
             </p> <br />
@@ -85,7 +86,7 @@ export default function TermsOfService() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">6. General</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">General</h2>
             <p>
               These Terms are subject to occasional revision, and if we make any substantial changes, we may notify you by sending you an e-mail to the last e-mail address you provided to us and/or by prominently posting notice of the changes on our Site.  You are responsible for providing us with your most current e-mail address.  In the event that the last e-mail address that you have provided us is not valid our dispatch of the e-mail containing such notice will nonetheless constitute effective notice of the changes described in the notice.  Any changes to these Terms will be effective upon the earliest of thirty (30) calendar days following our dispatch of an e-mail notice to you or thirty (30) calendar days following our posting of notice of the changes on our Site.  These changes will be effective immediately for new users of our Site.  Continued use of our Site following notice of such changes shall indicate your acknowledgement of such changes and agreement to be bound by the terms and conditions of such changes. Dispute Resolution. Please read this Arbitration Agreement carefully. It is part of your contract with Company and affects your rights.  It contains procedures for MANDATORY BINDING ARBITRATION AND A CLASS ACTION WAIVER.
             </p><br />
@@ -145,7 +146,7 @@ export default function TermsOfService() {
               Anyhow the foregoing, either party may seek emergency equitable relief before a state or federal court in order to maintain the status quo pending arbitration.  A request for interim measures shall not be deemed a waiver of any other rights or obligations under this Arbitration Agreement.
             </p> <br />
             <p>
-              <b>Claims Not Subject to Arbitration.</b>
+              <b>Claims Not Subject to Arbitration. </b>
               Notwithstanding the foregoing, claims of defamation, violation of the Computer Fraud and Abuse Act, and infringement or misappropriation of the other party's patent, copyright, trademark or trade secrets shall not be subject to this Arbitration Agreement
             </p> <br />
             <p>
@@ -180,31 +181,28 @@ export default function TermsOfService() {
           </div>
 
           <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">7. Contact Information</h2>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Contact Information</h2>
             <p>
               Address: 117 S LEXINGTON ST STE 100 HARRISONVILLE, MO 64701-2444
             </p>
             <p>
-              Email: info@innovixllc.com
-            </p>
-            <p>
-              Address: 117 S LEXINGTON ST STE 100 HARRISONVILLE, MO 64701-2444
+              Email: info@innovixllc.us
             </p>
           </div>
 
-          <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">8. Governing Law</h2>
+          {/* <div>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Governing Law</h2>
             <p>
               These terms are governed by the laws of the jurisdiction in which InnovixLLC operates.
             </p>
-          </div>
+          </div> */}
 
-          <div>
-            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">9. Changes to Terms</h2>
+          {/* <div>
+            <h2 className="text-2xl font-semibold text-(--text-main) mb-4">Changes to Terms</h2>
             <p>
               We may update these Terms of Service from time to time. Your continued use of the website after changes are posted constitutes acceptance of the new terms.
             </p>
-          </div>
+          </div> */}
         </section>
       </div>
     </div>

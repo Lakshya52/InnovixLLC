@@ -41,6 +41,7 @@ export async function getBlogs(page = 1, perPage = 6) {
       updatedAt: p.updatedAt.toISOString(),
       publishDate: p.publishDate?.toISOString() || null,
       tags: Array.isArray(p.tags) ? (p.tags as string[]) : [],
+      keyTakeaways: Array.isArray(p.keyTakeaways) ? (p.keyTakeaways as string[]) : [],
     })),
     total,
     pages: Math.ceil(total / perPage),
@@ -54,6 +55,7 @@ export async function createBlogPost(data: {
   summary?: string;
   category: string;
   tags: string[];
+  keyTakeaways: string[];
   seoDescription?: string;
   featuredImage?: string;
   status: string;
@@ -79,6 +81,7 @@ export async function createBlogPost(data: {
       summary: data.summary || null,
       category: data.category,
       tags: data.tags,
+      keyTakeaways: data.keyTakeaways,
       seoDescription: data.seoDescription || null,
       featuredImage: data.featuredImage || null,
       status: data.status,
@@ -101,6 +104,7 @@ export async function updateBlogPost(
     summary?: string;
     category?: string;
     tags?: string[];
+    keyTakeaways?: string[];
     seoDescription?: string;
     featuredImage?: string;
     status?: string;

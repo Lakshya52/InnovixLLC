@@ -57,13 +57,13 @@ export default function HeroProduct() {
               <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between w-full gap-5 lg:gap-0">
 
                 <div className="flex flex-wrap sm:flex-nowrap gap-3 lg:gap-5 w-full lg:w-auto">
-                  <Link href="/products" className="button-green text-sm lg:text-base justify-center flex-1 sm:flex-none">Buy Now <ArrowRight className="w-4 h-4 lg:w-6 lg:h-6" /></Link>
+                  <Link href="https://innovixllc.us/products/bdf4d959-4919-11f1-9b3a-14e8d4bdfad6" className="button-green text-sm lg:text-base justify-center flex-1 sm:flex-none">Buy Now <ArrowRight className="w-4 h-4 lg:w-6 lg:h-6" /></Link>
 
                   {/* bordered button */}
-                  <Link href="/products" className="button-dark text-sm lg:text-base justify-center flex-1 sm:flex-none">View More</Link>
+                  <Link href="https://innovixllc.us/products/bdf4d959-4919-11f1-9b3a-14e8d4bdfad6" className="button-dark text-sm lg:text-base justify-center flex-1 sm:flex-none">View More</Link>
                 </div>
                 {/* price of the product in dollars */}
-                <div className="flex items-center justify-center gap-2 text-(--accent) font-inter text-3xl lg:text-4xl rounded-full w-fit font-bold">$1499.00</div>
+                <div className="flex items-center justify-center gap-2 text-(--accent) font-inter text-3xl lg:text-4xl rounded-full w-fit font-bold">$6155.00</div>
               </div>
             </div>
 

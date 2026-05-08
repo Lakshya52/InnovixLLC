@@ -187,6 +187,17 @@ export async function updateProduct(id: string, data: any) {
 export async function deleteProduct(id: string) {
   await checkAdmin();
 
+  // First, delete associated InventoryKeys
+  await prisma.inventoryKey.deleteMany({
+    where: { productId: id }
+  });
+
+  // Second, detach Orders (set productId to null)
+  await prisma.order.updateMany({
+    where: { productId: id },
+    data: { productId: null }
+  });
+
   const product = await prisma.product.delete({
     where: { id }
   });

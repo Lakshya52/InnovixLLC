@@ -70,13 +70,35 @@ export default function EditProductClient({ product }: { product: any }) {
    const [newFeature, setNewFeature] = useState("");
 
    const handleSave = async (status: string) => {
+      // Pre-flight Database Limit Checks
+      if (!formData.name.trim()) {
+         alert("Database Error: Product Title is required.");
+         return;
+      }
+      if (formData.name.length > 191) {
+         alert(`Database Error: Product Title is too long (${formData.name.length}/191 characters).`);
+         return;
+      }
+      if (formData.sku && formData.sku.length > 191) {
+         alert(`Database Error: SKU is too long (${formData.sku.length}/191 characters).`);
+         return;
+      }
+      if (formData.shortDescription && formData.shortDescription.length > 191) {
+         alert(`Database Error: Short Description is too long (${formData.shortDescription.length}/191 characters). Please shorten it.`);
+         return;
+      }
+      if (formData.featureHeading && formData.featureHeading.length > 191) {
+         alert(`Database Error: Feature Heading is too long (${formData.featureHeading.length}/191 characters).`);
+         return;
+      }
+
       setLoading(true);
       try {
          await updateProduct(product.id, { ...formData, status });
          router.push("/admin/inventory");
-      } catch (err) {
+      } catch (err: any) {
          console.error(err);
-         alert("Failed to update product");
+         alert(`Server Error: ${err.message || "Failed to update product. This might be a database constraint error."}`);
       } finally {
          setLoading(false);
       }
@@ -109,7 +131,7 @@ export default function EditProductClient({ product }: { product: any }) {
 
 
    return (
-      <div className="flex min-h-screen bg-(--bg-dark) text-(--text-main) p-10">
+      <div className="flex min-h-screen bg-(--bg-less-dark) text-(--text-main) p-10">
          <main className="flex-grow max-w-[1400px] mx-auto w-full">
             {/* Title Section */}
             <div className="flex items-center justify-between mb-10">
@@ -118,7 +140,7 @@ export default function EditProductClient({ product }: { product: any }) {
                      Inventory <ChevronRight size={12} /> <span className="text-(--accent)">Edit Product</span>
                   </div>
                   <h1 className="text-5xl font-bold tracking-tight">Modify <span className="text-(--accent)">Product</span></h1>
-                  <p className="text-(--text-main) text-sm mt-3 max-w-xl">Editing: {product.name}. ID: {product.id}</p>
+                  <p className="text-(--text-main) text-sm mt-3 max-w-xl">Editing: {product.name} <br /> ID: {product.id}</p>
                </div>
                <div className="flex items-center gap-4">
                   <button
@@ -166,10 +188,11 @@ export default function EditProductClient({ product }: { product: any }) {
                               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                               className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all appearance-none cursor-pointer"
                            >
-                              <option>OS</option>
-                              <option>Security & Privacy</option>
-                              <option>Enterprise</option>
-                              <option>Productivity</option>
+                               <option value="OS">OS</option>
+                               <option value="Office">Office</option>
+                               <option value="Security">Security</option>
+                               <option value="Enterprise">Enterprise</option>
+                               <option value="Productivity">Productivity</option>
                            </select>
                         </div>
                         <div>

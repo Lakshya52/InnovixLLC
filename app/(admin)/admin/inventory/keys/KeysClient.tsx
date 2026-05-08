@@ -204,32 +204,34 @@ export default function KeysClient({
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-          <div className="relative flex-1 xl:flex-none">
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full xl:w-auto">
+          <div className="relative flex-1 md:min-w-[180px]">
+            <Filter className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             <select 
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full appearance-none bg-(--bg-less-dark)/20 border border-(--bg-less-dark) text-(--text-main) px-6 py-4 rounded-2xl focus:outline-none focus:border-(--accent)/40 transition-all text-sm font-bold cursor-pointer pr-12"
+              className="w-full appearance-none bg-(--bg-less-dark)/30 border border-(--bg-less-dark) text-(--text-main) pl-12 pr-10 py-4 rounded-2xl focus:outline-none focus:border-(--accent)/50 transition-all text-xs font-bold cursor-pointer hover:border-(--accent)/30"
             >
               <option value="All">All Status</option>
-              <option value="Available">Available</option>
-              <option value="Sold">Sold</option>
+              <option value="Available">Available Only</option>
+              <option value="Sold">Sold / Used</option>
             </select>
-            <Filter className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none" size={16} />
+            <ArrowUpDown className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none" size={12} />
           </div>
 
-          <div className="relative flex-1 xl:flex-none">
+          <div className="relative flex-1 md:min-w-[240px]">
+            <Package className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
             <select 
               value={productFilter}
               onChange={(e) => setProductFilter(e.target.value)}
-              className="w-full appearance-none bg-(--bg-less-dark)/20 border border-(--bg-less-dark) text-(--text-main) px-6 py-4 rounded-2xl focus:outline-none focus:border-(--accent)/40 transition-all text-sm font-bold cursor-pointer pr-12"
+              className="w-full appearance-none bg-(--bg-less-dark)/30 border border-(--bg-less-dark) text-(--text-main) pl-12 pr-10 py-4 rounded-2xl focus:outline-none focus:border-(--accent)/50 transition-all text-xs font-bold cursor-pointer hover:border-(--accent)/30"
             >
               <option value="All Products">All Products</option>
               {products.map(p => (
                 <option key={p.id} value={p.id}>{p.name}</option>
               ))}
             </select>
-            <Package className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none" size={16} />
+            <ArrowUpDown className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-600 pointer-events-none" size={12} />
           </div>
         </div>
       </div>

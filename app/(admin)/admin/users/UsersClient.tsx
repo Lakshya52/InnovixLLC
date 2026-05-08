@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Users,
   Search,
@@ -19,6 +19,7 @@ import {
   Activity
 } from "lucide-react";
 import * as XLSX from "xlsx";
+import { blockUser, deleteUser } from "@/actions/user";
 
 interface User {
   id: string;
@@ -26,6 +27,8 @@ interface User {
   name: string | null;
   role: string;
   image: string | null;
+  lastActive: Date | string;
+  isBlocked: boolean;
   createdAt: Date | string;
 }
 
@@ -100,6 +103,20 @@ export default function UsersClient({ initialUsers, totalUserCount }: UsersClien
     XLSX.writeFile(wb, `Innovix_Users_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
+  const handleBlock = async (userId: string, currentStatus: boolean) => {
+    if (!confirm(`Are you sure you want to ${currentStatus ? 'unblock' : 'block'} this user?`)) return;
+    const res = await blockUser(userId, !currentStatus);
+    if (res.error) alert(res.error);
+    else window.location.reload();
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm("Are you sure you want to PERMANENTLY delete this user? This cannot be undone.")) return;
+    const res = await deleteUser(userId);
+    if (res.error) alert(res.error);
+    else window.location.reload();
+  };
+
   return (
     <div className="space-y-6">
       {/* Search and Filters */}
@@ -155,6 +172,9 @@ export default function UsersClient({ initialUsers, totalUserCount }: UsersClien
                 <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666] cursor-pointer hover:text-(--accent) transition-colors" onClick={() => handleSort('createdAt')}>
                   <div className="flex items-center gap-2">Joined Date <ArrowUpDown size={12} /></div>
                 </th>
+                <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666] cursor-pointer hover:text-(--accent) transition-colors" onClick={() => handleSort('lastActive')}>
+                  <div className="flex items-center gap-2">Last Active <ArrowUpDown size={12} /></div>
+                </th>
                 <th className="px-8 py-6 text-[10px] font-bold uppercase tracking-widest text-[#666] text-right">Actions</th>
               </tr>
             </thead>
@@ -186,24 +206,45 @@ export default function UsersClient({ initialUsers, totalUserCount }: UsersClien
                     </span>
                   </td>
                   <td className="px-8 py-6">
-                    <div className="flex items-center gap-2 text-green-400 font-bold text-[11px] uppercase tracking-tighter">
-                      <Activity size={12} className="animate-pulse" />
-                      Active
+                    <div className={`flex items-center gap-2 font-bold text-[11px] uppercase tracking-tighter ${user.isBlocked ? 'text-red-500' : 'text-green-400'}`}>
+                      {user.isBlocked ? (
+                        <>
+                          <Ban size={12} />
+                          Blocked
+                        </>
+                      ) : (
+                        <>
+                          <Activity size={12} className="animate-pulse" />
+                          Active
+                        </>
+                      )}
                     </div>
                   </td>
                   <td className="px-8 py-6 text-gray-500 font-medium text-sm">
-                    {new Date(user.createdAt).toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' })}
+                    <span suppressHydrationWarning>
+                      {new Date(user.createdAt).toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' })}
+                    </span>
+                  </td>
+                  <td className="px-8 py-6 text-gray-500 font-medium text-sm">
+                    <span suppressHydrationWarning>
+                      {new Date(user.lastActive).toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    </span>
                   </td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button className="p-2 text-gray-500 hover:text-(--accent) hover:bg-(--accent)/10 rounded-xl transition-all cursor-pointer" title="Edit Permissions">
-                        <Edit3 size={18} />
-                      </button>
-                      <button className="p-2 text-gray-500 hover:text-yellow-500 hover:bg-yellow-500/10 rounded-xl transition-all cursor-pointer" title="Reset Credentials">
-                        <Key size={18} />
-                      </button>
-                      <button className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer" title="Suspend Account">
+                      <button 
+                        onClick={() => handleBlock(user.id, user.isBlocked)}
+                        className={`p-2 rounded-xl transition-all cursor-pointer ${user.isBlocked ? 'text-green-500 bg-green-500/10 hover:bg-green-500/20' : 'text-yellow-500 bg-yellow-500/10 hover:bg-yellow-500/20'}`} 
+                        title={user.isBlocked ? "Unblock Account" : "Block Account"}
+                      >
                         <Ban size={18} />
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteUser(user.id)}
+                        className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer" 
+                        title="Delete User"
+                      >
+                        <Trash2 size={18} />
                       </button>
                     </div>
                   </td>

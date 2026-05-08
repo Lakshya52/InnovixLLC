@@ -85,6 +85,10 @@ export async function login(formData: FormData) {
       return { error: "Invalid credentials" };
     }
 
+    if (user.isBlocked) {
+      return { error: "Your account has been suspended. Please contact support." };
+    }
+
     const session = await encrypt({ id: user.id, email: user.email, role: user.role });
 
     const cookieStore = await cookies();
@@ -137,6 +141,9 @@ export async function forgotPassword(formData: FormData) {
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (user) {
+      if (user.isBlocked) {
+        return { error: "This account has been suspended. Password reset is not available." };
+      }
       const token = crypto.randomBytes(32).toString("hex");
       const expiry = new Date(Date.now() + 3600000);
 
@@ -187,6 +194,10 @@ export async function resetPassword(formData: FormData) {
 
     if (!user) {
       return { error: "Invalid or expired reset token" };
+    }
+
+    if (user.isBlocked) {
+      return { error: "This account has been suspended." };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

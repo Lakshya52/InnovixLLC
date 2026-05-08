@@ -1,0 +1,84 @@
+================================================================================
+INNOVIX LLC - ADMIN DASHBOARD MANAGEMENT GUIDE
+================================================================================
+
+This guide provides the necessary steps to access and manage the admin dashboard 
+features for the InnovixLLC platform.
+
+--------------------------------------------------------------------------------
+1. ACCESSING THE DASHBOARD
+--------------------------------------------------------------------------------
+- URL: /admin
+- Requirement: You must be logged in with an account that has the "ADMIN" role.
+- If you are not an admin, you will be redirected to the login page or home.
+
+--------------------------------------------------------------------------------
+2. PRODUCT INVENTORY MANAGEMENT
+--------------------------------------------------------------------------------
+Location: /admin/inventory
+
+A. Creating a New Product:
+   1. Click the "Add New Product" button or go to /admin/inventory/new.
+   2. Fill in basic info (Title, Category, SKU, Description).
+   3. Set the Selling Price and MSRP.
+   4. Add Features (Trust signals) and System Requirements.
+   5. Upload a product image (Max 5MB) or paste an image URL.
+   6. Enter initial license keys (one per line) in the "Inventory Keys" section.
+   7. Click "Publish Product" to make it live.
+
+B. Editing a Product:
+   1. In the Inventory list, click the "Edit" icon (pencil) next to a product.
+   2. Update any fields and click "Save Changes".
+
+C. Deleting a Product:
+   1. Click the "Trash" icon next to the product.
+   2. Confirm the deletion.
+   *Note: This will also delete associated unsold keys and detach order history. if you dont want to delete the product just set status to draft. 
+   The products which are in draft will not be visible in the website.
+
+--------------------------------------------------------------------------------
+3. DIGITAL KEY (STOCK) MANAGEMENT
+--------------------------------------------------------------------------------
+Location: /admin/inventory
+
+A. Adding New Keys to Existing Products:
+   1. In the Inventory list, find your product and click "Manage Keys" (or the Plus icon).
+   2. In the modal, paste your new keys (one per line).
+   3. Click "Confirm Upload".
+
+B. Clearing Unsold Stock:
+   1. Click "Manage Keys" on a product.
+   2. In the "Danger Zone" section, click "Clear All Unsold Stock".
+   3. This is useful for rotating keys or fixing bulk upload errors.
+
+--------------------------------------------------------------------------------
+4. BLOG MANAGEMENT
+--------------------------------------------------------------------------------
+Location: /admin/blogs
+
+A. Creating a Blog Post:
+   1. Go to /admin/blogs/new.
+   2. Enter Title and Content (Supports Markdown).
+   3. Add Tags and "Key Takeaways" (These appear at the top of the blog).
+   4. Upload a featured image.
+   5. Set status to "PUBLISHED" or "DRAFT".
+
+B. Editing a Blog Post:
+   1. Click the "Edit" icon in the blog list.
+   2. Update content, takeaways, or visibility and save.
+
+--------------------------------------------------------------------------------
+5. MONITORING & STATS
+--------------------------------------------------------------------------------
+- Stats: Use the top cards in the Inventory page to monitor Total Inventory, 
+  Active Listings, and Low Stock Alerts (< 10 keys).
+- System Logs: View the "System Log" at the bottom of the Inventory page to 
+  track admin actions (Price updates, new stock, product creation).
+
+--------------------------------------------------------------------------------
+TECH SUPPORT NOTE:
+--------------------------------------------------------------------------------
+If you encounter "Permission Denied" or database errors:
+1. Ensure your database is synced (npx prisma db push).
+2. Ensure you have the correct ADMIN role assigned to your email in the database.
+================================================================================

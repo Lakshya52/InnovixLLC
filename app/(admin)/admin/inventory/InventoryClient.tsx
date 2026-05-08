@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Plus,
   Filter,
@@ -39,6 +39,7 @@ interface Product {
   status: string;
   iconVariant: string | null;
   stockKeys: InventoryKey[];
+  image: string | null;
   updatedAt: string;
 }
 
@@ -57,17 +58,31 @@ export default function InventoryClient({
   initialLogs: Log[]
 }) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [filter, setFilter] = useState("All Software");
+  const [filter, setFilter] = useState("All Products");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const filteredProducts = useMemo(() => {
+    setCurrentPage(1); // Reset to page 1 when filter or search changes
     return products.filter(p => {
-      const matchesFilter = filter === "All Software" || p.category.toLowerCase() === filter.toLowerCase();
+      const matchesFilter = filter === "All Products" || p.category.toLowerCase() === filter.toLowerCase();
       const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         p.id.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesFilter && matchesSearch;
     });
   }, [products, filter, searchQuery]);
+
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredProducts, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   const stats = {
     totalInventory: products.reduce((acc, p) => acc + p.stockKeys.length, 0),
@@ -105,12 +120,12 @@ export default function InventoryClient({
       const updatedKeys = await getProductKeys(selectedProductForStock.id);
       setCurrentKeys(updatedKeys as any);
       setNewKeysInput("");
-      
+
       // Update local products state
-      setProducts(prev => prev.map(p => 
-        p.id === selectedProductForStock.id 
-        ? { ...p, stockKeys: updatedKeys as any } 
-        : p
+      setProducts(prev => prev.map(p =>
+        p.id === selectedProductForStock.id
+          ? { ...p, stockKeys: updatedKeys as any }
+          : p
       ));
     } catch (err) {
       alert("Failed to add stock");
@@ -124,13 +139,13 @@ export default function InventoryClient({
     try {
       await deleteStockKey(keyId);
       setCurrentKeys(prev => prev.filter(k => k.id !== keyId));
-      
+
       // Update local products state
       if (selectedProductForStock) {
-        setProducts(prev => prev.map(p => 
-          p.id === selectedProductForStock.id 
-          ? { ...p, stockKeys: p.stockKeys.filter(k => k.id !== keyId) } 
-          : p
+        setProducts(prev => prev.map(p =>
+          p.id === selectedProductForStock.id
+            ? { ...p, stockKeys: p.stockKeys.filter(k => k.id !== keyId) }
+            : p
         ));
       }
     } catch (err) {
@@ -143,12 +158,12 @@ export default function InventoryClient({
     try {
       await clearUnsoldStock(selectedProductForStock.id);
       setCurrentKeys([]);
-      
+
       // Update local products state
-      setProducts(prev => prev.map(p => 
-        p.id === selectedProductForStock.id 
-        ? { ...p, stockKeys: [] } 
-        : p
+      setProducts(prev => prev.map(p =>
+        p.id === selectedProductForStock.id
+          ? { ...p, stockKeys: [] }
+          : p
       ));
     } catch (err) {
       alert("Failed to clear stock");
@@ -175,10 +190,10 @@ export default function InventoryClient({
           <p className="text-(--text-main) text-sm">Manage digital license keys and product listings for the enterprise software catalog.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-6 py-3 rounded-2xl font-bold text-sm hover:bg-[#222] transition-all cursor-pointer">
+          {/* <button className="flex items-center gap-2 bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-6 py-3 rounded-2xl font-bold text-sm hover:bg-[#222] transition-all cursor-pointer">
             <Filter size={18} />
             Filters
-          </button>
+          </button> */}
           <Link
             href="/admin/inventory/keys"
             className="flex items-center gap-2 bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) px-6 py-3 rounded-2xl font-bold text-sm hover:bg-[#222] transition-all cursor-pointer"
@@ -247,19 +262,34 @@ export default function InventoryClient({
       {/* Main Catalog Container */}
       <div className="bg-(--bg-dark) border border-(--bg-dark) rounded-[40px] p-8 mb-12">
         <div className="flex items-center justify-between mb-10">
-          <h2 className="text-2xl font-bold">Product Catalog</h2>
-          <div className="flex bg-(--bg-dark) p-1.5 rounded-2xl border border-(--bg-dark)">
-            {["All Software", "OS", "Office", "Security"].map((cat) => (
+          <div className="flex items-center gap-8">
+            <h2 className="text-2xl font-bold">Product Catalog</h2>
+          </div>
+          <div className="flex bg-(--bg-dark) p-1.5 rounded-2xl border border-(--bg-less-dark)">
+            {["All Products", "OS", "Office", "Security", "Enterprise", "Productivity"].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setFilter(cat)}
-                className={`px-5 py-2 rounded-xl text-xs font-bold transition-all ${filter === cat ? 'bg-(--bg-dark) text-(--accent)' : 'text-gray-500 hover:text-gray-300'}`}
+                className={`px-5 py-2 rounded-xl cursor-pointer text-xs font-bold transition-all ${filter === cat ? 'bg-(--accent)  text-(--bg-dark)' : 'text-gray-500 hover:text-gray-300'}`}
               >
                 {cat}
               </button>
             ))}
           </div>
         </div>
+        {/* serach bar */}
+        {/* <div className="flex items-center justify-center mb-10 p-8 bg-(--bg-dark) rounded-[40px]"> */}
+        <div className="relative w-full my-10">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-(--bg-dark) border border-(--bg-less-dark) rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:border-(--accent)/50 transition-all"
+          />
+        </div>
+        {/* </div> */}
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -274,8 +304,8 @@ export default function InventoryClient({
               </tr>
             </thead>
             <tbody className="divide-y divide-(--bg-dark)">
-              {filteredProducts.map((p) => {
-                const stockCount = p.stockKeys.length;
+              {paginatedProducts.map((p) => {
+                const stockCount = p.stockKeys?.length || 0;
                 const progressWidth = Math.min(100, (stockCount / 500) * 100);
 
                 return (
@@ -283,7 +313,11 @@ export default function InventoryClient({
                     <td className="px-6 py-8">
                       <div className="flex items-center gap-4">
                         <div className="w-14 h-14 bg-(--bg-dark) rounded-2xl flex items-center justify-center border border-(--bg-less-dark) relative overflow-hidden">
-                          <Monitor size={24} className="text-(--accent)/50" />
+                          {p.image ? (
+                            <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <Monitor size={24} className="text-(--accent)/50" />
+                          )}
                         </div>
                         <div>
                           <p className="font-bold text-(--text-main) text-lg leading-tight">{p.name}</p>
@@ -314,11 +348,11 @@ export default function InventoryClient({
                             style={{ width: `${progressWidth}%` }}
                           ></div>
                         </div>
-                        <button 
+                        <button
                           onClick={() => openStockModal(p)}
                           className="mt-2 text-[9px] font-bold text-(--accent) hover:underline flex items-center gap-1 uppercase tracking-tighter cursor-pointer"
                         >
-                          <Plus size={10} /> Manage Quantities
+                          <Plus size={10} /> Manage Keys
                         </button>
                       </div>
                     </td>
@@ -331,13 +365,13 @@ export default function InventoryClient({
                     </td>
                     <td className="px-6 py-8 text-right">
                       <div className="flex items-center justify-end gap-3 text-gray-600">
-                        <Link 
+                        <Link
                           href={`/admin/inventory/edit/${p.id}`}
                           className="p-2 hover:bg-(--bg-dark) hover:text-(--accent) rounded-xl transition-all cursor-pointer border border-(--bg-dark)"
                         >
                           <Edit2 size={18} />
                         </Link>
-                        <button 
+                        <button
                           onClick={() => handleDelete(p.id, p.name)}
                           className="p-2 hover:bg-(--bg-dark) hover:text-red-500 rounded-xl transition-all cursor-pointer border border-(--bg-dark)"
                         >
@@ -354,16 +388,41 @@ export default function InventoryClient({
 
         {/* Pagination Footer */}
         <div className="mt-8 flex items-center justify-between text-[#666] text-xs font-bold uppercase tracking-widest">
-          <p>Showing 1 - {filteredProducts.length} of {products.length} products</p>
+          <p>Showing {Math.min(filteredProducts.length, (currentPage - 1) * itemsPerPage + 1)} - {Math.min(filteredProducts.length, currentPage * itemsPerPage)} of {filteredProducts.length} products</p>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <span>Rows per page:</span>
-              <span className="text-(--text-main)">10</span>
-              <ChevronRight size={14} className="rotate-90" />
+              <span className="text-(--text-main)">
+                <select className="px-3 py-1 rounded-lg bg-(--bg-dark) border border-(--bg-less-dark) cursor-pointer" name="rowsPerPage" id="rowsPerPage" value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+                {/* {itemsPerPage} */}
+              </span>
+              {/* <ChevronRight size={14} className="rotate-90" /> */}
             </div>
             <div className="flex items-center gap-4">
-              <button className="p-1 px-3 rounded-lg hover:bg-(--bg-dark) transition-all"><ChevronLeft size={16} /></button>
-              <button className="p-1 px-3 rounded-lg hover:bg-(--bg-dark) transition-all"><ChevronRight size={16} /></button>
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="p-1.5 px-3 rounded-xl hover:bg-(--bg-less-dark) hover:text-(--accent) transition-all disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="text-(--text-main)">{currentPage}</span>
+                <span className="text-gray-600">/</span>
+                <span>{totalPages || 1}</span>
+              </div>
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages || totalPages === 0}
+                className="p-1.5 px-3 rounded-xl hover:bg-(--bg-less-dark) hover:text-(--accent) transition-all disabled:opacity-20 disabled:cursor-not-allowed cursor-pointer"
+              >
+                <ChevronRight size={16} />
+              </button>
             </div>
           </div>
         </div>
@@ -406,8 +465,8 @@ export default function InventoryClient({
                 <h3 className="text-2xl font-bold text-(--text-main)">Manage <span className="text-(--accent)">Quantities</span></h3>
                 <p className="text-xs text-gray-500 font-medium mt-1">{selectedProductForStock.name} • {selectedProductForStock.category}</p>
               </div>
-              <button 
-                onClick={() => setIsStockModalOpen(false)} 
+              <button
+                onClick={() => setIsStockModalOpen(false)}
                 className="w-10 h-10 rounded-full bg-(--bg-less-dark)/20 flex items-center justify-center text-gray-500 hover:text-(--text-main) hover:bg-(--bg-less-dark)/50 transition-all cursor-pointer"
               >
                 <X size={20} />
@@ -424,13 +483,13 @@ export default function InventoryClient({
                   </div>
                   <div className="bg-(--bg-less-dark)/10 p-6 rounded-3xl border border-(--bg-less-dark)/30">
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4">Paste keys here (one per line)</p>
-                    <textarea 
+                    <textarea
                       value={newKeysInput}
                       onChange={(e) => setNewKeysInput(e.target.value)}
                       placeholder="XXXXX-XXXXX-XXXXX-XXXXX&#10;YYYYY-YYYYY-YYYYY-YYYYY"
                       className="w-full h-48 bg-(--bg-dark) border border-(--bg-less-dark) rounded-2xl p-4 text-sm font-mono text-(--text-main) focus:outline-none focus:border-(--accent) transition-all resize-none mb-4"
                     />
-                    <button 
+                    <button
                       onClick={handleAddStock}
                       disabled={isAddingStock || !newKeysInput.trim()}
                       className="w-full bg-(--accent) text-(--bg-dark) py-4 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50 transition-all cursor-pointer"
@@ -445,7 +504,7 @@ export default function InventoryClient({
                       <AlertTriangle size={14} /> Danger Zone
                     </h5>
                     <p className="text-[10px] text-gray-500 mb-4">Wipe all current unsold keys from the database. This action is irreversible.</p>
-                    <button 
+                    <button
                       onClick={handleClearStock}
                       className="w-full py-3 rounded-xl border border-red-500/30 text-red-400 font-bold text-[10px] uppercase tracking-widest hover:bg-red-500 hover:text-(--bg-dark) transition-all cursor-pointer"
                     >
@@ -478,7 +537,7 @@ export default function InventoryClient({
                           {currentKeys.map((k) => (
                             <div key={k.id} className="flex items-center justify-between p-4 bg-(--bg-dark) rounded-2xl border border-(--bg-less-dark)/50 group">
                               <code className="text-xs font-bold text-gray-400 group-hover:text-(--text-main) transition-colors">{k.keyValue}</code>
-                              <button 
+                              <button
                                 onClick={() => handleDeleteKey(k.id)}
                                 className="p-2 text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer opacity-0 group-hover:opacity-100"
                               >

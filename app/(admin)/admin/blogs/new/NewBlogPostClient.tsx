@@ -73,7 +73,8 @@ export default function NewBlogPostClient() {
       content: "",
       summary: "",
       category: "Engineering",
-      tags: ["Admin", "Product"] as string[],
+      tags: [] as string[],
+      keyTakeaways: [] as string[],
       seoDescription: "",
       featuredImage: "",
       status: "PUBLISHED",
@@ -83,6 +84,7 @@ export default function NewBlogPostClient() {
    });
 
    const [newTag, setNewTag] = useState("");
+   const [newTakeaway, setNewTakeaway] = useState("");
 
    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -140,16 +142,25 @@ export default function NewBlogPostClient() {
          alert("Please enter a post title");
          return;
       }
+      if (formData.title.length > 191) {
+         alert(`Database Error: Post Title is too long (${formData.title.length}/191 characters).`);
+         return;
+      }
+      if (formData.slug.length > 191) {
+         alert(`Database Error: Slug is too long (${formData.slug.length}/191 characters).`);
+         return;
+      }
+
       setLoading(true);
       try {
          await createBlogPost({
             ...formData,
-            status: "PUBLISHED",
+            status: formData.status, // use the actual selected status
          });
          router.push("/admin/blogs");
-      } catch (err) {
+      } catch (err: any) {
          console.error(err);
-         alert("Failed to publish post");
+         alert(`Server Error: ${err.message || "Failed to publish post"}`);
       } finally {
          setLoading(false);
       }
@@ -172,6 +183,21 @@ export default function NewBlogPostClient() {
       setFormData((prev) => ({
          ...prev,
          tags: prev.tags.filter((t) => t !== tag),
+      }));
+   };
+
+   const addTakeaway = () => {
+      const takeaway = newTakeaway.trim();
+      if (takeaway && !formData.keyTakeaways.includes(takeaway)) {
+         setFormData((prev) => ({ ...prev, keyTakeaways: [...prev.keyTakeaways, takeaway] }));
+         setNewTakeaway("");
+      }
+   };
+
+   const removeTakeaway = (takeaway: string) => {
+      setFormData((prev) => ({
+         ...prev,
+         keyTakeaways: prev.keyTakeaways.filter((t) => t !== takeaway),
       }));
    };
 
@@ -271,6 +297,47 @@ export default function NewBlogPostClient() {
                            placeholder="Brief elevator pitch..."
                            className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all placeholder:text-gray-600"
                         />
+                     </div>
+                  </div>
+
+                  <div className="mt-6">
+                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
+                        Key Takeaways
+                     </label>
+                     <div className="space-y-3 mb-4">
+                        {formData.keyTakeaways.map((takeaway, index) => (
+                           <div
+                              key={index}
+                              className="flex items-center gap-3 bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs text-gray-300 group"
+                           >
+                              <span className="flex-grow">{takeaway}</span>
+                              <button
+                                 onClick={() => removeTakeaway(takeaway)}
+                                 className="text-gray-500 hover:text-red-400 transition-colors"
+                              >
+                                 <X size={14} />
+                              </button>
+                           </div>
+                        ))}
+                     </div>
+                     <div className="flex gap-2">
+                        <input
+                           type="text"
+                           value={newTakeaway}
+                           onChange={(e) => setNewTakeaway(e.target.value)}
+                           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTakeaway())}
+                           placeholder="Add a key takeaway..."
+                           className="flex-grow bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-4 text-sm outline-none focus:border-(--accent)/30 transition-all placeholder:text-gray-600"
+                        />
+                        <button
+                           onClick={(e) => {
+                              e.preventDefault();
+                              addTakeaway();
+                           }}
+                           className="px-6 bg-(--accent)/10 text-(--accent) rounded-xl font-bold text-xs hover:bg-(--accent)/20 transition-all"
+                        >
+                           Add
+                        </button>
                      </div>
                   </div>
                </section>
@@ -451,6 +518,23 @@ export default function NewBlogPostClient() {
 
                   <div className="space-y-4">
                      <div className="flex items-center justify-between text-xs font-bold">
+                        <span className="text-gray-500">Status</span>
+                        <select
+                           value={formData.status}
+                           onChange={(e) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 status: e.target.value,
+                              }))
+                           }
+                           className="bg-transparent text-(--accent) text-right outline-none cursor-pointer appearance-none font-bold"
+                        >
+                           <option value="PUBLISHED">Published</option>
+                           <option value="DRAFT">Draft</option>
+                        </select>
+                     </div>
+
+                     <div className="flex items-center justify-between text-xs font-bold">
                         <span className="text-gray-500">Visibility</span>
                         <select
                            value={formData.visibility}
@@ -469,7 +553,17 @@ export default function NewBlogPostClient() {
 
                      <div className="flex items-center justify-between text-xs font-bold">
                         <span className="text-gray-500">Publish Date</span>
-                        <span className="text-(--text-main)">Immediately</span>
+                        <input
+                           type="datetime-local"
+                           value={formData.publishDate || ""}
+                           onChange={(e) =>
+                              setFormData((prev) => ({
+                                 ...prev,
+                                 publishDate: e.target.value,
+                              }))
+                           }
+                           className="bg-transparent text-(--text-main) text-right outline-none cursor-pointer"
+                        />
                      </div>
 
                      <div className="flex flex-col gap-2 text-xs font-bold w-full">

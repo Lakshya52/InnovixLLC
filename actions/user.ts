@@ -27,10 +27,13 @@ export async function getCurrentUser() {
         email: true,
         image: true,
         role: true,
+        isBlocked: true,
         marketingEmails: true,
         transactionalEmails: true
       }
     });
+    if (user?.isBlocked) return null;
+    return user;
   } catch (error) {
     console.error("Get current user error:", error);
     return null;
@@ -174,5 +177,66 @@ export async function updateActivity() {
     });
   } catch (error) {
     // Silent fail for activity tracking
+  }
+}
+export async function blockUser(userId: string, blocked: boolean) {
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") return { error: "Unauthorized" };
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { isBlocked: blocked }
+    });
+    revalidatePath("/admin/users");
+    return { success: true };
+  } catch (error) {
+    console.error("Block user error:", error);
+    return { error: "Failed to update user status" };
+  }
+}
+
+export async function deleteUser(userId: string) {
+  const session = await getSession();
+  if (!session || session.role !== "ADMIN") return { error: "Unauthorized" };
+
+  try {
+    // Manual cleanup of related records to satisfy foreign key constraints
+    await prisma.$transaction(async (tx) => {
+      // 1. Handle Support Tickets and their messages
+      const userTickets = await tx.supportTicket.findMany({
+        where: { userId: userId },
+        select: { id: true }
+      });
+      const ticketIds = userTickets.map(t => t.id);
+
+      // Delete all messages in those tickets (sent by anyone)
+      await tx.chatMessage.deleteMany({
+        where: { ticketId: { in: ticketIds } }
+      });
+      
+      // Delete messages sent by this user in other tickets
+      await tx.chatMessage.deleteMany({
+        where: { senderId: userId }
+      });
+
+      // Delete the tickets themselves
+      await tx.supportTicket.deleteMany({
+        where: { userId: userId }
+      });
+
+      // 2. Handle Blogs, Orders, and Keys
+      await tx.blogPost.deleteMany({ where: { authorId: userId } });
+      await tx.productKey.deleteMany({ where: { userId: userId } });
+      await tx.order.deleteMany({ where: { userId: userId } });
+
+      // 3. Delete the User
+      await tx.user.delete({ where: { id: userId } });
+    });
+    revalidatePath("/admin/users");
+    return { success: true };
+  } catch (error) {
+    console.error("Delete user error:", error);
+    return { error: "Failed to delete user" };
   }
 }

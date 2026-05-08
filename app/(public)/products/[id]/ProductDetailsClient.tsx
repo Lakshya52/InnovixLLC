@@ -158,7 +158,8 @@ export default function ProductDetailsClient({
             <img
               src={product.image}
               alt={`${product.name} product image`}
-              className="w-1/2 h-[70dvh] rounded-[40px] shadow-2xl shadow-[10px_10px_100px_var(--accent)] hover:shadow-[10px_10px_300px_var(--accent)] transition-all duration-300 object-cover"
+              className="w-1/2 h-[70dvh] rounded-[40px] shadow-2xl shadow-[10px_10px_100px_var(--accent)] hover:shadow-[10px_10px_300px_var(--accent)] transition-all duration-300 object-cover bg-white "
+              
             />
           )}
         </div>

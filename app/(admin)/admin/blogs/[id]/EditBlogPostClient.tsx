@@ -70,18 +70,20 @@ export default function EditBlogPostClient({ post }: { post: any }) {
       title: post.title,
       slug: post.slug,
       content: post.content,
-      summary: post.excerpt || "",
+      summary: post.summary || "",
       category: post.category,
-      tags: post.keyTakeaways || [],
+      tags: post.tags || [],
       seoDescription: post.seoDescription || "",
-      featuredImage: post.image || "",
+      featuredImage: post.featuredImage || "",
       status: post.status || "PUBLISHED",
       visibility: post.visibility || "Public",
       promoted: post.promoted || false,
-      publishDate: post.publishDate || null,
+      publishDate: post.publishDate ? new Date(post.publishDate).toISOString().slice(0, 16) : "",
+      keyTakeaways: post.keyTakeaways || [],
    });
 
    const [newTag, setNewTag] = useState("");
+   const [newTakeaway, setNewTakeaway] = useState("");
    const [manualSlug, setManualSlug] = useState(true); // Default to true for existing posts
 
    const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,6 +131,15 @@ export default function EditBlogPostClient({ post }: { post: any }) {
          alert("Please enter a post title");
          return;
       }
+      if (formData.title.length > 191) {
+         alert(`Database Error: Post Title is too long (${formData.title.length}/191 characters).`);
+         return;
+      }
+      if (formData.slug.length > 191) {
+         alert(`Database Error: Slug is too long (${formData.slug.length}/191 characters).`);
+         return;
+      }
+
       setLoading(true);
       try {
          await updateBlogPost(post.id, {
@@ -136,9 +147,9 @@ export default function EditBlogPostClient({ post }: { post: any }) {
          });
          router.push("/admin/blogs");
          router.refresh();
-      } catch (err) {
+      } catch (err: any) {
          console.error(err);
-         alert("Failed to update post");
+         alert(`Server Error: ${err.message || "Failed to update post"}`);
       } finally {
          setLoading(false);
       }
@@ -156,6 +167,21 @@ export default function EditBlogPostClient({ post }: { post: any }) {
       setFormData((prev) => ({
          ...prev,
          tags: prev.tags.filter((t: any) => t !== tag),
+      }));
+   };
+
+   const addTakeaway = () => {
+      const takeaway = newTakeaway.trim();
+      if (takeaway && !formData.keyTakeaways.includes(takeaway)) {
+         setFormData((prev) => ({ ...prev, keyTakeaways: [...prev.keyTakeaways, takeaway] }));
+         setNewTakeaway("");
+      }
+   };
+
+   const removeTakeaway = (takeaway: string) => {
+      setFormData((prev) => ({
+         ...prev,
+         keyTakeaways: prev.keyTakeaways.filter((t: string) => t !== takeaway),
       }));
    };
 
@@ -235,6 +261,47 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                            onChange={(e) => setFormData((prev) => ({ ...prev, summary: e.target.value }))}
                            className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-2xl p-5 text-sm outline-none focus:border-(--accent)/30 transition-all"
                         />
+                     </div>
+                  </div>
+
+                  <div className="mt-6">
+                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">
+                        Key Takeaways
+                     </label>
+                     <div className="space-y-3 mb-4">
+                        {formData.keyTakeaways.map((takeaway: string, index: number) => (
+                           <div
+                              key={index}
+                              className="flex items-center gap-3 bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs text-gray-300 group"
+                           >
+                              <span className="flex-grow">{takeaway}</span>
+                              <button
+                                 onClick={() => removeTakeaway(takeaway)}
+                                 className="text-gray-500 hover:text-red-400 transition-colors"
+                              >
+                                 <X size={14} />
+                              </button>
+                           </div>
+                        ))}
+                     </div>
+                     <div className="flex gap-2">
+                        <input
+                           type="text"
+                           value={newTakeaway}
+                           onChange={(e) => setNewTakeaway(e.target.value)}
+                           onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTakeaway())}
+                           placeholder="Add a key takeaway..."
+                           className="flex-grow bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-4 text-sm outline-none focus:border-(--accent)/30 transition-all placeholder:text-gray-600"
+                        />
+                        <button
+                           onClick={(e) => {
+                              e.preventDefault();
+                              addTakeaway();
+                           }}
+                           className="px-6 bg-(--accent)/10 text-(--accent) rounded-xl font-bold text-xs hover:bg-(--accent)/20 transition-all"
+                        >
+                           Add
+                        </button>
                      </div>
                   </div>
                </section>
@@ -336,7 +403,17 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                         onChange={(e) => setNewTag(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addTag())}
                         placeholder="Add tag..."
-                        className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none"
+                        className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none focus:border-(--accent)/30 transition-all mb-4"
+                     />
+
+                     <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">SEO Description</label>
+                     <textarea
+                        rows={3}
+                        value={formData.seoDescription}
+                        onChange={(e) => setFormData((prev) => ({ ...prev, seoDescription: e.target.value }))}
+                        placeholder="Optimal SEO description (max 160 chars)"
+                        maxLength={160}
+                        className="w-full bg-(--bg-dark) border border-(--text-main)/5 rounded-xl p-3 text-xs outline-none focus:border-(--accent)/30 transition-all resize-none placeholder:text-gray-700"
                      />
                   </div>
                </section>
@@ -376,6 +453,28 @@ export default function EditBlogPostClient({ post }: { post: any }) {
                            <option value="DRAFT">Draft</option>
                            <option value="ARCHIVED">Archived</option>
                         </select>
+                     </div>
+
+                     <div className="flex items-center justify-between text-xs font-bold pt-4 border-t border-(--text-main)/5">
+                        <span className="text-gray-500">Visibility</span>
+                        <select
+                           value={formData.visibility}
+                           onChange={(e) => setFormData(prev => ({ ...prev, visibility: e.target.value }))}
+                           className="bg-transparent text-(--accent) outline-none cursor-pointer font-bold"
+                        >
+                           <option value="Public">Public</option>
+                           <option value="Private">Private</option>
+                        </select>
+                     </div>
+
+                     <div className="flex items-center justify-between text-xs font-bold pt-4 border-t border-(--text-main)/5">
+                        <span className="text-gray-500">Publish Date</span>
+                        <input
+                           type="datetime-local"
+                           value={formData.publishDate}
+                           onChange={(e) => setFormData(prev => ({ ...prev, publishDate: e.target.value }))}
+                           className="bg-transparent text-(--text-main) outline-none cursor-pointer font-bold"
+                        />
                      </div>
 
                      <div className="border-t border-(--text-main)/5 pt-4 mt-4">

@@ -44,7 +44,7 @@ export async function getBlogPosts() {
         role: "Author"
       },
       image: post.featuredImage || "/BlogsPage.png",
-      keyTakeaways: post.tags || [],
+      keyTakeaways: Array.isArray(post.keyTakeaways) ? (post.keyTakeaways as string[]) : [],
       promoted: post.promoted,
     }));
   } catch (error) {
@@ -91,7 +91,7 @@ export async function getBlogPostBySlug(slug: string) {
         role: "Author"
       },
       image: post.featuredImage || "/BlogsPage.png",
-      keyTakeaways: post.tags || [],
+      keyTakeaways: Array.isArray(post.keyTakeaways) ? (post.keyTakeaways as string[]) : [],
       promoted: post.promoted,
     };
   } catch (error) {
@@ -140,7 +140,7 @@ export async function getBlogPostById(id: string) {
         role: "Author"
       },
       image: post.featuredImage || "/BlogsPage.png",
-      keyTakeaways: post.tags || [],
+      keyTakeaways: Array.isArray(post.keyTakeaways) ? (post.keyTakeaways as string[]) : [],
       promoted: post.promoted,
     };
   } catch (error) {

@@ -25,6 +25,7 @@ model User {
   resetToken       String?
   resetTokenExpiry DateTime?
   lastActive       DateTime        @default(now())
+  isBlocked        Boolean         @default(false)
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   orders           Order[]
@@ -138,6 +139,7 @@ model BlogPost {
   summary        String? @db.Text      // Short summary / elevator pitch
   category       String   // Engineering, Infrastructure, Security, Licensing, etc.
   tags           Json?    // Array of strings, stored as JSON for MySQL
+  keyTakeaways   Json?    // Array of strings, stored as JSON for MySQL
   seoDescription String? @db.Text
   featuredImage  String? @db.LongText
   status         String   @default("DRAFT") // PUBLISHED, DRAFT, SCHEDULED
