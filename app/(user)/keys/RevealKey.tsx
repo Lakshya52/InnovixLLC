@@ -8,7 +8,6 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
-    setRevealed(true); // Auto-reveal on copy
     navigator.clipboard.writeText(keyValue);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
