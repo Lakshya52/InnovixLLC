@@ -33,10 +33,15 @@ export default function Loading() {
         </div>
 
         {/* Product Grid Skeleton */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-32">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-12">
+          {[1, 2, 3, 4, 5].map((i) => (
             <ProductSkeleton key={i} />
           ))}
+        </div>
+
+        {/* Load More Button Skeleton */}
+        <div className="flex justify-center mb-32">
+          <div className="h-16 w-64 bg-(--bg-dark) border border-(--bg-dark) rounded-2xl animate-pulse" />
         </div>
 
         {/* Footer Features Skeleton */}

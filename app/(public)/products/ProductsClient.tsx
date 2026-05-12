@@ -15,7 +15,9 @@ import {
   Lock,
 } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
-import { useMemo } from "react";
+import { useMemo, useEffect, useCallback } from "react";
+import { Plus, Loader2 } from "lucide-react";
+import { getProducts } from "@/app/actions/product-actions";
 
 interface Product {
   id: string;
@@ -35,25 +37,56 @@ const categoryIcons: Record<string, React.ReactNode> = {
   "Security & Privacy": <Lock className="w-10 h-10 text-(--accent)" />
 };
 
-export default function ProductsClient({ initialProducts }: { initialProducts: Product[] }) {
+export default function ProductsClient({ 
+  initialProducts, 
+  initialTotalCount 
+}: { 
+  initialProducts: Product[], 
+  initialTotalCount: number 
+}) {
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [totalCount, setTotalCount] = useState(initialTotalCount);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("Popular");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
 
-  const filteredProducts = useMemo(() => {
-    return initialProducts
-      .filter(product => {
-        const matchesCategory = activeCategory === "All" || product.category === activeCategory;
-        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-      })
-      .sort((a, b) => {
-        if (sortBy === "Price: Low to High") return a.price - b.price;
-        if (sortBy === "Price: High to Low") return b.price - a.price;
-        if (sortBy === "Name: A-Z") return a.name.localeCompare(b.name);
-        return 0;
-      });
-  }, [initialProducts, activeCategory, searchQuery, sortBy]);
+  const fetchProducts = useCallback(async (isInitial: boolean, currentSearch: string, currentCategory: string, currentSort: string) => {
+    if (isInitial) setIsInitialLoading(true);
+    else setIsLoading(true);
+
+    const skip = isInitial ? 0 : products.length;
+    const result = await getProducts({
+      skip,
+      limit: 5,
+      search: currentSearch,
+      category: currentCategory,
+      sortBy: currentSort
+    });
+
+    if (isInitial) {
+      setProducts(result.products);
+    } else {
+      setProducts(prev => [...prev, ...result.products]);
+    }
+    setTotalCount(result.totalCount);
+    setIsInitialLoading(false);
+    setIsLoading(false);
+  }, [products.length]);
+
+  // Debounced search and instant filter effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchProducts(true, searchQuery, activeCategory, sortBy);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, activeCategory, sortBy]);
+
+  const handleLoadMore = () => {
+    fetchProducts(false, searchQuery, activeCategory, sortBy);
+  };
 
   return (
     <div className=" w-full min-h-screen text-(--text-main) py-20 mt-[15dvh]">
@@ -115,9 +148,16 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
         </div>
 
         {/* Product Grid */}
-        {filteredProducts.length > 0 ? (
+        {isInitialLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-32">
-            {filteredProducts.map((product) => (
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-[400px] bg-(--bg-dark) border border-(--bg-dark) rounded-3xl animate-pulse" />
+            ))}
+          </div>
+        ) : products.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 mb-12">
+              {products.map((product) => (
               <ProductCard
                 key={product.id}
                 product={{
@@ -129,8 +169,30 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
                 } as any}
                 categoryIcon={categoryIcons[product.category]}
               />
-            ))}
-          </div>
+              ))}
+            </div>
+
+            {/* Load More Button */}
+            {products.length < totalCount && (
+              <div className="flex justify-center mb-32">
+                <button
+                  onClick={handleLoadMore}
+                  disabled={isLoading}
+                  className="group flex items-center gap-3 px-10 py-5 bg-(--bg-dark) border border-(--bg-dark) hover:border-(--accent)/50 rounded-2xl text-(--text-main) font-bold font-inter transition-all shadow-xl hover:shadow-(--accent)/10 disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 text-(--accent) animate-spin" />
+                  ) : (
+                    <Plus className="w-5 h-5 text-(--accent) group-hover:rotate-90 transition-transform duration-300" />
+                  )}
+                  {isLoading ? "Loading..." : "Load More Products"}
+                  <span className="text-xs text-gray-500 ml-2">
+                    ({products.length} of {totalCount})
+                  </span>
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center py-40 text-center bg-(--bg-dark)/30 border border-dashed border-(--bg-dark) rounded-[60px] mb-32">
             <h3 className="text-3xl font-bold font-grotesk mb-4 text-(--text-main)">No products found</h3>
