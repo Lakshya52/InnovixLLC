@@ -78,7 +78,7 @@ export const generateInvoice = (order: OrderDetail, user: UserDetail) => {
   doc.setFontSize(10);
   doc.setTextColor(150);
   doc.text("Thank you for your business!", 105, 280, { align: "center" });
-  doc.text("InnovixLLC - Support: support@innovixllc.com", 105, 285, { align: "center" });
+  doc.text("InnovixLLC - Support: info@innovixllc.us", 105, 285, { align: "center" });
 
   return doc;
 };

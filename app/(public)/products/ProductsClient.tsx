@@ -7,13 +7,15 @@ import {
   Headphones,
   ShieldCheck,
   CheckCircle,
+  LayoutGrid,
+  ListFilterPlus,
   Monitor,
   Briefcase,
   Database,
-  LayoutGrid,
-  ListFilterPlus,
+  Lock,
 } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
+import { useMemo } from "react";
 
 interface Product {
   id: string;
@@ -24,13 +26,13 @@ interface Product {
   status: string;
 }
 
-const categories = ["All", "OS", "Office", "Servers", "Security"];
+const categories = ["All", "Operating System", "Productivity", "RDS", "Security & Privacy"];
 
 const categoryIcons: Record<string, React.ReactNode> = {
-  "OS": <Monitor className="w-10 h-10 text-(--accent)" />,
-  "Office": <Briefcase className="w-10 h-10 text-(--accent)" />,
-  "Servers": <Database className="w-10 h-10 text-(--accent)" />,
-  "Security": <LayoutGrid className="w-10 h-10 text-(--accent)" />
+  "Operating System": <Monitor className="w-10 h-10 text-(--accent)" />,
+  "Productivity": <Briefcase className="w-10 h-10 text-(--accent)" />,
+  "RDS": <Database className="w-10 h-10 text-(--accent)" />,
+  "Security & Privacy": <Lock className="w-10 h-10 text-(--accent)" />
 };
 
 export default function ProductsClient({ initialProducts }: { initialProducts: Product[] }) {
@@ -38,18 +40,20 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("Popular");
 
-  const filteredProducts = initialProducts
-    .filter(product => {
-      const matchesCategory = activeCategory === "All" || product.category === activeCategory;
-      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    })
-    .sort((a, b) => {
-      if (sortBy === "Price: Low to High") return a.price - b.price;
-      if (sortBy === "Price: High to Low") return b.price - a.price;
-      if (sortBy === "Name: A-Z") return a.name.localeCompare(b.name);
-      return 0;
-    });
+  const filteredProducts = useMemo(() => {
+    return initialProducts
+      .filter(product => {
+        const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      })
+      .sort((a, b) => {
+        if (sortBy === "Price: Low to High") return a.price - b.price;
+        if (sortBy === "Price: High to Low") return b.price - a.price;
+        if (sortBy === "Name: A-Z") return a.name.localeCompare(b.name);
+        return 0;
+      });
+  }, [initialProducts, activeCategory, searchQuery, sortBy]);
 
   return (
     <div className=" w-full min-h-screen text-(--text-main) py-20 mt-[15dvh]">
@@ -101,9 +105,9 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
                 onChange={(e) => setSortBy(e.target.value)}
                 className="bg-transparent text-(--text-main) text-sm font-bold cursor-pointer outline-none"
               >
-                <option value="Popular">Popularity</option>
-                <option value="Price: Low to High">Price Min</option>
-                <option value="Price: High to Low">Price Max</option>
+                {/* <option value="Popular">Popularity</option> */}
+                <option value="Price: Low to High">Price Low to High</option>
+                <option value="Price: High to Low">Price High to Low</option>
                 <option value="Name: A-Z">Name A-Z</option>
               </select>
             </div>
@@ -121,7 +125,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
                   price: product.price.toString(),
                   category: product.category,
                   isBestseller: false, // Placeholder for logic
-                  features: ["Lifetime Activation", "Direct Support", "256-bit Encryption"]
+                  features: (product as any).features || ["Lifetime Activation", "Direct Support", "256-bit Encryption"]
                 } as any}
                 categoryIcon={categoryIcons[product.category]}
               />

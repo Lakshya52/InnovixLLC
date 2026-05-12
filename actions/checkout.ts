@@ -30,7 +30,7 @@ export async function createCheckoutSession(items: { productId: string, quantity
     return acc + (product?.price || 0) * item.quantity;
   }, 0);
 
-  const order = await prisma.order.create({
+  const order = await (prisma.order.create as any)({
     data: {
       userId: payload.id,
       productId: products[0].id,
@@ -38,6 +38,15 @@ export async function createCheckoutSession(items: { productId: string, quantity
       productType: products[0].category,
       amount: totalAmount,
       status: "Waiting_For_Payment",
+      items: items.map(item => {
+        const p = products.find(prod => prod.id === item.productId);
+        return {
+          productId: item.productId,
+          productName: p?.name || "Unknown Product",
+          quantity: item.quantity,
+          price: p?.price || 0
+        };
+      })
     }
   });
 
@@ -102,7 +111,7 @@ export async function createOrderDirect(items: { productId: string, quantity: nu
     return acc + (product?.price || 0) * item.quantity;
   }, 0);
 
-  const order = await prisma.order.create({
+  const order = await (prisma.order.create as any)({
     data: {
       userId: payload.id,
       productId: products[0]?.id,
@@ -110,6 +119,15 @@ export async function createOrderDirect(items: { productId: string, quantity: nu
       productType: products[0]?.category || "Digital Software",
       amount: totalAmount,
       status: "Waiting_For_Payment",
+      items: items.map(item => {
+        const p = products.find(prod => prod.id === item.productId);
+        return {
+          productId: item.productId,
+          productName: p?.name || "Unknown Product",
+          quantity: item.quantity,
+          price: p?.price || 0
+        };
+      })
     }
   });
 

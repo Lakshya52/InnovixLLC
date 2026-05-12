@@ -44,11 +44,23 @@ export async function sendResetEmail(email: string, token: string) {
   }
 }
 
-export async function sendOrderKeyEmail(email: string, productName: string, key: string) {
+export async function sendOrderKeysEmail(email: string, items: { productName: string, keys: string[] }[]) {
+  const itemsHtml = items.map(item => `
+    <div style="margin-bottom: 30px; padding: 20px; background-color: #1a1a1a; border-radius: 15px; border: 1px solid #ffffff05;">
+      <h3 style="color: #6eDD86; margin-top: 0; font-size: 18px;">${item.productName}</h3>
+      <p style="color: #aaa; font-size: 13px; margin-bottom: 15px;">License Keys (${item.keys.length}):</p>
+      ${item.keys.map(key => `
+        <div style="background-color: #000000; padding: 12px; border-radius: 8px; border: 1px dashed #6eDD86; text-align: center; margin-bottom: 10px;">
+          <code style="color: #6eDD86; font-size: 16px; font-family: 'Courier New', monospace; font-weight: bold;">${key}</code>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
   const mailOptions = {
     from: `"InnovixLLC Fulfillment" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: `Your License Key for ${productName} - InnovixLLC`,
+    subject: `Your License Keys from InnovixLLC`,
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #0b0b0b; color: #ffffff; border-radius: 20px; border: 1px solid #ffffff10;">
         <div style="text-align: center; margin-bottom: 30px;">
@@ -56,31 +68,26 @@ export async function sendOrderKeyEmail(email: string, productName: string, key:
           <p style="color: #666; font-size: 14px; margin-top: 5px;">Premium Digital Infrastructure</p>
         </div>
         
-        <div style="background-color: #1a1a1a; padding: 30px; border-radius: 15px; border: 1px solid #ffffff05;">
-          <h2 style="margin-top: 0; font-size: 20px; font-weight: 600;">Delivery info for ${productName}</h2>
-          <p style="color: #aaa; font-size: 14px; line-height: 1.6;">Your digital license key has been generated successfully. Please find it below:</p>
-          
-          <div style="background-color: #000000; padding: 15px; border-radius: 10px; border: 1px dashed #6eDD86; text-align: center; margin: 25px 0;">
-            <code style="color: #6eDD86; font-size: 20px; font-family: 'Courier New', monospace; font-weight: bold; letter-spacing: 2px;">${key}</code>
-          </div>
-          
-          <div style="margin-top: 20px;">
-            <p style="font-size: 13px; color: #888;"><strong>Activation Instructions:</strong></p>
-            <ol style="font-size: 13px; color: #888; padding-left: 20px;">
-              <li>Copy the license key above.</li>
-              <li>Open your application and navigate to the activation settings.</li>
-              <li>Paste the key and follow the on-screen prompts.</li>
-            </ol>
-          </div>
+        <h2 style="text-align: center; font-size: 22px; margin-bottom: 30px;">Your Digital Assets are Ready</h2>
+        
+        ${itemsHtml}
+
+        <div style="background-color: #1a1a1a; padding: 20px; border-radius: 15px; margin-top: 30px;">
+          <p style="font-size: 13px; color: #888; margin-top: 0;"><strong>Activation Instructions:</strong></p>
+          <ul style="font-size: 13px; color: #888; padding-left: 20px;">
+            <li>Copy the license keys provided above.</li>
+            <li>Use them in your respective applications to unlock premium features.</li>
+            <li>Need help? Contact our support team via the dashboard.</li>
+          </ul>
         </div>
 
-        <div style="text-align: center; margin-top: 30px;">
-          <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="background-color: #6eDD86; color: #000000; padding: 12px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; display: inline-block;">Access Dashboard</a>
+        <div style="text-align: center; margin-top: 40px;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="background-color: #6eDD86; color: #000000; padding: 12px 30px; text-decoration: none; border-radius: 10px; font-weight: bold; display: inline-block;">View in Dashboard</a>
         </div>
         
-        <p style="font-size: 12px; color: #444; text-align: center; margin-top: 40px;">
+        <p style="font-size: 11px; color: #444; text-align: center; margin-top: 40px;">
           InnovixLLC &copy; 2026. All rights reserved.<br />
-          This is an automated delivery. Please do not reply to this email.
+          This is an automated delivery. Please do not reply.
         </p>
       </div>
     `,
@@ -91,8 +98,12 @@ export async function sendOrderKeyEmail(email: string, productName: string, key:
     return { success: true };
   } catch (error) {
     console.error("Order completion email error:", error);
-    return { error: "Failed to send license key email" };
+    return { error: "Failed to send license keys email" };
   }
+}
+
+export async function sendOrderKeyEmail(email: string, productName: string, key: string) {
+  return sendOrderKeysEmail(email, [{ productName, keys: [key] }]);
 }
 
 export async function sendOTPEmail(email: string, otp: string) {

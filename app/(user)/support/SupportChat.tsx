@@ -81,10 +81,13 @@ export default function SupportChat({
     if (initialStatus) setCurrentStatus(initialStatus);
   }, [initialStatus]);
 
+  const creationStarted = useRef(false);
+
   // Update internal ID if prop changes
   useEffect(() => {
     setCurrentTicketId(ticketId);
-    if (ticketId === "NEW") {
+    if (ticketId === "NEW" && !creationStarted.current) {
+      creationStarted.current = true;
       const initTicket = async () => {
         try {
           setLoading(true);
@@ -92,11 +95,12 @@ export default function SupportChat({
           setCurrentTicketId(newTicket.id);
         } catch (err) {
           console.error("Failed to auto-create ticket:", err);
+          creationStarted.current = false;
         }
       };
       initTicket();
     }
-  }, [ticketId]);
+  }, [ticketId, subject, category]);
 
   useEffect(() => {
     if (currentTicketId === "NEW") return;

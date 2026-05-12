@@ -46,6 +46,7 @@ model Order {
   amount      Float
   status      String       @default("Processing")
   createdAt   DateTime     @default(now())
+  items       Json?        // Array of { productId, productName, quantity, price }
   keys        ProductKey[]
 }
 

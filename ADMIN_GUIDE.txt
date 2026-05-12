@@ -1,84 +1,125 @@
 ================================================================================
-INNOVIX LLC - ADMIN DASHBOARD MANAGEMENT GUIDE
+INNOVIX LLC - COMPLETE PROJECT DOCUMENTATION & MANAGEMENT GUIDE
 ================================================================================
 
-This guide provides the necessary steps to access and manage the admin dashboard 
-features for the InnovixLLC platform.
+This document provides a comprehensive overview of the InnovixLLC platform, 
+covering the Public Website, User Dashboard, and Admin Dashboard functionalities.
 
 --------------------------------------------------------------------------------
-1. ACCESSING THE DASHBOARD
+1. PUBLIC WEBSITE (FRONT-END)
 --------------------------------------------------------------------------------
-- URL: /admin
-- Requirement: You must be logged in with an account that has the "ADMIN" role.
-- If you are not an admin, you will be redirected to the login page or home.
+The public website is accessible to all visitors and provides information about 
+products, services, and the company.
 
---------------------------------------------------------------------------------
-2. PRODUCT INVENTORY MANAGEMENT
---------------------------------------------------------------------------------
-Location: /admin/inventory
+- Home Page (/): 
+  - Featured hero section with key value propositions.
+  - Showcases featured products and latest blog posts.
+  - Quick links to services and categories.
 
-A. Creating a New Product:
-   1. Click the "Add New Product" button or go to /admin/inventory/new.
-   2. Fill in basic info (Title, Category, SKU, Description).
-   3. Set the Selling Price and MSRP.
-   4. Add Features (Trust signals) and System Requirements.
-   5. Upload a product image (Max 5MB) or paste an image URL.
-   6. Enter initial license keys (one per line) in the "Inventory Keys" section.
-   7. Click "Publish Product" to make it live.
+- Products Catalog (/products):
+  - Displays all products with "Live" status.
+  - Filterable by categories (OS, Productivity, Enterprise, etc.).
+  - Search functionality to find specific software.
 
-B. Editing a Product:
-   1. In the Inventory list, click the "Edit" icon (pencil) next to a product.
-   2. Update any fields and click "Save Changes".
+- Product Details (/productsdetails/[id]):
+  - Comprehensive view of a single product.
+  - Includes pricing, SKU, features (trust signals), and system requirements.
+  - "Add to Cart" functionality for purchasing.
 
-C. Deleting a Product:
-   1. Click the "Trash" icon next to the product.
-   2. Confirm the deletion.
-   *Note: This will also delete associated unsold keys and detach order history. if you dont want to delete the product just set status to draft. 
-   The products which are in draft will not be visible in the website.
+- Blogs & Articles (/blogs):
+  - List of all "Published" blog posts.
+  - Search and filter by tags/categories.
+  - Blog Details (/blogsdetails/[slug]) features high-quality reading experience 
+    with "Key Takeaways" highlighted at the top.
 
---------------------------------------------------------------------------------
-3. DIGITAL KEY (STOCK) MANAGEMENT
---------------------------------------------------------------------------------
-Location: /admin/inventory
+- Support & Interaction:
+  - Contact Us (/contact): Inquiry form for direct communication.
+  - AI Chatbot (/chatbot): Instant support for common queries.
+  - Shopping Cart (/cart): Manage items before proceeding to checkout.
 
-A. Adding New Keys to Existing Products:
-   1. In the Inventory list, find your product and click "Manage Keys" (or the Plus icon).
-   2. In the modal, paste your new keys (one per line).
-   3. Click "Confirm Upload".
-
-B. Clearing Unsold Stock:
-   1. Click "Manage Keys" on a product.
-   2. In the "Danger Zone" section, click "Clear All Unsold Stock".
-   3. This is useful for rotating keys or fixing bulk upload errors.
+- Legal Pages:
+  - Privacy Policy (/privacy-policy)
+  - Refund Policy (/refund-policy)
+  - Terms of Service (/terms)
 
 --------------------------------------------------------------------------------
-4. BLOG MANAGEMENT
+2. USER DASHBOARD (CLIENT AREA)
 --------------------------------------------------------------------------------
-Location: /admin/blogs
+Accessible to registered users. Provides tools to manage purchases and support.
 
-A. Creating a Blog Post:
-   1. Go to /admin/blogs/new.
-   2. Enter Title and Content (Supports Markdown).
-   3. Add Tags and "Key Takeaways" (These appear at the top of the blog).
-   4. Upload a featured image.
-   5. Set status to "PUBLISHED" or "DRAFT".
+- Dashboard Overview (/dashboard):
+  - Summary of recent orders and active licenses.
+  - Quick access buttons to main features.
 
-B. Editing a Blog Post:
-   1. Click the "Edit" icon in the blog list.
-   2. Update content, takeaways, or visibility and save.
+- My Orders (/orders):
+  - Complete history of all purchases.
+  - View order status (Processing, Completed, etc.) and transaction amounts.
+
+- License Keys (/keys):
+  - The central hub for digital assets.
+  - Users can view and copy their purchased product keys here.
+  - Keys are organized by product with clear status indicators.
+
+- Support Tickets (/support):
+  - Users can create new support requests.
+  - Real-time chat interface to communicate with administrators.
+  - Track ticket status (OPEN, IN_PROGRESS, RESOLVED).
+
+- Account Settings (/settings):
+  - Profile Management: Update name, email, and upload profile pictures.
+  - Security: Change password functionality.
+  - Email Preferences: Toggle marketing and transactional email notifications.
 
 --------------------------------------------------------------------------------
-5. MONITORING & STATS
+3. ADMIN DASHBOARD (CENTRAL MANAGEMENT)
 --------------------------------------------------------------------------------
-- Stats: Use the top cards in the Inventory page to monitor Total Inventory, 
-  Active Listings, and Low Stock Alerts (< 10 keys).
-- System Logs: View the "System Log" at the bottom of the Inventory page to 
-  track admin actions (Price updates, new stock, product creation).
+Accessible ONLY to users with the "ADMIN" role at /admin.
+
+A. Dashboard Home (/admin/dashboard):
+   - Real-time statistics on sales, user growth, and active tickets.
+   - Quick overview of system health.
+
+B. Product Inventory (/admin/inventory):
+   - Add/Edit/Delete products.
+   - Manage Features (JSON) and System Requirements (JSON).
+   - Stock Management: Upload bulk license keys (one per line).
+   - Low Stock Alerts: Visual indicators when keys for a product are < 10.
+   - System Logs: Tracks all inventory-related changes.
+
+C. User Management (/admin/users):
+   - View all registered users.
+   - Monitor "Last Active" timestamps to track engagement.
+   - Administrative Controls: Block/Unblock users or permanently delete accounts.
+   - Role Management: Verify or update user permissions.
+
+D. Order Monitoring (/admin/orders):
+   - Global view of all platform transactions.
+   - Filter and search orders by user or product.
+
+E. Blog Management (/admin/blogs):
+   - Full Markdown editor for creating/editing articles.
+   - Manage Tags, "Key Takeaways," and SEO descriptions.
+   - Control visibility (Public/Private) and status (Draft/Published).
+
+F. Support Desk (/admin/support):
+   - Centralized interface to respond to all user tickets.
+   - Real-time messaging with users.
+   - Mark tickets as resolved after providing assistance.
 
 --------------------------------------------------------------------------------
-TECH SUPPORT NOTE:
+4. SYSTEM ARCHITECTURE & TECH STACK
 --------------------------------------------------------------------------------
-If you encounter "Permission Denied" or database errors:
-1. Ensure your database is synced (npx prisma db push).
-2. Ensure you have the correct ADMIN role assigned to your email in the database.
+- Framework: Next.js (App Router)
+- Database: MySQL with Prisma ORM
+- Authentication: NextAuth.js
+- Styling: Vanilla CSS & TailwindCSS
+- Emails: Nodemailer with Titan SMTP for Transactional and OTP emails.
+
+--------------------------------------------------------------------------------
+5. MAINTENANCE & TROUBLESHOOTING
+--------------------------------------------------------------------------------
+- Database Sync: Use 'npx prisma db push' after schema changes.
+- Environment: Ensure all keys (DATABASE_URL, EMAIL_HOST, EMAIL_USER, etc.) are in .env.
+- Access Issues: If "Permission Denied," check the 'role' column in the 'User' 
+  table for your email.
 ================================================================================

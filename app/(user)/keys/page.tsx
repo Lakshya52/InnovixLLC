@@ -40,13 +40,12 @@ export default async function KeysPage() {
               className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl md:rounded-[40px] p-6 md:p-8 flex flex-col relative group hover:border-(--bg-less-dark) transition-all"
             >
               <div
-                className={`absolute top-6 right-6 md:top-8 md:right-8 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
-                  key.status === "Active"
-                    ? "bg-green-400/10 text-green-400"
-                    : "bg-yellow-400/10 text-yellow-400"
-                }`}
+                className={`absolute top-6 right-6 md:top-8 md:right-8 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${key.status === "Active"
+                  ? "bg-green-400/10 text-green-400"
+                  : "bg-yellow-400/10 text-yellow-400"
+                  }`}
               >
-                {key.status}
+                {key.status === "Pending_Stock" ? "KEY NOT ASSIGNED YET" : key.status}
               </div>
 
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 bg-(--bg-dark) text-(--accent) border border-(--text-main)/5">
@@ -60,10 +59,13 @@ export default async function KeysPage() {
 
               {/* Reveal Key Interactivity */}
               <RevealKey keyValue={key.keyValue} />
-              
-              <div className="mt-8 pt-8 border-t border-(--text-main)/5 flex items-center justify-between">
-                 <p className="text-[10px] text-gray-500 font-mono">ID: {key.id.slice(-8).toUpperCase()}</p>
-                 <Link href="/support" className="text-[10px] font-bold text-(--accent) uppercase hover:underline">Get Help</Link>
+
+              <div className="mt-8 pt-8 border-t border-(--text-main)/5 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] text-gray-400 font-mono">KEY ID: {key.id.slice(-8).toUpperCase()}</p>
+                  <Link href="/support" className="text-[10px] font-bold text-(--accent) uppercase hover:underline">Get Help</Link>
+                </div>
+                <p className="text-[9px] text-gray-500 font-medium tracking-tight">ORDER ID: {key.orderId.toUpperCase()}</p>
               </div>
             </div>
           ))

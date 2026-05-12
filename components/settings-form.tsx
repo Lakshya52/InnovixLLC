@@ -175,7 +175,7 @@ export default function SettingsForm({ initialUser }: { initialUser: UserData })
     <div className="space-y-8 pb-20">
       {/* Profile Information */}
       <form onSubmit={handleUpdateProfile} className="bg-(--bg-dark) border border-(--bg-dark) rounded-3xl md:rounded-[40px] p-6 md:p-10 relative group overflow-hidden md:overflow-visible">
-        <div className="absolute top-0 right-0 w-40 h-40 bg-(--bg-dark)/40 rounded-full -mr-16 -mt-16 pointer-events-none transition-transform group-hover:scale-110"></div>
+        {/* <div className="absolute top-0 right-0 w-40 h-40 bg-(--bg-dark)/40 rounded-full -mr-16 -mt-16 pointer-events-none transition-transform group-hover:scale-110"></div> */}
         <Fingerprint size={80} className="absolute top-10 right-10 text-[#222] pointer-events-none hidden md:block" />
 
         <div className="flex items-center gap-3 mb-10 text-(--accent)">

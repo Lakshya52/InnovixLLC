@@ -30,9 +30,9 @@ function OrderSuccessContent() {
 
     const verify = async () => {
       try {
-        const result = await verifyOrderFulfillment({ 
-          sessionId: sessionId || undefined, 
-          orderId: orderId || undefined 
+        const result = await verifyOrderFulfillment({
+          sessionId: sessionId || undefined,
+          orderId: orderId || undefined
         });
 
         if (result.success) {
@@ -57,7 +57,7 @@ function OrderSuccessContent() {
   return (
     <div className="min-h-[80vh] text-(--text-main) px-6 flex flex-col items-center justify-center text-center">
       <div className="absolute inset-0 bg-(--accent)/5 blur-[120px] rounded-full -z-10" />
-      
+
       {loading ? (
         <div className="flex flex-col items-center gap-6">
           <Loader2 className="w-16 h-16 text-(--accent) animate-spin" />
@@ -71,7 +71,7 @@ function OrderSuccessContent() {
           </div>
           <h2 className="text-3xl font-bold font-grotesk text-red-500">Verification Pending</h2>
           <p className="text-gray-400">
-            We couldn't verify your payment instantly. Don't worry, your order is being processed. 
+            We couldn't verify your payment instantly. Don't worry, your order is being processed.
             Please check your email and dashboard in a few minutes.
           </p>
           <Link href="/orders" className="bg-(--text-main)/10 hover:bg-(--text-main)/20 py-3 px-8 rounded-xl font-bold transition-all">
@@ -90,10 +90,10 @@ function OrderSuccessContent() {
           <h1 className="text-5xl md:text-6xl font-bold font-grotesk mb-6 tracking-tight mt-8">
             Payment <span className="text-(--accent)">Successful!</span>
           </h1>
-          
+
           <p className="text-gray-400 font-inter text-lg max-w-2xl leading-relaxed mb-8">
-            {fulfillmentStatus === "Awaiting_Stock" 
-              ? "Your order is confirmed! We are currently restocking keys for this product. You will receive an email as soon as your key is ready."
+            {fulfillmentStatus === "PENDING_KEY_ASSIGNMENT"
+              ? "Your order is confirmed! We are currently assigning keys for this order. You will receive an email as soon as your keys are ready."
               : "Thank you for choosing InnovixLLC. Your digital keys have been generated and are now available below and in your dashboard."}
           </p>
 

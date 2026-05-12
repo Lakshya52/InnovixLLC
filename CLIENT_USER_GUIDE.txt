@@ -1,0 +1,81 @@
+================================================================================
+INNOVIX LLC - PLATFORM OVERVIEW & USER GUIDE
+================================================================================
+
+Welcome to the InnovixLLC Platform! This guide is designed to help you 
+understand all the features and capabilities of your new website, explained 
+ in simple terms for business owners and daily users.
+
+--------------------------------------------------------------------------------
+1. THE VISITOR EXPERIENCE (Your Public Website)
+--------------------------------------------------------------------------------
+This is the "storefront" that everyone sees. It is designed to be fast, 
+beautiful, and easy to use on both computers and mobile phones.
+
+- Professional Storefront: A clean homepage that highlights your best products 
+  and latest news to build trust with new visitors.
+- Product Catalog: A organized list where customers can browse software by 
+  category (like "Productivity" or "Security") and find exactly what they need.
+- Detailed Product Pages: Each item has its own page with clear descriptions, 
+  price tags, and a list of "what you get" (features) to help customers decide.
+- Secure Shopping Cart: Customers can add multiple items to their cart and 
+  see exactly what they are buying before they pay.
+- Learning Hub (Blog): A place for you to share articles, tips, and updates. 
+  Each article includes "Key Takeaways" to help readers get the main points quickly.
+- Instant Help: A built-in Chatbot and Contact Form ensure that your 
+  customers can always reach you if they have questions.
+
+--------------------------------------------------------------------------------
+2. THE CUSTOMER DASHBOARD (For Your Clients)
+--------------------------------------------------------------------------------
+When a customer creates an account, they get their own private "Office" area 
+to manage their relationship with your business.
+
+- Order History: A clean list of everything they have ever bought from you, 
+  including dates and prices.
+- Digital Vault (My Keys): This is the most important part! Customers can 
+  securely view and copy the software license keys they purchased at any time.
+- Personal Support Center: If a customer has an issue, they can open a 
+  "Support Ticket." It works like a private chat room between you and them.
+- Profile Management: Customers can update their name, email, and even 
+  upload a profile picture to personalize their experience.
+
+--------------------------------------------------------------------------------
+3. THE BUSINESS COMMAND CENTER (For You / Admin)
+--------------------------------------------------------------------------------
+This is your private dashboard (located at /admin) where you run your business.
+
+- Business Health Snapshot: A quick-look dashboard showing your total sales, 
+  number of customers, and how many support requests need your attention.
+- Inventory Control: 
+  - Easily add new software products with images and descriptions.
+  - Bulk Upload: You can add hundreds of license keys at once just by pasting them.
+  - Low Stock Alerts: The system automatically warns you when you are running 
+    out of keys for a specific product.
+- Customer Management: 
+  - View a list of all your customers and see when they were last active.
+  - Security Controls: You have the power to block suspicious accounts or 
+    remove users if necessary.
+- Order Tracking: A master list of every transaction on the platform, so 
+  you can keep your books in order.
+- Content Creator: A simple tool to write and publish blog posts without 
+  needing to know any "coding."
+- Support Desk: Respond to customer questions in real-time and mark them as 
+  "Resolved" once the customer is happy.
+
+--------------------------------------------------------------------------------
+4. PEACE OF MIND FEATURES
+--------------------------------------------------------------------------------
+- Automated Emails: The system sends automatic "Thank You" emails and 
+  Account Verification codes so you don't have to do it manually.
+- Security First: All passwords are encrypted, and your database is protected 
+  to keep your business and customer data safe.
+- Mobile Ready: Everything—from the shop to the admin dashboard—works 
+  perfectly on tablets and smartphones.
+
+--------------------------------------------------------------------------------
+NEED ASSISTANCE?
+--------------------------------------------------------------------------------
+If you have any questions about how to use a specific feature, please refer 
+to the "Admin Management Guide" or contact your technical team - Lakshya.
+================================================================================

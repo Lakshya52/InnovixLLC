@@ -96,8 +96,13 @@ export default function InvoiceModal({ isOpen, onClose, order, user }: InvoiceMo
               <div className="space-y-2">
                 {order.keys.map((key: any, i: number) => (
                   <div key={i} className="p-3 bg-(--bg-less-dark)/50 border border-(--bg-less-dark) rounded-xl font-mono text-xs text-(--accent) flex justify-between items-center">
-                    <span>{key.keyValue}</span>
-                    <span className="text-[10px] text-[#666] font-sans font-bold uppercase">Active</span>
+                    <span>{key.keyValue === "NO_KEY_AVAILABLE" ? "Not Assigned Yet" : key.keyValue}</span>
+                    {
+                      key.keyValue > 0 ?
+                        <span className="text-[10px] text-[#666] font-sans font-bold uppercase">Active</span>
+                        :
+                        null
+                    }
                   </div>
                 ))}
               </div>
@@ -114,7 +119,7 @@ export default function InvoiceModal({ isOpen, onClose, order, user }: InvoiceMo
 
         {/* Footer */}
         <div className="p-6 bg-(--bg-less-dark)/20 text-center border-t border-(--bg-less-dark)">
-          <p className="text-xs text-[#666]">For support queries, please contact <span className="text-(--text-main) font-medium">support@innovixllc.com</span></p>
+          <p className="text-xs text-[#666]">For support queries, please contact <span className="text-(--text-main) font-medium">info@innovixllc.us</span></p>
         </div>
       </div>
     </div>

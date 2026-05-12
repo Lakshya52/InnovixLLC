@@ -6,9 +6,8 @@ export async function fulfillOrder(orderId: string) {
   try {
     const order = await prisma.order.findUnique({
       where: { id: orderId },
-      include: { 
+      include: {
         user: true,
-        product: true 
       }
     });
 
@@ -17,96 +16,139 @@ export async function fulfillOrder(orderId: string) {
       return { success: false, error: "Order not found" };
     }
 
-    if (order.status === "Fulfilled") {
-      console.log(`Order ${orderId} already fulfilled`);
-      const existingKey = await prisma.productKey.findFirst({
-        where: { orderId: order.id }
-      });
-      return { 
-        success: true, 
-        status: "Fulfilled", 
-        productKey: existingKey?.keyValue || null 
-      };
-    }
-
-    // 1. Find an available key for this product
-    const inventoryKey = await prisma.inventoryKey.findFirst({
-      where: {
-        productId: order.productId as string,
-        isSold: false
+    // 1. Get items to fulfill
+    const orderItems = ((order as any).items as any[]) || [
+      {
+        productId: order.productId,
+        productName: order.productName,
+        quantity: 1
       }
+    ];
+
+    let totalFulfilled = 0;
+    let totalNeeded = 0;
+    let firstAssignedKey = null;
+
+    // Fetch all products in this order to get their metadata
+    const productIds = orderItems.map(item => item.productId).filter(Boolean);
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } }
     });
 
-    let assignedKeyValue = "NO_KEY_AVAILABLE";
-    
-    if (inventoryKey) {
-      // 2. Mark inventory key as sold
-      await prisma.inventoryKey.update({
-        where: { id: inventoryKey.id },
-        data: { isSold: true }
-      });
-      assignedKeyValue = inventoryKey.keyValue;
-      console.log(`Key found and assigned for order ${orderId}`);
-    } else {
-      console.warn(`No inventory key available for product ${order.productId} in order ${orderId}`);
-    }
+    for (const item of orderItems) {
+      totalNeeded += item.quantity;
+      const product = products.find(p => p.id === item.productId);
 
-    // 3. Update or Create a ProductKey for the user
-    // Look for an existing key for this order (in case it was Awaiting_Stock previously)
-    const existingProductKey = await prisma.productKey.findFirst({
-      where: { orderId: order.id }
-    });
-
-    if (existingProductKey) {
-      console.log(`Updating existing ProductKey record (ID: ${existingProductKey.id}) for order ${orderId}`);
-      await prisma.productKey.update({
-        where: { id: existingProductKey.id },
-        data: {
-          keyValue: assignedKeyValue,
-          status: inventoryKey ? "Active" : "Pending_Stock",
-          name: order.productName, // Keep name in sync
-          iconVariant: order.product?.iconVariant
-        }
-      });
-    } else {
-      console.log(`Creating new ProductKey record for order ${orderId}`);
-      await prisma.productKey.create({
-        data: {
-          userId: order.userId,
+      // Check how many keys we already have for this product in this order
+      const existingProductKeys = await prisma.productKey.findMany({
+        where: {
           orderId: order.id,
-          name: order.productName,
-          keyValue: assignedKeyValue,
-          status: inventoryKey ? "Active" : "Pending_Stock",
-          edition: order.product?.category || "Standard",
-          iconVariant: order.product?.iconVariant
+          name: item.productName
         }
       });
+
+      // A. Update existing Pending_Stock keys first
+      const pendingKeys = existingProductKeys.filter(k => k.status === "Pending_Stock" || k.keyValue === "WAITING_KEY_ASSIGNMENT");
+      for (const pk of pendingKeys) {
+        const inventoryKey = await prisma.inventoryKey.findFirst({
+          where: {
+            productId: item.productId,
+            isSold: false
+          }
+        });
+
+        if (inventoryKey) {
+          await prisma.inventoryKey.update({
+            where: { id: inventoryKey.id },
+            data: { isSold: true }
+          });
+
+          await prisma.productKey.update({
+            where: { id: pk.id },
+            data: {
+              keyValue: inventoryKey.keyValue,
+              status: "Active"
+            }
+          });
+
+          if (!firstAssignedKey) firstAssignedKey = inventoryKey.keyValue;
+          console.log(`Fulfilled pending key ${pk.id} for order ${orderId}`);
+        }
+      }
+
+      // B. Create new keys if we don't have enough records yet
+      const currentRecordCount = existingProductKeys.length;
+      const neededNewRecords = item.quantity - currentRecordCount;
+
+      for (let i = 0; i < neededNewRecords; i++) {
+        const inventoryKey = await prisma.inventoryKey.findFirst({
+          where: {
+            productId: item.productId,
+            isSold: false
+          }
+        });
+
+        const assignedKeyValue = inventoryKey ? inventoryKey.keyValue : "NO_KEY_AVAILABLE";
+
+        if (inventoryKey) {
+          await prisma.inventoryKey.update({
+            where: { id: inventoryKey.id },
+            data: { isSold: true }
+          });
+          if (!firstAssignedKey) firstAssignedKey = assignedKeyValue;
+        }
+
+        await prisma.productKey.create({
+          data: {
+            userId: order.userId,
+            orderId: order.id,
+            name: item.productName,
+            keyValue: assignedKeyValue,
+            status: inventoryKey ? "Active" : "Pending_Stock",
+            edition: product?.category || "Premium License",
+            iconVariant: product?.iconVariant
+          }
+        });
+        console.log(`Created new ProductKey record for order ${orderId} (${item.productName})`);
+      }
+
+      // Refresh count after updates/creations
+      const finalKeysForProduct = await prisma.productKey.count({
+        where: {
+          orderId: order.id,
+          name: item.productName,
+          status: "Active"
+        }
+      });
+      totalFulfilled += finalKeysForProduct;
     }
 
-    // 4. Update order status FIRST to ensure DB is consistent
+    // 4. Update order status
+    const isFullyFulfilled = totalFulfilled >= totalNeeded;
     const updatedOrder = await prisma.order.update({
       where: { id: order.id },
-      data: { 
-        status: inventoryKey ? "Fulfilled" : "Awaiting_Stock" 
+      data: {
+        status: isFullyFulfilled ? "Fulfilled" : "PENDING_KEY_ASSIGNMENT"
       }
     });
 
-    // 5. Send email if key was available (async, don't block the status update)
-    if (inventoryKey) {
+    // 5. Send email logic (maybe only if at least one new key was found?)
+    // For simplicity, we keep it as is or slightly improve.
+    // In a multi-key scenario, maybe we should send all keys or just notification.
+    if (firstAssignedKey && order.user.transactionalEmails) {
       sendOrderKeyEmail(
         order.user.email,
-        order.productName,
-        inventoryKey.keyValue
-      ).catch(emailErr => {
-        console.error("Delayed Email Error:", emailErr);
-      });
+        order.productName, // Could be comma separated list
+        firstAssignedKey // Just shows the first one in the email for now
+      ).catch(console.error);
     }
 
-    console.log(`Successfully processed order ${orderId}. Status: ${updatedOrder.status}`);
-    return { 
-      success: true, 
+    console.log(`Order ${orderId} processed. Status: ${updatedOrder.status}. Fulfilled ${totalFulfilled}/${totalNeeded}`);
+
+    return {
+      success: true,
       status: updatedOrder.status,
-      productKey: inventoryKey ? inventoryKey.keyValue : null
+      productKey: firstAssignedKey
     };
   } catch (error) {
     console.error("Critical Fulfillment Error:", error);
@@ -119,12 +161,12 @@ export async function fulfillOrder(orderId: string) {
  * Called when new inventory keys are added to the system.
  */
 export async function processBacklog(productId: string) {
-  console.log(`Processing backlog for product: ${productId}`);
+  console.log(`Processing backlog. Restocked product: ${productId}`);
   try {
+    // Find all orders that are still waiting for stock
     const pendingOrders = await prisma.order.findMany({
       where: {
-        productId: productId,
-        status: "Awaiting_Stock"
+        status: "PENDING_KEY_ASSIGNMENT"
       },
       orderBy: {
         createdAt: "asc" // Fulfill oldest orders first (FIFO)
@@ -132,12 +174,12 @@ export async function processBacklog(productId: string) {
     });
 
     if (pendingOrders.length === 0) {
-      console.log(`No pending backlog for product ${productId}`);
+      console.log(`No pending backlog found.`);
       return { msg: "No pending orders" };
     }
 
-    console.log(`Found ${pendingOrders.length} pending orders for product ${productId}. Triggering fulfillment...`);
-    
+    console.log(`Found ${pendingOrders.length} orders in PENDING_KEY_ASSIGNMENT. Triggering fulfillment check...`);
+
     let fulfilledCount = 0;
     for (const order of pendingOrders) {
       const result = await fulfillOrder(order.id);

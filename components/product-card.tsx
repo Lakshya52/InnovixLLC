@@ -2,10 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { 
-  ShoppingCart, 
-  Monitor
+import {
+  ShoppingCart,
+  Monitor,
+  Check,
+  Plus,
+  Minus
 } from "lucide-react";
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { Product } from "@/lib/products";
@@ -17,9 +21,10 @@ interface ProductCardProps {
 
 export function ProductCard({ product, categoryIcon }: ProductCardProps) {
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
   const { addToCart } = useCart();
   const router = useRouter();
-  
+
   const stockCount = product.stockKeys?.length || 0;
 
   const handleBuyNow = async (e: React.MouseEvent) => {
@@ -38,6 +43,9 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
     e.stopPropagation();
     addToCart(product as any, quantity);
     setQuantity(1); // Reset quantity after adding
+    
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
   };
 
   return (
@@ -48,13 +56,19 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
       {/* Image Section */}
       <div className="aspect-square w-full bg-(--bg-dark) border-b border-(--text-main)/5 flex items-center justify-center overflow-hidden relative">
         {product.image ? (
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
         ) : (
           <Monitor className="w-20 h-20 text-(--accent)/20" />
         )}
 
         {/* Stock Badge */}
-        {stockCount === 0 ? (
+        {/* {stockCount === 0 ? (
           <div className="absolute inset-0 bg-(--bg-dark)/60 backdrop-blur-[2px] flex items-center justify-center">
             <span className="bg-red-500 text-(--text-main) px-6 py-2 rounded-full font-bold text-sm uppercase tracking-widest shadow-lg">
               Out of Stock
@@ -67,9 +81,9 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
               Only {stockCount} Left
             </span>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
-      
+
       {/* Content Section */}
       <div className="p-8 flex flex-col flex-grow">
         <div className="flex items-start justify-between gap-5 mb-4">
@@ -82,25 +96,62 @@ export function ProductCard({ product, categoryIcon }: ProductCardProps) {
 
         {/* Price and Actions - Pushed to bottom */}
         <div className="mt-auto pt-4">
-          <div className="mb-6">
+          <div className="mb-6 flex items-center justify-between">
             <span className="block text-3xl font-bold font-grotesk">${product.price}</span>
+            
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-4 bg-(--text-main)/[0.05] border border-(--text-main)/5 px-3 py-2 rounded-xl">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setQuantity(Math.max(1, quantity - 1));
+                }}
+                disabled={quantity <= 1}
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--text-main)/10 transition-colors text-(--text-main) disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <Minus className="w-4 h-4" />
+              </button>
+              <span className="text-lg font-bold font-grotesk min-w-[1.5rem] text-center">{quantity}</span>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setQuantity(quantity + 1);
+                }}
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--text-main)/10 transition-colors text-(--text-main)"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <button 
+            <button
               onClick={handleBuyNow}
-              disabled={stockCount === 0}
+              // disabled={stockCount === 0}
               className="flex items-center justify-center gap-2 bg-(--accent) text-(--bg-dark) px-6 py-4 rounded-2xl transition-all duration-300 font-bold hover:bg-(--accent) active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed disabled:grayscale cursor-pointer"
             >
-              <span>{stockCount === 0 ? "Unavailable" : "Buy Now"}</span>
+              <span>Buy Now</span>
             </button>
-            
-            <button 
+
+            <button
               onClick={handleAddToCart}
-              disabled={stockCount === 0}
-              className="flex items-center justify-center gap-2 bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) px-6 py-4 rounded-2xl transition-all duration-300 font-bold border border-(--text-main)/5 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+              // disabled={stockCount === 0}
+              className={`flex items-center justify-center gap-2 px-6 py-4 rounded-2xl transition-all duration-300 font-bold border active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer ${
+                added 
+                  ? "bg-green-500/10 border-green-500/20 text-green-500" 
+                  : "bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) border-(--text-main)/5"
+              }`}
             >
-              <ShoppingCart className="w-5 h-5" />
+              {added ? (
+                <>
+                  <Check className="w-5 h-5" />
+                  <span className="text-sm">Added</span>
+                </>
+              ) : (
+                <ShoppingCart className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>

@@ -37,7 +37,7 @@ export default async function DashboardPage() {
     where: { id: session.id },
     include: {
       orders: { take: 5, orderBy: { createdAt: 'desc' } },
-      keys: { take: 4, orderBy: { id: 'desc' } },
+      keys: { orderBy: { id: 'desc' } },
       tickets: { take: 5, orderBy: { updatedAt: 'desc' } }
     }
   });
@@ -81,10 +81,10 @@ export default async function DashboardPage() {
         </div>
 
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 relative z-10">
-          Welcome back, <br className="md:hidden" /> <span className="text-(--accent)">{user.name || 'User'}</span>!
+          Greetings, <br className="md:hidden" /> <span className="text-(--accent)">{user.name || 'User'}</span>!
         </h1>
         <p className="text-(--text-main) max-w-lg leading-relaxed text-sm lg:text-base relative z-10">
-          Your digital infrastructure is performing at peak efficiency. You have {pendingRenewals} licenses nearing renewal and {user.keys.length} active deployments.
+          Welcome to your dashboard. You have {user.keys.length} active keys purchased from us.
         </p>
       </section>
 
@@ -117,9 +117,10 @@ export default async function DashboardPage() {
       </section>
 
       {/* Main Layout Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8"> */}
+      <div className="grid grid-cols-1 gap-8 w-full">
         {/* Left Column: Quick Access Keys */}
-        <div className="order-2 lg:order-1">
+        {/* <div className="order-2 lg:order-1">
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <h2 className="text-xl font-bold">Quick Access Keys</h2>
             <Link href="/keys" className="text-(--accent) text-sm font-medium hover:underline flex items-center gap-1">
@@ -153,7 +154,7 @@ export default async function DashboardPage() {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         {/* Right Column: Recent Activity */}
         <aside className="order-1 lg:order-2 bg-(--bg-dark) border border-(--bg-dark) rounded-2xl p-6 flex flex-col hover:border-(--bg-less-dark) transition-all">
@@ -178,9 +179,9 @@ export default async function DashboardPage() {
             )}
           </div>
 
-          <button className="mt-8 w-full bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) py-3 rounded-xl font-bold text-xs hover:bg-[#222] hover:border-(--accent)/30 transition-all cursor-pointer shadow-lg active:scale-[0.98]">
+          {/* <button className="mt-8 w-full bg-(--bg-dark) border border-(--bg-less-dark) text-(--text-main) py-3 rounded-xl font-bold text-xs hover:bg-[#222] hover:border-(--accent)/30 transition-all cursor-pointer shadow-lg active:scale-[0.98]">
             Download Full Report
-          </button>
+          </button> */}
         </aside>
       </div>
 

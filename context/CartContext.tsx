@@ -42,14 +42,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const MAX_ITEMS = 50;
 
-  const addToCart = useCallback((product: Product, _quantity: number) => {
+  const addToCart = useCallback((product: Product, quantity: number) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.product.id === product.id);
       if (existingItem) {
-        // One product can only be added once.
-        return prevCart;
+        return prevCart.map((item) =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
       }
-      return [...prevCart, { product, quantity: 1 }];
+      return [...prevCart, { product, quantity }];
     });
   }, []);
 
@@ -58,8 +61,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
+    if (quantity < 1) {
       return;
     }
 

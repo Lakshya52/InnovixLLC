@@ -12,20 +12,28 @@ async function getSession() {
   return await decrypt(session);
 }
 
-export default async function AdminOrdersPage() {
+import { getOrdersWithPagination, getDashboardStats } from "@/actions/dashboard";
+
+export default async function AdminOrdersPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ page?: string; status?: string }> 
+}) {
   const session = await getSession();
   if (!session || session.role !== 'ADMIN') redirect("/login");
 
-  const orders = await prisma.order.findMany({
-    include: {
-      user: true,
-      product: true,
-      keys: true
-    },
-    orderBy: { createdAt: 'desc' }
-  });
+  const resolvedParams = await searchParams;
+  const page = parseInt(resolvedParams.page || "1");
+  const status = resolvedParams.status;
+
+  const data = await getOrdersWithPagination(page, 10, status);
+  const stats = await getDashboardStats();
 
   return (
-    <OrdersClient initialOrders={JSON.parse(JSON.stringify(orders))} />
+    <OrdersClient 
+      initialData={JSON.parse(JSON.stringify(data))} 
+      initialStatus={status}
+      totalRevenue={stats.revenue}
+    />
   );
 }

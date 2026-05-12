@@ -26,7 +26,7 @@ export default function OrdersClient({ initialOrders }: OrdersClientProps) {
   const [sortConfig, setSortConfig] = useState<{ key: string, direction: 'asc' | 'desc' } | null>(null);
 
   // Status options
-  const statusOptions = ["All", "Fulfilled", "Waiting_For_Payment", "Awaiting_Stock", "Processing", "Cancelled"];
+  const statusOptions = ["All", "Fulfilled", "Waiting_For_Payment", "PENDING_KEY_ASSIGNMENT", "Processing", "Cancelled"];
 
   // Filtering logic
   const filteredOrders = useMemo(() => {

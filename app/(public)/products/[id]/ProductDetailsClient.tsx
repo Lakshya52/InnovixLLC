@@ -7,6 +7,8 @@ import {
   ShoppingCart,
   Check,
   CheckCircle2,
+  Plus,
+  Minus
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -45,6 +47,7 @@ export default function ProductDetailsClient({
   const router = useRouter();
   const { addToCart, cart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   // Build a cart-compatible product object
   const cartProduct = {
@@ -57,18 +60,18 @@ export default function ProductDetailsClient({
   };
 
   const handleAddToCart = () => {
-    addToCart(cartProduct as any, 1);
+    addToCart(cartProduct as any, quantity);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 2000);
   };
 
   const handleBuyNow = () => {
-    addToCart(cartProduct as any, 1);
+    addToCart(cartProduct as any, quantity);
     router.push("/cart");
   };
 
   const alreadyInCart = cart.some((item) => item.product.id === product.id);
-  const stockCount = product.stockKeys?.length || 0;
+  // const stockCount = product.stockKeys?.length || 0;
 
   return (
     <div className="min-h-screen text-(--text-main) pt-28 w-full pb-20 px-4 md:px-8 mt-20 relative">
@@ -97,37 +100,55 @@ export default function ProductDetailsClient({
               {product.shortDescription || product.description}
             </p>
 
-            <div className="flex items-baseline gap-4 mb-10">
-              <span className="text-5xl font-bold font-grotesk">
-                ${product.price.toFixed(2)}
-              </span>
-              {product.msrp && product.msrp > product.price && (
-                <span className="text-gray-500 text-lg line-through font-inter">
-                  ${product.msrp.toFixed(2)}
+            <div className="flex items-center gap-10 mb-10">
+              <div className="flex items-baseline gap-4">
+                <span className="text-5xl font-bold font-grotesk">
+                  ${product.price.toFixed(2)}
                 </span>
-              )}
+                {product.msrp && product.msrp > product.price && (
+                  <span className="text-gray-500 text-lg line-through font-inter">
+                    ${product.msrp.toFixed(2)}
+                  </span>
+                )}
+              </div>
+
+              {/* Quantity Selector */}
+              <div className="flex items-center gap-6 bg-(--text-main)/[0.05] border border-(--text-main)/10 px-4 py-2 rounded-2xl">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                  className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-xl hover:bg-(--text-main)/10 transition-colors text-(--text-main) disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <Minus className="w-5 h-5" />
+                </button>
+                <span className="text-xl font-bold font-grotesk min-w-[2rem] text-center">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="cursor-pointer w-10 h-10 flex items-center justify-center rounded-xl hover:bg-(--text-main)/10 transition-colors text-(--text-main)"
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row items-center gap-6 mb-12">
               <button
                 onClick={handleAddToCart}
-                disabled={alreadyInCart || stockCount === 0}
-                className={`flex-1 w-full font-bold h-16 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(110,221,134,0.3)] flex items-center justify-center gap-3 font-grotesk text-lg group ${(alreadyInCart || stockCount === 0)
-                    ? "bg-(--text-main)/10 text-gray-500 cursor-not-allowed border border-(--text-main)/5 shadow-none"
-                    : isAdded
-                      ? "bg-(--text-main) text-(--bg-dark)"
-                      : "bg-(--accent) hover:bg-(--accent) text-(--bg-dark)"
+                // disabled={alreadyInCart || stockCount === 0}
+                className={`cursor-pointer flex-1 w-full font-bold h-16 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(110,221,134,0.3)] flex items-center justify-center gap-3 font-grotesk text-lg group ${(alreadyInCart)
+                  ? "bg-(--text-main)/10 text-gray-500 cursor-not-allowed border border-(--text-main)/5 shadow-none"
+                  : isAdded
+                    ? "bg-(--text-main) text-(--bg-dark)"
+                    : "bg-(--accent) hover:bg-(--accent) text-(--bg-dark)"
                   }`}
               >
-                {stockCount === 0
-                  ? "Out of Stock"
-                  : alreadyInCart
-                    ? "Already Added"
-                    : isAdded
-                      ? "Added!"
-                      : "Add to Cart"}
-                {!isAdded && !alreadyInCart && stockCount > 0 && (
+                {alreadyInCart
+                  ? "Already Added"
+                  : isAdded
+                    ? "Added!"
+                    : "Add to Cart"}
+                {!isAdded && !alreadyInCart && (
                   <ShoppingCart className="w-5 h-5 transition-transform group-hover:scale-110" />
                 )}
                 {alreadyInCart && <Check className="w-5 h-5" />}
@@ -135,22 +156,22 @@ export default function ProductDetailsClient({
 
               <button
                 onClick={handleBuyNow}
-                disabled={stockCount === 0}
-                className="flex-1 w-full bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) font-bold h-16 rounded-2xl transition-all duration-300 border border-(--text-main)/10 flex items-center justify-center gap-3 font-grotesk text-lg disabled:opacity-30 disabled:cursor-not-allowed"
+                // disabled={stockCount === 0}
+                className="cursor-pointer flex-1 w-full bg-(--text-main)/[0.05] hover:bg-(--text-main)/[0.1] text-(--text-main) font-bold h-16 rounded-2xl transition-all duration-300 border border-(--text-main)/10 flex items-center justify-center gap-3 font-grotesk text-lg disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                {stockCount === 0 ? "Unavailable" : "Buy Now"}
+                Buy Now
               </button>
             </div>
 
             {/* Low Stock Indicator */}
-            {stockCount > 0 && stockCount < 10 && (
+            {/* {stockCount > 0 && stockCount < 10 && (
               <div className="mb-8 flex items-center gap-3 bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-2xl w-fit animate-in slide-in-from-left duration-500">
                 <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.5)]"></div>
                 <p className="text-yellow-500 text-sm font-bold uppercase tracking-widest">
                   Limited Supply: Only {stockCount} licenses left
                 </p>
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Product Image */}
@@ -159,7 +180,7 @@ export default function ProductDetailsClient({
               src={product.image}
               alt={`${product.name} product image`}
               className="w-1/2 h-[70dvh] rounded-[40px] shadow-2xl shadow-[10px_10px_100px_var(--accent)] hover:shadow-[10px_10px_300px_var(--accent)] transition-all duration-300 object-cover bg-white "
-              
+
             />
           )}
         </div>

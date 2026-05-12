@@ -13,6 +13,7 @@ import {
   LogOut,
   Search,
   Bell,
+  ShoppingBag,
   PanelLeftClose,
   PanelLeftOpen,
   Menu,
@@ -36,7 +37,8 @@ export default function AdminClientLayout({
   }, [pathname]);
 
   const navItems = [
-    { name: "Orders", icon: <BarChart3 size={20} />, href: "/admin/dashboard" },
+    { name: "Dashboard", icon: <BarChart3 size={20} />, href: "/admin/dashboard" },
+    { name: "Orders", icon: <ShoppingBag size={20} />, href: "/admin/orders" },
     { name: "Users", icon: <Users size={20} />, href: "/admin/users" },
     { name: "Inventory", icon: <Package size={20} />, href: "/admin/inventory" },
     { name: "Support Chats", icon: <MessageSquare size={20} />, href: "/admin/support" },

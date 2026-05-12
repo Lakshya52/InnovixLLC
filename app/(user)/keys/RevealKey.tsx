@@ -8,10 +8,30 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
+    setRevealed(true); // Auto-reveal on copy
     navigator.clipboard.writeText(keyValue);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  if (keyValue === "NO_KEY_AVAILABLE") {
+    return (
+      <div className="bg-(--bg-dark) border border-yellow-500/10 rounded-3xl p-8 text-center animate-in fade-in zoom-in duration-500">
+        <div className="w-12 h-12 bg-yellow-500/10 rounded-2xl flex items-center justify-center text-yellow-500 mx-auto mb-4">
+          <Lock size={24} className="opacity-50" />
+        </div>
+        <p className="text-yellow-500 font-bold text-sm uppercase tracking-widest mb-2">
+          Your Order is confirmed,
+        </p>
+        <p className="text-yellow-500 font-bold text-sm uppercase tracking-widest mb-2">
+          Key Not Assigned Yet
+        </p>
+        {/* <p className="text-gray-500 text-[10px] leading-relaxed max-w-[200px] mx-auto">
+          We're currently restocking this product. You'll be notified as soon as your key is ready.
+        </p> */}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 w-full">
@@ -23,11 +43,6 @@ export default function RevealKey({ keyValue }: { keyValue: string }) {
             </span>
           ) : (
             <div className="flex items-center opacity-20">
-              {/* {[...Array(5)].map((_, i) => (
-                <span key={i} className="flex items-center">
-                  XXXXX{i < 4 && <span className="mx-1 mt-[-2px]">-</span>}
-                </span>
-              ))} */}
               XXXXX-XXXXX-XXXXX-XXXXX
             </div>
           )}

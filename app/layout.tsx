@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "Innovix LLC | Your Hub for Microsoft Solutions & Expert Support",
 };
 
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,6 +41,7 @@ export default function RootLayout({
         >
           <CartProvider>
             {children}
+            <Toaster position="top-center" richColors />
           </CartProvider>
         </ThemeProvider>
       </body>

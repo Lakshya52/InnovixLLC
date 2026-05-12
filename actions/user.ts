@@ -19,7 +19,7 @@ export async function getCurrentUser() {
   if (!session) return null;
 
   try {
-    return await (prisma.user as any).findUnique({
+    const user = await (prisma.user as any).findUnique({
       where: { id: session.id },
       select: {
         id: true,

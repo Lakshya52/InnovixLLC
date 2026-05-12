@@ -50,7 +50,7 @@ export default function CartPage() {
     try {
       const items = cart.map(item => ({
         productId: item.product.id,
-        quantity: 1 // For digital assets quantity is usually 1
+        quantity: item.quantity
       }));
 
       if (paymentMethod === "stripe") {
@@ -104,12 +104,12 @@ export default function CartPage() {
   }
 
   return (
-    <div className="bg-(--bg-dark) min-h-screen text-(--text-main) pt-32 pb-20 px-6 lg:px-12 relative overflow-hidden">
+    <div className="bg-(--bg-dark) min-h-screen mt-[15dvh] text-(--text-main) pt-12 pb-20  relative overflow-hidden">
       {/* Background blobs for premium feel */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-(--accent)/5 blur-[120px] rounded-full -z-10" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-(--accent)/5 blur-[100px] rounded-full -z-10" />
 
-      <div className="w-full max-w-7xl mx-auto relative z-10">
+      <div className="w-full max-w-[80dvw] mx-auto relative z-10">
         {/* Header Section */}
         <div className="mb-10 md:mb-16 text-center md:text-left">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk mb-4 tracking-tight">
@@ -154,12 +154,38 @@ export default function CartPage() {
                     </div>
 
                     <div className="flex items-center justify-between w-full sm:w-auto gap-4 sm:gap-6 pt-4 sm:pt-0 border-t border-(--text-main)/5 sm:border-0 mt-2 sm:mt-0">
-                      <div className="text-xl font-bold font-grotesk whitespace-nowrap">
-                        ${item.product.price}
+                      <div className="flex flex-col items-center sm:items-end gap-2">
+                        <div className="text-xl font-bold font-grotesk whitespace-nowrap">
+                          ${(parseFloat(item.product.price) * item.quantity).toFixed(2)}
+                        </div>
+                        {item.quantity > 1 && (
+                          <div className="text-xs text-gray-500 font-inter">
+                            ${item.product.price} each
+                          </div>
+                        )}
                       </div>
+
+                      {/* Quantity Selector */}
+                      <div className="flex items-center gap-3 bg-(--text-main)/[0.05] border border-(--text-main)/10 px-3 py-1.5 rounded-xl">
+                        <button
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          disabled={item.quantity <= 1}
+                          className=" cursor-pointer w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--text-main)/10 transition-colors text-(--text-main) disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+                        <span className="text-sm font-bold font-grotesk min-w-[1.2rem] text-center">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          className=" cursor-pointer w-8 h-8 flex items-center justify-center rounded-lg hover:bg-(--text-main)/10 transition-colors text-(--text-main)"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+                      </div>
+
                       <button
                         onClick={() => removeFromCart(item.product.id)}
-                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all"
+                        className="cursor-pointer w-10 h-10 flex items-center justify-center text-gray-600 hover:text-red-500 hover:bg-red-500/10 rounded-full transition-all"
                       >
                         <Trash2 size={20} />
                       </button>
@@ -254,7 +280,7 @@ export default function CartPage() {
               <button
                 onClick={handleCheckout}
                 disabled={loading}
-                className={`w-full bg-(--accent) hover:bg-(--accent) text-(--bg-dark) font-bold py-6 rounded-3xl transition-all duration-300 shadow-[0_0_30px_rgba(110,221,134,0.4)] font-grotesk text-xl flex items-center justify-center gap-3 group relative overflow-hidden ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+                className={`cursor-pointer w-full bg-(--accent) hover:bg-(--accent) text-(--bg-dark) font-bold py-6 rounded-3xl transition-all duration-300 shadow-[0_0_30px_rgba(110,221,134,0.4)] font-grotesk text-xl flex items-center justify-center gap-3 group relative overflow-hidden ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
               >
                 <span className="relative z-10">{loading ? "Processing..." : "Complete Purchase"}</span>
                 {!loading && <ArrowRight className="w-6 h-6 relative z-10 transition-transform group-hover:translate-x-1" />}

@@ -92,7 +92,7 @@ export async function getOrdersWithPagination(page = 1, limit = 10, status?: str
 
   const [orders, total] = await Promise.all([
     prisma.order.findMany({
-      include: { user: true, product: true },
+      include: { user: true, product: true, keys: true },
       orderBy: { createdAt: "desc" },
       skip,
       take: limit,
